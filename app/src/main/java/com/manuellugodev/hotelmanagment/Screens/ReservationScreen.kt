@@ -89,28 +89,36 @@ fun ReservationScreen() {
 fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
 
 
-    Column() {
-        PreviewGuestInputScreen(
-            title = "Adulto",
-            stateNumberGuest = stateNumberGuest.adults,
-            operation = { stateNumberGuest.adults.value+= it })
-        PreviewGuestInputScreen(
-            title = "Menores",
-            stateNumberGuest = stateNumberGuest.children,
-            operation = { stateNumberGuest.children.value += it })
+    Card(Modifier.padding(5.dp)){
+        Column() {
+            GuestInputScreen(
+                title = "Adulto",
+                stateNumberGuest = stateNumberGuest.adults,
+                operation = { if ((stateNumberGuest.adults.value + it) > -1) stateNumberGuest.adults.value += it })
+            GuestInputScreen(
+                title = "Menores",
+                stateNumberGuest = stateNumberGuest.children,
+                operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
+        }
     }
 
 }
 
+
+
 @Composable
-fun PreviewGuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (Int) -> Unit) {
+fun GuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (Int) -> Unit) {
 
     Card(Modifier.padding(10.dp)) {
         Column() {
             Row() {
                 Text(text = title, fontSize = 30.sp, textAlign = TextAlign.Center)
-                Button(onClick = { operation(1) }, modifier = Modifier.width(80.dp)) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "PLus")
+                Button(
+                    onClick = { operation(-1) }, modifier = Modifier
+                        .width(80.dp)
+                        .height(40.dp)
+                ) {
+                    Text(text = "-", fontSize = 30.sp, modifier = Modifier.wrapContentHeight())
                 }
                 Box(
                     Modifier
@@ -119,13 +127,10 @@ fun PreviewGuestInputScreen(title: String, stateNumberGuest: State<Int>, operati
                 ) {
                     Text(text = stateNumberGuest.value.toString(), fontSize = 30.sp)
                 }
-                Button(
-                    onClick = { operation(-1) }, modifier = Modifier
-                        .width(80.dp)
-                        .height(40.dp)
-                ) {
-                    Text(text = "-", fontSize = 30.sp, modifier = Modifier.wrapContentHeight())
+                Button(onClick = { operation(1) }, modifier = Modifier.width(80.dp)) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "PLus")
                 }
+
             }
         }
     }
