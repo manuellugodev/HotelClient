@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
 import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
@@ -48,7 +50,9 @@ import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReservationScreen() {
+fun ReservationScreen(
+    navController: NavController
+) {
     Column {
         var dateVisibleState by remember { mutableStateOf(false) }
         var guestVisibleState by remember { mutableStateOf(false) }
@@ -69,6 +73,10 @@ fun ReservationScreen() {
                 }
             }
         })
+        Button(modifier = Modifier.padding(start = 10.dp),onClick = {navController.navigate(Screen.RoomTypeScreen.route)}) {
+            Text(text = "Search")
+            
+        }
 
         if (dateVisibleState) {
             DateInputScreen(stateDate) {

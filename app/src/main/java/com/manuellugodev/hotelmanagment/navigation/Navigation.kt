@@ -13,7 +13,7 @@ import com.manuellugodev.hotelmanagment.Screens.RoomTypeScreen
 fun Navigation(navController: NavHostController){
     NavHost(navController = navController, startDestination =Screen.ReservationScreen.route){
         composable(route =Screen.ReservationScreen.route){
-            ReservationScreen()
+            ReservationScreen(navController)
         }
 
         composable(route = Screen.RoomTypeScreen.route){

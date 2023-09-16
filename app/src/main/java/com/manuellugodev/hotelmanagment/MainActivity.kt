@@ -111,7 +111,6 @@ fun Screen(innerPadding: PaddingValues) {
             .padding(innerPadding)
             .scrollable(state, Orientation.Vertical)
     ) {
-        ReservationScreen()
 
     }
 }
