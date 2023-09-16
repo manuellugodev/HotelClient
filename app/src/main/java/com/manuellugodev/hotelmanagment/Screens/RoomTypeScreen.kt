@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BedroomParent
 import androidx.compose.material.icons.rounded.Bed
@@ -20,13 +21,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.manuellugodev.hotelmanagment.R
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 
@@ -34,7 +38,7 @@ import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 @Composable
 fun RoomTypeScreen() {
     val room = RoomHotel("Room double", 2, "", 2, 60.23)
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+    LazyColumn(Modifier.fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         items(10) {
             RoomItem()
         }
@@ -48,7 +52,7 @@ fun RoomItem() {
 
     Card(
         Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(0.9f)
             .wrapContentHeight()
     ) {
         Column(Modifier.padding(15.dp)) {
@@ -57,7 +61,13 @@ fun RoomItem() {
                     .fillMaxWidth()
                     .height(100.dp)
             ) {
-                Image(contentScale = ContentScale.Inside,painter = painterResource(id = R.drawable.ic_launcher_foreground), contentDescription = "image")
+                AsyncImage(
+                    modifier = Modifier.clip(RoundedCornerShape(8.dp)),
+                    model = "https://cdn.loewshotels.com/loewshotels.com-1435110691/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/2d2d9d187a62f65b7602eab28e06bcce.jpg",
+                    contentDescription = "Bedroom",
+                    contentScale = ContentScale.Crop,
+
+                )
             }
 
             Text(text = room.title, fontSize = 30.sp, textAlign = TextAlign.Left)
