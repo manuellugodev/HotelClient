@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.manuellugodev.hotelmanagment.Screens.ReservationScreen
+import com.manuellugodev.hotelmanagment.navigation.Navigation
 import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
 
@@ -58,8 +61,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HotelManagmentTheme {
+                val navController= rememberNavController()
                 Scaffold(topBar = { TopBar() }, bottomBar = {BottomBar()}) { innerPadding ->
-                    Screen(innerPadding)
+                    Box(modifier = Modifier.padding(innerPadding)){
+                        Navigation(navController)
+                    }
+
                 }
             }
 
@@ -105,6 +112,7 @@ fun Screen(innerPadding: PaddingValues) {
             .scrollable(state, Orientation.Vertical)
     ) {
         ReservationScreen()
+
     }
 }
 

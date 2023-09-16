@@ -47,7 +47,7 @@ fun RoomTypeScreen() {
 
 @Preview
 @Composable
-fun RoomItem() {
+private fun RoomItem() {
     val room = RoomHotel("Room double", 2, "", 2, 60.23)
 
     Card(
