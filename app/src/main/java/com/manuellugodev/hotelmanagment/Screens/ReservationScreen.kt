@@ -31,6 +31,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +54,7 @@ fun ReservationScreen() {
         var guestVisibleState by remember { mutableStateOf(false) }
 
         val stateDate = rememberDateRangePickerState()
-        val stateNumberGuest by remember {
+        val stateNumberGuest by rememberSaveable (stateSaver = numberGuestSaver){
             mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
         }
         CardFields(stateDate, event = {
