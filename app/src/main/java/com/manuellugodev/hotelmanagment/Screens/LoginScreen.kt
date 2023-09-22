@@ -32,8 +32,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
 
-@Preview
+
 @Composable
 fun LoginScreen() {
 
@@ -101,4 +102,10 @@ fun LoginScreen() {
         }
     }
 }
-
+@Preview
+@Composable
+fun PreviewLoginScreen(){
+ HotelManagmentTheme {
+     LoginScreen()
+ }
+}
