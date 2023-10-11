@@ -32,11 +32,24 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.LoginStatus
+import com.manuellugodev.hotelmanagment.navigation.Screen
+import com.manuellugodev.hotelmanagment.ui.LoginViewModel
 import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
 
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
+
+    val viewmodel = remember {
+        LoginViewModel()
+    }
+
+    if (viewmodel._statusLogin.value is LoginStatus.Success) {
+        navController.navigate(Screen.ReservationScreen.route)
+    }
+
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -93,6 +106,7 @@ fun LoginScreen() {
             onClick = {
                 // Perform login logic here
                 focusManager.clearFocus()
+                viewmodel.tryLogin("email","password")
                 // Example: Check username and password, navigate to the next screen, etc.
             },
             modifier = Modifier.fillMaxWidth(),
@@ -102,10 +116,12 @@ fun LoginScreen() {
         }
     }
 }
+/*
+
 @Preview
 @Composable
-fun PreviewLoginScreen(){
- HotelManagmentTheme {
-     LoginScreen()
- }
-}
+fun PreviewLoginScreen() {
+    HotelManagmentTheme {
+        LoginScreen()
+    }
+}*/
