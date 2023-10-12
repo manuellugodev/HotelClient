@@ -1,5 +1,7 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +42,7 @@ import com.manuellugodev.hotelmanagment.LoginStatus
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.LoginViewModel
 import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
+import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
 
 
 @Composable
@@ -45,10 +51,24 @@ fun LoginScreen(navController: NavController) {
     val viewmodel = remember {
         LoginViewModel()
     }
+    Box(Modifier.padding(start = 170.dp,top = 100.dp)){
+        when (viewmodel._statusLogin.value ) {
+            is LoginStatus.Success ->{
+                Text(text = "Welcome")
 
-    if (viewmodel._statusLogin.value is LoginStatus.Success) {
-        navController.navigate(Screen.ReservationScreen.route)
+                navController.navigate(Screen.ReservationScreen.route)
+            }
+
+            LoginStatus.Failure -> {
+                Text(text = "Error Try Again")
+
+            }
+            LoginStatus.Pending -> {
+                CircularProgressIndicator(color = md_theme_light_primary)
+            }
+        }
     }
+
 
 
     var username by remember { mutableStateOf("") }
@@ -106,7 +126,7 @@ fun LoginScreen(navController: NavController) {
             onClick = {
                 // Perform login logic here
                 focusManager.clearFocus()
-                viewmodel.tryLogin("email","password")
+                viewmodel.tryLogin(username,password)
                 // Example: Check username and password, navigate to the next screen, etc.
             },
             modifier = Modifier.fillMaxWidth(),

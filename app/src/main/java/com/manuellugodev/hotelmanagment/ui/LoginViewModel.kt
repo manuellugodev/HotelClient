@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.manuellugodev.hotelmanagment.LoginStatus
 import com.manuellugodev.hotelmanagment.data.LoginRepositoryImpl
 import com.manuellugodev.hotelmanagment.data.sources.FirebaseLogin
@@ -16,7 +17,8 @@ class LoginViewModel : ViewModel() {
      val _statusLogin :MutableState<LoginStatus> = mutableStateOf(LoginStatus.Pending)
 
      fun tryLogin(email: String, password: String) {
-        val useCase = LoginWithUsernameAndPassword(LoginRepositoryImpl(FirebaseLogin()))
+         _statusLogin.value=LoginStatus.Pending
+        val useCase = LoginWithUsernameAndPassword(LoginRepositoryImpl(FirebaseLogin(FirebaseAuth.getInstance())))
 
          viewModelScope.launch(Dispatchers.IO) {
             val result = useCase(email, password)
