@@ -38,6 +38,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.manuellugodev.hotelmanagment.LoginStatus
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.LoginViewModel
@@ -48,12 +51,16 @@ import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
 @Composable
 fun LoginScreen(navController: NavController) {
 
+    val firebaseAuth = FirebaseAuth.getInstance()
+    if (firebaseAuth.currentUser != null) {
+        navController.navigate(Screen.ReservationScreen.route)
+    }
     val viewmodel = remember {
         LoginViewModel()
     }
-    Box(Modifier.padding(start = 170.dp,top = 100.dp)){
-        when (viewmodel._statusLogin.value ) {
-            is LoginStatus.Success ->{
+    Box(Modifier.padding(start = 170.dp, top = 100.dp)) {
+        when (viewmodel._statusLogin.value) {
+            is LoginStatus.Success -> {
                 Text(text = "Welcome")
 
                 navController.navigate(Screen.ReservationScreen.route)
@@ -63,12 +70,12 @@ fun LoginScreen(navController: NavController) {
                 Text(text = "Error Try Again")
 
             }
+
             LoginStatus.Pending -> {
                 CircularProgressIndicator(color = md_theme_light_primary)
             }
         }
     }
-
 
 
     var username by remember { mutableStateOf("") }
@@ -126,7 +133,7 @@ fun LoginScreen(navController: NavController) {
             onClick = {
                 // Perform login logic here
                 focusManager.clearFocus()
-                viewmodel.tryLogin(username,password)
+                viewmodel.tryLogin(username, password)
                 // Example: Check username and password, navigate to the next screen, etc.
             },
             modifier = Modifier.fillMaxWidth(),
