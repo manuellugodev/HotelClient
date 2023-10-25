@@ -18,9 +18,12 @@ import androidx.compose.material.icons.filled.BedroomParent
 import androidx.compose.material.icons.rounded.Bed
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,25 +33,67 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.manuellugodev.hotelmanagment.R
+import com.manuellugodev.hotelmanagment.RoomTypeState
+import com.manuellugodev.hotelmanagment.data.RoomRepository
+import com.manuellugodev.hotelmanagment.data.RoomRepositoryImpl
+import com.manuellugodev.hotelmanagment.data.sources.RoomDataSourceFirebaseOperations
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
+import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
+import com.manuellugodev.hotelmanagment.utils.vo.DataResult
 
-@Preview
+
 @Composable
-fun RoomTypeScreen() {
+fun RoomTypeScreen(navController: NavController) {
+
+    val viewModel = remember {
+        RoomTypeViewModel(
+            SearchRoomAvailables(
+                RoomRepositoryImpl(
+                    RoomDataSourceFirebaseOperations(
+                        Firebase.firestore
+                    )
+                )
+            )
+        )
+    }
     val room = RoomHotel("Room double", 2, "", 2, 60.23)
-    LazyColumn(Modifier.fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        items(10) {
-            RoomItem()
+
+    LazyColumn(
+        Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (viewModel._statusRoom.value) {
+            is RoomTypeState.Error -> {
+                item { Text(text = "Error get lists") }
+            }
+
+            is RoomTypeState.Pending -> {
+                item { CircularProgressIndicator() }
+                viewModel.searchRoomsAvailables(0)
+            }
+
+            is RoomTypeState.Success -> {
+                val list = (viewModel._statusRoom.value as RoomTypeState.Success).data
+                items(items = list) {
+                    RoomItem(room = it)
+                }
+
+            }
         }
     }
 }
 
-@Preview
+
 @Composable
-private fun RoomItem() {
-    val room = RoomHotel("Room double", 2, "", 2, 60.23)
+private fun RoomItem(room: RoomHotel) {
 
     Card(
         Modifier
@@ -63,11 +108,11 @@ private fun RoomItem() {
             ) {
                 AsyncImage(
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-                    model = "https://cdn.loewshotels.com/loewshotels.com-1435110691/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/2d2d9d187a62f65b7602eab28e06bcce.jpg",
-                    contentDescription = "Bedroom",
+                    model =room.pathImage,
+                    contentDescription = room.title,
                     contentScale = ContentScale.Crop,
 
-                )
+                    )
             }
 
             Text(text = room.title, fontSize = 30.sp, textAlign = TextAlign.Left)

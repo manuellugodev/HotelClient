@@ -22,7 +22,7 @@ fun Navigation(navController: NavHostController){
         }
 
         composable(route = Screen.RoomTypeScreen.route){
-            RoomTypeScreen()
+            RoomTypeScreen(navController)
         }
     }
 }

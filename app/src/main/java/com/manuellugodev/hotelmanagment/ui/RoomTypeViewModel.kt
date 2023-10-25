@@ -1,0 +1,38 @@
+package com.manuellugodev.hotelmanagment.ui
+
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.manuellugodev.hotelmanagment.RoomTypeState
+import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
+import com.manuellugodev.hotelmanagment.utils.vo.DataResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class RoomTypeViewModel(val usecase: SearchRoomAvailables) : ViewModel() {
+
+    val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending(0))
+
+    fun searchRoomsAvailables(guests: Int) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = usecase(guests)
+
+                when (result) {
+                    is DataResult.Success -> {
+                        _statusRoom.value = RoomTypeState.Success(result.data)
+                    }
+
+                    is DataResult.Error -> {
+                        _statusRoom.value = RoomTypeState.Error("Some is wrong,Try Again")
+                    }
+                }
+            } catch (e: Exception) {
+                _statusRoom.value = RoomTypeState.Error("Some is wrong,Try Again")
+
+            }
+        }
+    }
+}
