@@ -1,6 +1,5 @@
 package com.manuellugodev.hotelmanagment.Screens
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,46 +19,38 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.manuellugodev.hotelmanagment.LoginStatus
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.LoginViewModel
-import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
 import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
 
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,viewModel: LoginViewModel= hiltViewModel()) {
 
     val firebaseAuth = FirebaseAuth.getInstance()
     if (firebaseAuth.currentUser != null) {
         navController.navigate(Screen.ReservationScreen.route)
     }
-    val viewmodel = remember {
-        LoginViewModel()
-    }
+
     Box(Modifier.padding(start = 170.dp, top = 100.dp)) {
-        when (viewmodel._statusLogin.value) {
+        when (viewModel._statusLogin.value) {
             is LoginStatus.Success -> {
                 Text(text = "Welcome")
 
@@ -133,7 +124,7 @@ fun LoginScreen(navController: NavController) {
             onClick = {
                 // Perform login logic here
                 focusManager.clearFocus()
-                viewmodel.tryLogin(username, password)
+                viewModel.tryLogin(username, password)
                 // Example: Check username and password, navigate to the next screen, etc.
             },
             modifier = Modifier.fillMaxWidth(),

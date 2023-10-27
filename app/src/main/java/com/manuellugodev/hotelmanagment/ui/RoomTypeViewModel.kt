@@ -7,10 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.RoomTypeState
 import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RoomTypeViewModel(val usecase: SearchRoomAvailables) : ViewModel() {
+@HiltViewModel
+class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables) : ViewModel() {
 
     val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending(0))
 

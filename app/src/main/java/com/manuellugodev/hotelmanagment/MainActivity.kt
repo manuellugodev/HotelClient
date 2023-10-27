@@ -54,7 +54,9 @@ import com.manuellugodev.hotelmanagment.Screens.ReservationScreen
 import com.manuellugodev.hotelmanagment.navigation.Navigation
 import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
