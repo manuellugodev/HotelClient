@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.manuellugodev.hotelmanagment.RoomTypeState
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
 
 
@@ -58,7 +60,7 @@ fun RoomTypeScreen(navController: NavController,viewModel: RoomTypeViewModel = h
             is RoomTypeState.Success -> {
                 val list = (viewModel._statusRoom.value as RoomTypeState.Success).data
                 items(items = list) {
-                    RoomItem(room = it)
+                    RoomItem(room = it) { navController.navigate(Screen.ConfirmationScreen.route)  }
                 }
 
             }
@@ -66,14 +68,14 @@ fun RoomTypeScreen(navController: NavController,viewModel: RoomTypeViewModel = h
     }
 }
 
-
 @Composable
-private fun RoomItem(room: RoomHotel) {
+private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
 
     Card(
         Modifier
             .fillMaxWidth(0.9f)
             .wrapContentHeight()
+            .clickable { onClickItem() }
     ) {
         Column(Modifier.padding(15.dp)) {
             Box(

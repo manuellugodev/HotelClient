@@ -1,10 +1,12 @@
 package com.manuellugodev.hotelmanagment.Screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,6 +31,7 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -39,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -53,14 +57,14 @@ import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 fun ReservationScreen(
     navController: NavController
 ) {
-    Column {
-        var dateVisibleState by remember { mutableStateOf(false) }
-        var guestVisibleState by remember { mutableStateOf(false) }
+    var dateVisibleState by remember { mutableStateOf(false) }
+    var guestVisibleState by remember { mutableStateOf(false) }
 
-        val stateDate = rememberDateRangePickerState()
-        val stateNumberGuest by rememberSaveable (stateSaver = numberGuestSaver){
-            mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
-        }
+    val stateDate = rememberDateRangePickerState()
+    val stateNumberGuest by rememberSaveable(stateSaver = numberGuestSaver) {
+        mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
+    }
+    Column {
         CardFields(stateDate, event = {
             when (it) {
                 EventField.SEARCH -> {}
@@ -73,18 +77,27 @@ fun ReservationScreen(
                 }
             }
         })
-        Button(modifier = Modifier.padding(start = 10.dp),onClick = {navController.navigate(Screen.RoomTypeScreen.route)}) {
+        Button(
+            modifier = Modifier.padding(start = 10.dp),
+            onClick = { navController.navigate(Screen.RoomTypeScreen.route) }) {
             Text(text = "Search")
-            
+
         }
 
-        if (dateVisibleState) {
-            DateInputScreen(stateDate) {
-                dateVisibleState = dateVisibleState.not()
-            }
-        }
+    }
 
-        if (guestVisibleState) {
+    if (dateVisibleState) {
+        DateInputScreen(stateDate) {
+            dateVisibleState = dateVisibleState.not()
+        }
+    }
+
+    if (guestVisibleState) {
+        Box(
+            Modifier
+                .fillMaxSize(1f)
+                .background(Color.White)
+                .padding(bottom = 10.dp),contentAlignment = Alignment.Center) {
             GuestInputScreen(stateNumberGuest) {
                 guestVisibleState = guestVisibleState.not()
             }
@@ -95,11 +108,29 @@ fun ReservationScreen(
 
 }
 
+@Preview
+@Composable
+fun testLayouts() {
+    val stateNumberGuest = remember {
+        NumberGuest(adults = mutableIntStateOf(0), mutableIntStateOf(0))
+    }
+    Box(
+        Modifier
+            .fillMaxSize(1f)
+            .border(2.dp, Color.Black),contentAlignment = Alignment.BottomCenter) {
+        GuestInputScreen(stateNumberGuest =stateNumberGuest) {
+
+        }
+    }
+}
+
 @Composable
 fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
-
-
-    Card(Modifier.padding(5.dp)){
+    Card(
+        Modifier
+            .padding(5.dp)
+            .border(2.dp, Color.Blue)
+    ) {
         Column() {
             GuestInputScreen(
                 title = "Adulto",
@@ -109,11 +140,20 @@ fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
                 title = "Menores",
                 stateNumberGuest = stateNumberGuest.children,
                 operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(5.dp),
+                onClick = event
+            ) {
+                Text("Set", textAlign = TextAlign.Center)
+            }
         }
     }
 
 }
-
 
 
 @Composable

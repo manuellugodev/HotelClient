@@ -5,4 +5,6 @@ sealed class Screen(val route:String){
     object ReservationScreen:Screen("reservation_screen")
 
     object RoomTypeScreen:Screen("room_type_reservation")
+
+    object ConfirmationScreen:Screen("room_reservation_confirm")
 }
