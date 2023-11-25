@@ -19,8 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.type.DateTime
+import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
+import com.manuellugodev.hotelmanagment.utils.fakes.reservationMock
+import com.manuellugodev.hotelmanagment.utils.fakes.roomMock
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -28,7 +31,7 @@ import java.util.Date
 @Composable
 fun ConfirmationScreen(navController: NavHostController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        DetailConfirmationScreen()
+        DetailConfirmationScreen(reservationMock)
 
         Button(onClick = { /*TODO*/ }, Modifier.fillMaxWidth(0.7f)) {
             Text(text = "Book")
@@ -40,7 +43,7 @@ fun ConfirmationScreen(navController: NavHostController) {
 @Composable
 fun ConfirmationScreenPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        DetailConfirmationScreen()
+        DetailConfirmationScreen(reservationMock)
 
         Button(onClick = { /*TODO*/ }, Modifier.fillMaxWidth(0.7f)) {
             Text(text = "Book")
@@ -49,17 +52,11 @@ fun ConfirmationScreenPreview() {
 }
 
 @Composable
-fun DetailConfirmationScreen() {
-    val room = RoomHotel(
-        "test",
-        2,
-        "https://cdn.loewshotels.com/loewshotels.com-1435110691/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/2d2d9d187a62f65b7602eab28e06bcce.jpg",
-        2,
-        200.0
-    )
+fun DetailConfirmationScreen(reservation: Reservation) {
+    val room = reservation.roomHotel
 
-    val checkInTime= 1700103111000
-    val checkOutTime = 1700106711000
+    val checkInTime= reservation.checkIn
+    val checkOutTime = reservation.checkOut
 
     Card(
         Modifier
@@ -68,8 +65,9 @@ fun DetailConfirmationScreen() {
     ) {
         Column(Modifier.padding(10.dp)) {
             AsyncImage(
-                model = room.title,
-                contentDescription = room.pathImage, Modifier.height(200.dp)
+                model = room.pathImage,
+                contentDescription = room.title?:"Hoa",
+                Modifier.height(200.dp)
             )
 
 

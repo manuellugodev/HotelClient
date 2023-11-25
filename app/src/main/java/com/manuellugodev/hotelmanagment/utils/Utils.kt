@@ -16,7 +16,7 @@ fun convertLongToTime(time: Long): String {
 
 fun convertLongToDateTimeRoom(time:Long): String {
     val date=Date(time)
-    val format = SimpleDateFormat("dd MMM yyyy hh:mm")
+    val format = SimpleDateFormat("dd MMM yyyy")
     return format.format(date)
 }
 
