@@ -1,6 +1,7 @@
 package com.manuellugodev.hotelmanagment.domain.model
 
 data class Reservation(
+    var id:String?=null,
     val client:Customer,
     val roomHotel: RoomHotel,
     val checkIn:Long,

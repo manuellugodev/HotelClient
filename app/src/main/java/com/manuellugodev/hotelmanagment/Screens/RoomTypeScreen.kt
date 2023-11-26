@@ -40,8 +40,6 @@ import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
 @Composable
 fun RoomTypeScreen(navController: NavController,viewModel: RoomTypeViewModel = hiltViewModel() ) {
 
-    val room = RoomHotel("Room double", 2, "", 2, 60.23)
-
     LazyColumn(
         Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
