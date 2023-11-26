@@ -1,9 +1,11 @@
 package com.manuellugodev.hotelmanagment.di
 
 import com.manuellugodev.hotelmanagment.data.LoginRepository
+import com.manuellugodev.hotelmanagment.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.data.RoomRepository
 import com.manuellugodev.hotelmanagment.usecases.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
+import com.manuellugodev.hotelmanagment.usecases.SendConfirmationReservation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +23,10 @@ class UseCaseModule {
     @Provides
     fun provideSearchRoomAvailablesUseCase(repository: RoomRepository): SearchRoomAvailables {
         return SearchRoomAvailables(repository)
+    }
+
+    @Provides
+    fun provideSendConfirmationReservationUsecase(repository: ReservationRepository):SendConfirmationReservation{
+        return SendConfirmationReservation(repository)
     }
 }

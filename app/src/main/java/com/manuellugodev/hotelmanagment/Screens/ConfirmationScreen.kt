@@ -16,11 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.type.DateTime
+import com.manuellugodev.hotelmanagment.ConfirmationState
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
+import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
 import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.utils.fakes.reservationMock
 import com.manuellugodev.hotelmanagment.utils.fakes.roomMock
@@ -29,12 +33,25 @@ import java.util.Date
 
 
 @Composable
-fun ConfirmationScreen(navController: NavHostController) {
+fun ConfirmationScreen(navController: NavHostController,viewModel: ConfirmationViewModel = hiltViewModel() ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         DetailConfirmationScreen(reservationMock)
 
-        Button(onClick = { /*TODO*/ }, Modifier.fillMaxWidth(0.7f)) {
+        Button(onClick = { viewModel.sendConfirmation(reservationMock)}, Modifier.fillMaxWidth(0.7f)) {
             Text(text = "Book")
+        }
+
+        when(viewModel._confirmationScreenState.value){
+            is ConfirmationState.Success -> {
+                navController.popBackStack()
+            }
+            is ConfirmationState.Error -> {
+
+            }
+            is ConfirmationState.Pending -> {
+
+            }
+
         }
     }
 }
@@ -45,7 +62,7 @@ fun ConfirmationScreenPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         DetailConfirmationScreen(reservationMock)
 
-        Button(onClick = { /*TODO*/ }, Modifier.fillMaxWidth(0.7f)) {
+        Button(onClick = TODO(), Modifier.fillMaxWidth(0.7f)) {
             Text(text = "Book")
         }
     }
@@ -94,18 +111,18 @@ fun DetailConfirmationScreen(reservation: Reservation) {
 
 
                     Text(
-                        text = "price:  100$",
+                        text = "Price: ${reservation.price}$",
                         modifier = Modifier.padding(start = 10.dp),
                         fontSize = 12.sp,
                         color = Color.LightGray
                     )
                     Text(
-                        text = "tax      10$",
+                        text = "tax: ${reservation.taxPrice}$",
                         modifier = Modifier.padding(start = 10.dp),
                         fontSize = 12.sp,
                         color = Color.LightGray
                     )
-                    Text(text = "Total   110$", fontSize = 18.sp)
+                    Text(text = "Total   ${reservation.totalPrice}$", fontSize = 18.sp)
 
                 }
 

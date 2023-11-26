@@ -13,6 +13,6 @@ val roomMock = RoomHotel(
 )
 val customer= Customer("2312312","Manuel","Lugo")
 val reservationMock=Reservation(
-    customer, roomMock,1700799185000,1700971985000
+    customer, roomMock,1700799185000,1700971985000,120,12,132
 
 )

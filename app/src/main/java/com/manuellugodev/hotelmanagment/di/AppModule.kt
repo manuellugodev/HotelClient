@@ -3,8 +3,10 @@ package com.manuellugodev.hotelmanagment.di
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
 import com.manuellugodev.hotelmanagment.data.sources.FirebaseLogin
 import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
+import com.manuellugodev.hotelmanagment.data.sources.ReservationFirebase
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSourceFirebaseOperations
 import dagger.Module
@@ -24,5 +26,10 @@ class AppModule {
     @Provides
     fun roomDataSource(database:FirebaseFirestore):RoomDataSource{
         return RoomDataSourceFirebaseOperations(database)
+    }
+
+    @Provides
+    fun provideDataSourceReservation(firestore: FirebaseFirestore): DataSourceReservation {
+        return ReservationFirebase(firestore)
     }
 }
