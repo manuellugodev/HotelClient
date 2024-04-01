@@ -25,7 +25,7 @@ class DataModule {
     }
 
     @Provides
-    fun provideRoomRepository(dataSource: RoomDataSource): RoomRepository {
+    fun provideRoomRepository(@Named("api")dataSource: RoomDataSource): RoomRepository {
         return RoomRepositoryImpl(dataSource)
     }
 

@@ -2,15 +2,16 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
 import com.manuellugodev.hotelmanagment.data.sources.FirebaseLogin
 import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
 import com.manuellugodev.hotelmanagment.data.sources.ReservationFirebase
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSourceFirebaseOperations
-import com.manuellugodev.hotelmanagment.network.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.network.source.DataSourceAppointmentApi
+import com.manuellugodev.hotelmanagment.network.source.RoomDataSourceApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +41,11 @@ class AppModule {
     @Named("api")
     fun provideDataSourceReservationApi(request: AppointmentRequest): DataSourceReservation {
         return DataSourceAppointmentApi(request)
+    }
+
+    @Provides
+    @Named("api")
+    fun provideDataSourceRoomApi(request: RoomRequest): RoomDataSource {
+        return RoomDataSourceApi(request)
     }
 }

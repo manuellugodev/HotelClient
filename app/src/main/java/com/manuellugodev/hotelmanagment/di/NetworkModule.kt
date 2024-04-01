@@ -2,9 +2,8 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.manuellugodev.hotelmanagment.network.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +26,13 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideApiRequest(@Named("baseUrl") baseUrl: String):AppointmentRequest{
+    fun provideApointmentRequest(@Named("baseUrl") baseUrl: String): AppointmentRequest {
         return AppointmentRequest(baseUrl)
+    }
+
+    @Provides
+    fun provideRoomRequest(@Named("baseUrl") baseUrl: String):RoomRequest{
+        return RoomRequest(baseUrl)
     }
 
     @Provides

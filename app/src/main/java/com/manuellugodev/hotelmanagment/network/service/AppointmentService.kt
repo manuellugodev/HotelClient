@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.network
+package com.manuellugodev.hotelmanagment.network.service
 
 import com.manuellugodev.hotelmanagment.network.entities.Appointment
 import retrofit2.Response

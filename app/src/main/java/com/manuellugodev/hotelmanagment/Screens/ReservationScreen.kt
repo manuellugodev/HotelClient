@@ -82,8 +82,7 @@ fun ReservationScreen(
         })
         Button(
             modifier = Modifier.padding(start = 10.dp),
-            onClick = { /*navController.navigate(Screen.RoomTypeScreen.route)*/
-            viewModel.getAppointments()}
+            onClick = { navController.navigate(Screen.RoomTypeScreen.route)}
                 ) {
             Text(text = "Search")
 

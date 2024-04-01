@@ -4,7 +4,7 @@ import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
 import com.manuellugodev.hotelmanagment.domain.model.Customer
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
-import com.manuellugodev.hotelmanagment.network.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.network.entities.Appointment
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
 import kotlin.random.Random
