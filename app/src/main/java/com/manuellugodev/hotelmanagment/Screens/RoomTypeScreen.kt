@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.manuellugodev.hotelmanagment.RoomTypeState
@@ -84,20 +83,20 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
                 AsyncImage(
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)),
                     model =room.pathImage,
-                    contentDescription = room.title,
+                    contentDescription = room.description,
                     contentScale = ContentScale.Crop,
 
                     )
             }
 
-            Text(text = room.title, fontSize = 30.sp, textAlign = TextAlign.Left)
+            Text(text = room.description, fontSize = 30.sp, textAlign = TextAlign.Left)
 
             Row() {
                 Icon(
                     imageVector = Icons.Rounded.Bed,
                     contentDescription = Icons.Rounded.Person.name
                 )
-                Text(text = room.numberOfBeds.toString())
+                Text(text = room.roomType.toString())
             }
             Row() {
                 Icon(

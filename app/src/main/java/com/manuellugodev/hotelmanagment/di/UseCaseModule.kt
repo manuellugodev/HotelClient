@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.di
 import com.manuellugodev.hotelmanagment.data.LoginRepository
 import com.manuellugodev.hotelmanagment.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.data.RoomRepository
+import com.manuellugodev.hotelmanagment.usecases.GetReservations
 import com.manuellugodev.hotelmanagment.usecases.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.usecases.SendConfirmationReservation
@@ -28,5 +29,10 @@ class UseCaseModule {
     @Provides
     fun provideSendConfirmationReservationUsecase(repository: ReservationRepository):SendConfirmationReservation{
         return SendConfirmationReservation(repository)
+    }
+
+    @Provides
+    fun provideGetReservationsUsecase(repository: ReservationRepository):GetReservations{
+        return GetReservations(repository)
     }
 }

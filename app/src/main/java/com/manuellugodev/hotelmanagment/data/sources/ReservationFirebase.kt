@@ -21,4 +21,8 @@ class ReservationFirebase(private val database:FirebaseFirestore) :DataSourceRes
             DataResult.Error(e)
         }
     }
+
+    override suspend fun getReservation(): DataResult<List<Reservation>> {
+        TODO("Not yet implemented")
+    }
 }

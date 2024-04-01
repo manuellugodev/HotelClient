@@ -45,8 +45,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.navigation.Screen
+import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
 import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
@@ -56,6 +58,7 @@ import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 @Composable
 fun ReservationScreen(
     navController: NavController
+    ,viewModel: ConfirmationViewModel = hiltViewModel()
 ) {
     var dateVisibleState by remember { mutableStateOf(false) }
     var guestVisibleState by remember { mutableStateOf(false) }
@@ -79,7 +82,9 @@ fun ReservationScreen(
         })
         Button(
             modifier = Modifier.padding(start = 10.dp),
-            onClick = { navController.navigate(Screen.RoomTypeScreen.route) }) {
+            onClick = { /*navController.navigate(Screen.RoomTypeScreen.route)*/
+            viewModel.getAppointments()}
+                ) {
             Text(text = "Search")
 
         }

@@ -19,17 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.google.type.DateTime
 import com.manuellugodev.hotelmanagment.ConfirmationState
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
-import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
 import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.utils.fakes.reservationMock
-import com.manuellugodev.hotelmanagment.utils.fakes.roomMock
-import java.text.SimpleDateFormat
-import java.util.Date
 
 
 @Composable
@@ -83,13 +77,13 @@ fun DetailConfirmationScreen(reservation: Reservation) {
         Column(Modifier.padding(10.dp)) {
             AsyncImage(
                 model = room.pathImage,
-                contentDescription = room.title?:"Hoa",
+                contentDescription = room.description?:"Hoa",
                 Modifier.height(200.dp)
             )
 
 
             Text(
-                room.title,
+                room.description,
                 fontSize = 24.sp
             )
 

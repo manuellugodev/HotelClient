@@ -13,6 +13,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,7 +30,7 @@ class DataModule {
     }
 
     @Provides
-    fun provideReservationRepository(dataSource:DataSourceReservation): ReservationRepository {
+    fun provideReservationRepository(@Named("api")dataSource:DataSourceReservation): ReservationRepository {
         return ReservationRepositoryImpl(dataSource)
     }
 }

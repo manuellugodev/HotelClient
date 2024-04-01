@@ -33,6 +33,6 @@ class RoomDataSourceFirebaseOperations(val database: FirebaseFirestore) : RoomDa
         val image = this.data?.get("image") as String
         val price = (this.data?.get("price") as String).toDouble()
 
-        return RoomHotel(id,title, beds, image, guests, price)
+        return RoomHotel(id,title, "suite", image, guests, price)
     }
 }
