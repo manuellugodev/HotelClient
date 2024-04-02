@@ -37,7 +37,11 @@ import com.manuellugodev.hotelmanagment.ui.RoomTypeViewModel
 
 
 @Composable
-fun RoomTypeScreen(navController: NavController,viewModel: RoomTypeViewModel = hiltViewModel() ) {
+fun RoomTypeScreen(
+    navController: NavController,
+    desiredStartTime: Long,
+    desiredEndTime: Long,
+    viewModel: RoomTypeViewModel = hiltViewModel() ) {
 
     LazyColumn(
         Modifier.fillMaxWidth(),
@@ -51,7 +55,7 @@ fun RoomTypeScreen(navController: NavController,viewModel: RoomTypeViewModel = h
 
             is RoomTypeState.Pending -> {
                 item { CircularProgressIndicator() }
-                viewModel.searchRoomsAvailables(0)
+                viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime)
             }
 
             is RoomTypeState.Success -> {
@@ -113,3 +117,6 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
         }
     }
 }
+
+const val START_TIME = "startTime"
+const val END_TIME = "endTime"

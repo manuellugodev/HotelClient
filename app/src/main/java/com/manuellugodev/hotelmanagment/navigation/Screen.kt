@@ -7,4 +7,13 @@ sealed class Screen(val route:String){
     object RoomTypeScreen:Screen("room_type_reservation")
 
     object ConfirmationScreen:Screen("room_reservation_confirm")
+
+    fun withArgs(vararg args:Long) :String{
+        return buildString {
+            append(route)
+            args.forEach {arg->
+                append("/$arg")
+            }
+        }
+    }
 }

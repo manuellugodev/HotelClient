@@ -82,7 +82,12 @@ fun ReservationScreen(
         })
         Button(
             modifier = Modifier.padding(start = 10.dp),
-            onClick = { navController.navigate(Screen.RoomTypeScreen.route)}
+            onClick = {
+                val startTime=stateDate.selectedStartDateMillis?:0
+                val endTime = stateDate.selectedEndDateMillis?:0
+                val url = Screen.RoomTypeScreen.withArgs(startTime,endTime)
+                navController.navigate(url)
+            }
                 ) {
             Text(text = "Search")
 

@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,11 +19,11 @@ class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables) :
 
     val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending(0))
 
-    fun searchRoomsAvailables(guests: Int) {
+    fun searchRoomsAvailables(desiredStartTime:Long,desiredEndTime: Long) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = usecase(guests)
+                val result = usecase(Date(desiredStartTime),Date(desiredEndTime))
 
                 when (result) {
                     is DataResult.Success -> {

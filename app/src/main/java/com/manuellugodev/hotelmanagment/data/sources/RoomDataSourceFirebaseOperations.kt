@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
 import kotlinx.coroutines.tasks.await
-
+import java.util.Date
 
 
 class RoomDataSourceFirebaseOperations(val database: FirebaseFirestore) : RoomDataSource {
@@ -23,6 +23,13 @@ class RoomDataSourceFirebaseOperations(val database: FirebaseFirestore) : RoomDa
 
             DataResult.Error(e)
         }
+    }
+
+    override suspend fun searchRooms(
+        desiredStartTime: Date,
+        desiredEndTime: Date
+    ): DataResult<List<RoomHotel>> {
+        TODO("Not yet implemented")
     }
 
     fun DocumentSnapshot.toParseRoomHotelDomain() :RoomHotel{
