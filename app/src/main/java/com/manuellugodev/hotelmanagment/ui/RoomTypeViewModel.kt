@@ -19,11 +19,11 @@ class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables) :
 
     val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending(0))
 
-    fun searchRoomsAvailables(desiredStartTime:Long,desiredEndTime: Long) {
+    fun searchRoomsAvailables(desiredStartTime:Long,desiredEndTime: Long,guests:Int) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = usecase(Date(desiredStartTime),Date(desiredEndTime))
+                val result = usecase(Date(desiredStartTime),Date(desiredEndTime),guests)
 
                 when (result) {
                     is DataResult.Success -> {

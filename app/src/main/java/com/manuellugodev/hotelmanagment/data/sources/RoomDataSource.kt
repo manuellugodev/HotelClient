@@ -8,6 +8,7 @@ interface RoomDataSource {
     suspend fun searchRooms():DataResult<List<RoomHotel>>
     suspend fun searchRooms(
         desiredStartTime: Date,
-        desiredEndTime: Date
+        desiredEndTime: Date,
+        guests:Int
     ): DataResult<List<RoomHotel>>
 }

@@ -51,6 +51,8 @@ import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.utils.getSum
+import com.manuellugodev.hotelmanagment.utils.getText
 import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 
 
@@ -68,7 +70,7 @@ fun ReservationScreen(
         mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
     }
     Column {
-        CardFields(stateDate, event = {
+        CardFields(stateDate,stateNumberGuest, event = {
             when (it) {
                 EventField.SEARCH -> {}
                 EventField.DATE -> {
@@ -85,7 +87,8 @@ fun ReservationScreen(
             onClick = {
                 val startTime=stateDate.selectedStartDateMillis?:0
                 val endTime = stateDate.selectedEndDateMillis?:0
-                val url = Screen.RoomTypeScreen.withArgs(startTime,endTime)
+                val guests = stateNumberGuest.getSum().toLong()
+                val url = Screen.RoomTypeScreen.withArgs(startTime,endTime,guests)
                 navController.navigate(url)
             }
                 ) {
@@ -216,10 +219,10 @@ fun DateInputScreen(stateDate: DateRangePickerState, event: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardFields(stateDate: DateRangePickerState, event: (EventField) -> Unit) {
+fun CardFields(stateDate: DateRangePickerState,stateNumberGuest: NumberGuest, event: (EventField) -> Unit) {
 
     Card(Modifier.padding(10.dp)) {
-        Field(Icons.Rounded.Search)
+       // Field(Icons.Rounded.Search)
         Field(
             Icons.Default.DateRange,
             "${convertLongToTime(stateDate.selectedStartDateMillis ?: 0)} - ${
@@ -229,10 +232,18 @@ fun CardFields(stateDate: DateRangePickerState, event: (EventField) -> Unit) {
             } ",
             event = { event(EventField.DATE) }
         )
-        Field(Icons.Filled.Person, event = { event(EventField.PERSON) })
+        Field(Icons.Filled.Person, text =stateNumberGuest.getText() ,event = { event(EventField.PERSON) })
 
     }
 
+}
+
+fun Int.isZero():String{
+    if(this==0){
+        return ""
+    }else{
+        return this.toString()
+    }
 }
 
 enum class EventField() {
@@ -246,7 +257,8 @@ enum class EventField() {
 fun Field(
     icon: ImageVector,
     text: String = "",
-    event: () -> Unit = {}
+    event: () -> Unit = {},
+    textAlign: TextAlign = TextAlign.Center
 ) {
 
     Column {
@@ -267,7 +279,7 @@ fun Field(
                     .wrapContentHeight(),
                 fontSize = 18.sp,
                 text = text,
-                textAlign = TextAlign.Center
+                textAlign = textAlign,
             )
         }
 

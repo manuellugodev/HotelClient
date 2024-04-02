@@ -14,8 +14,9 @@ class RoomRepositoryImpl(val dataSource: RoomDataSource) : RoomRepository {
 
     override suspend fun searchRoomsAvailable(
         desiredStarTime: Date,
-        desiredEndTime: Date
+        desiredEndTime: Date,
+        guests: Int
     ): DataResult<List<RoomHotel>> {
-        return dataSource.searchRooms(desiredStarTime, desiredEndTime)
+        return dataSource.searchRooms(desiredStarTime, desiredEndTime,guests)
     }
 }

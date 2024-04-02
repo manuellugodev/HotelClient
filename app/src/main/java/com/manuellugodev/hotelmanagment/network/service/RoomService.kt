@@ -9,5 +9,5 @@ import java.util.Date
 interface RoomService {
 
     @GET("/rooms")
-    suspend fun getAllRoomsAvailable(@Query("available")available:Boolean,@Query("dStartTime") desiredStartTime:Date,@Query("dEndTime") desiredEndTime:Date,):Response<List<RoomApi>>
+    suspend fun getAllRoomsAvailable(@Query("available")available:Boolean,@Query("dStartTime") desiredStartTime:Date,@Query("dEndTime") desiredEndTime:Date,@Query("guests")guestNumber:Int):Response<List<RoomApi>>
 }

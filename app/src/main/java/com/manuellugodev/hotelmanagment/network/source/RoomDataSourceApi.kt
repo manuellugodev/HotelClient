@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.network.source
 
+import android.util.Log
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.network.entities.RoomApi
@@ -12,10 +13,10 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchRooms(desiredStartTime:Date,desiredEndTime:Date): DataResult<List<RoomHotel>> {
+    override suspend fun searchRooms(desiredStartTime:Date,desiredEndTime:Date,guests:Int): DataResult<List<RoomHotel>> {
 
         return try {
-            val result = request.service.getAllRoomsAvailable(true,desiredStartTime,desiredEndTime)
+            val result = request.service.getAllRoomsAvailable(true,desiredStartTime,desiredEndTime,guests)
 
             if (result.isSuccessful) {
                 DataResult.Success(result.body()!!.map { it.toRoomHotel() })
@@ -24,7 +25,9 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
 
             }
         } catch (e: Exception) {
+            Log.e("ROOM ERROR:",e.message.toString())
             DataResult.Error(Exception("Error DataSource Room APi"))
+
 
         }
 

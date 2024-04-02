@@ -8,5 +8,5 @@ import java.util.Date
 interface RoomRepository {
 
     suspend fun searchRoomsAvailable(guests: Int): DataResult<List<RoomHotel>>
-    suspend fun searchRoomsAvailable(desiredStarTime: Date, desiredEndTime: Date): DataResult<List<RoomHotel>>
+    suspend fun searchRoomsAvailable(desiredStarTime: Date, desiredEndTime: Date,guests: Int): DataResult<List<RoomHotel>>
 }

@@ -41,6 +41,7 @@ fun RoomTypeScreen(
     navController: NavController,
     desiredStartTime: Long,
     desiredEndTime: Long,
+    guests:Int,
     viewModel: RoomTypeViewModel = hiltViewModel() ) {
 
     LazyColumn(
@@ -55,7 +56,7 @@ fun RoomTypeScreen(
 
             is RoomTypeState.Pending -> {
                 item { CircularProgressIndicator() }
-                viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime)
+                viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime,guests)
             }
 
             is RoomTypeState.Success -> {
@@ -120,3 +121,4 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
 
 const val START_TIME = "startTime"
 const val END_TIME = "endTime"
+const val GUESTS="guests"

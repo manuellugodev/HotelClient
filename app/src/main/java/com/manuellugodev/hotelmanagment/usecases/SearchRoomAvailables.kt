@@ -7,9 +7,9 @@ import java.util.Date
 
 class SearchRoomAvailables(val roomRepository: RoomRepository) {
 
-    suspend operator fun invoke(desiredStartTime: Date,desiredEndTime: Date): DataResult<List<RoomHotel>> {
+    suspend operator fun invoke(desiredStartTime: Date,desiredEndTime: Date,guests:Int): DataResult<List<RoomHotel>> {
 
-        return  roomRepository.searchRoomsAvailable(desiredStartTime,desiredEndTime)
+        return  roomRepository.searchRoomsAvailable(desiredStartTime,desiredEndTime,guests)
 
     }
 

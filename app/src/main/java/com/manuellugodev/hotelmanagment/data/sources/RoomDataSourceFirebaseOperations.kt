@@ -27,7 +27,8 @@ class RoomDataSourceFirebaseOperations(val database: FirebaseFirestore) : RoomDa
 
     override suspend fun searchRooms(
         desiredStartTime: Date,
-        desiredEndTime: Date
+        desiredEndTime: Date,
+        guests:Int
     ): DataResult<List<RoomHotel>> {
         TODO("Not yet implemented")
     }
