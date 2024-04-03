@@ -6,5 +6,6 @@ data class RoomApi(
     val roomType: String ,
     val capacity: Int ,
     val description: String ,
-    val price :Double
+    val price :Double,
+    val image: String?
 )

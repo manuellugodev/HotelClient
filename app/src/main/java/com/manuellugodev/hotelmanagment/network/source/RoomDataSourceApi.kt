@@ -35,5 +35,5 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
 }
 
 fun RoomApi.toRoomHotel(): RoomHotel {
-    return RoomHotel(this.id.toLong(), this.description, this.roomType, "", 3, this.price)
+    return RoomHotel(this.id.toLong(), this.description, this.roomType, this.image?:"", this.capacity, this.price)
 }
