@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -83,13 +84,13 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
+                    .height(200.dp)
             ) {
                 AsyncImage(
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp)),
+                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp)),
                     model =room.pathImage,
                     contentDescription = room.description,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillBounds,
 
                     )
             }
