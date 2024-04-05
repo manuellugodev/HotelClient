@@ -52,7 +52,7 @@ fun ConfirmationScreen(
                 Log.i("Confirmation_Screen", reservation.toString())
                 DetailConfirmationScreen(reservation)
                 Button(
-                    onClick = { viewModel.sendConfirmation(reservationMock) },
+                    onClick = { viewModel.sendConfirmation(reservation) },
                     Modifier.fillMaxWidth(0.7f)
                 ) {
                     Text(text = "Book")
