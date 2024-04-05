@@ -1,5 +1,7 @@
 package com.manuellugodev.hotelmanagment.ui
 
+import CONFIRMATION_SCREEN
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,12 +20,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ConfirmationViewModel @Inject constructor(var sendConfirmationReservation: SendConfirmationReservation,var getTemporalReservation: GetTemporalReservation):ViewModel() {
 
-    val _confirmationScreenState: MutableState<ConfirmationState> = mutableStateOf(ConfirmationState.Pending(0))
+    val _confirmationScreenState: MutableState<ConfirmationState> =
+        mutableStateOf(ConfirmationState.Pending)
 
     fun sendConfirmation(reservation: Reservation){
         viewModelScope.launch(Dispatchers.Main) {
 
-            _confirmationScreenState.value=ConfirmationState.Pending(0)
+            _confirmationScreenState.value = ConfirmationState.Pending
 
             withContext(Dispatchers.IO){
 
@@ -41,24 +44,31 @@ class ConfirmationViewModel @Inject constructor(var sendConfirmationReservation:
         }
     }
 
-    fun getTemporalReservation(id:Long){
+    fun getTemporalReservation(id:Long) {
+
+        Log.i(CONFIRMATION_SCREEN, "getTemporalReservation")
         viewModelScope.launch(Dispatchers.Main) {
 
-            _confirmationScreenState.value=ConfirmationState.Pending(0)
-
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
 
                 val result = getTemporalReservation.invoke(id)
 
-                when(result){
+                when (result) {
 
                     is DataResult.Success -> {
-                        _confirmationScreenState.value=ConfirmationState.ShowData(result.data)                    }
+                        _confirmationScreenState.value = ConfirmationState.ShowData(result.data)
+                    }
+
                     is DataResult.Error -> {
-                        _confirmationScreenState.value=ConfirmationState.Error("Error saving reservation,please try again")
+                        _confirmationScreenState.value =
+                            ConfirmationState.Error("Error saving reservation,please try again")
                     }
                 }
             }
         }
+    }
+
+    fun resetStates() {
+        _confirmationScreenState.value = ConfirmationState.Pending
     }
 }

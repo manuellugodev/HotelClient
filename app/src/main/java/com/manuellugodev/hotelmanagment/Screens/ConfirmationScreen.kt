@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,10 +14,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,19 +42,27 @@ fun ConfirmationScreen(
 
     Log.i(CONFIRMATION_SCREEN,"Recomposition")
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-        Log.i("Confirmation_Screen","Recomposition")
         when(val state=viewModel._confirmationScreenState.value){
 
             is ConfirmationState.ShowData -> {
-                Log.i("Confirmation_Screen","Show_Data")
-                val reservation=state.dataReservation
+                Log.i("Confirmation_Screen", "Show_Data")
+
+                val reservation = state.dataReservation
+
+                Log.i("Confirmation_Screen", reservation.toString())
                 DetailConfirmationScreen(reservation)
+                Button(
+                    onClick = { viewModel.sendConfirmation(reservationMock) },
+                    Modifier.fillMaxWidth(0.7f)
+                ) {
+                    Text(text = "Book")
+                }
             }
 
             is ConfirmationState.SavedReservation -> {
                 Log.i("Confirmation_Screen","Saved_Data")
                 navController.popBackStack()
+                viewModel.resetStates()
             }
             is ConfirmationState.Error -> {
                 Log.i("Confirmation_Screen","Error")
@@ -64,9 +74,6 @@ fun ConfirmationScreen(
 
         }
 
-        Button(onClick = { viewModel.sendConfirmation(reservationMock)}, Modifier.fillMaxWidth(0.7f)) {
-            Text(text = "Book")
-        }
     }
 }
 
@@ -98,8 +105,12 @@ fun DetailConfirmationScreen(reservation: Reservation) {
         Column(Modifier.padding(10.dp)) {
             AsyncImage(
                 model = room.pathImage,
-                contentDescription = room.description?:"Hoa",
-                Modifier.height(200.dp)
+                contentDescription = room.description,
+                Modifier
+                    .height(200.dp)
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.FillBounds
             )
 
 
