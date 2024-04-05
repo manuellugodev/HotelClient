@@ -1,7 +1,8 @@
 package com.manuellugodev.hotelmanagment.domain.model
 
+
 data class Customer(
-    val id: String,
+    val id: Long,
     val firstName:String,
     val lastName:String,
     val email:String,

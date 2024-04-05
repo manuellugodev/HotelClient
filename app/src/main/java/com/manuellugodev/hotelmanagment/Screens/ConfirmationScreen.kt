@@ -1,5 +1,8 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import CONFIRMATION_SCREEN
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,26 +30,42 @@ import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.utils.fakes.reservationMock
 
 
+@SuppressLint("RememberReturnType")
 @Composable
-fun ConfirmationScreen(navController: NavHostController,viewModel: ConfirmationViewModel = hiltViewModel() ) {
+fun ConfirmationScreen(
+    navController: NavHostController,
+    viewModel: ConfirmationViewModel = hiltViewModel(),
+    reservationId: Int
+) {
+
+    Log.i(CONFIRMATION_SCREEN,"Recomposition")
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        DetailConfirmationScreen(reservationMock)
 
-        Button(onClick = { viewModel.sendConfirmation(reservationMock)}, Modifier.fillMaxWidth(0.7f)) {
-            Text(text = "Book")
-        }
+        Log.i("Confirmation_Screen","Recomposition")
+        when(val state=viewModel._confirmationScreenState.value){
 
-        when(viewModel._confirmationScreenState.value){
-            is ConfirmationState.Success -> {
+            is ConfirmationState.ShowData -> {
+                Log.i("Confirmation_Screen","Show_Data")
+                val reservation=state.dataReservation
+                DetailConfirmationScreen(reservation)
+            }
+
+            is ConfirmationState.SavedReservation -> {
+                Log.i("Confirmation_Screen","Saved_Data")
                 navController.popBackStack()
             }
             is ConfirmationState.Error -> {
-
+                Log.i("Confirmation_Screen","Error")
             }
             is ConfirmationState.Pending -> {
-
+                Log.i("Confirmation_Screen","PEnding")
+               viewModel.getTemporalReservation(reservationId.toLong())
             }
 
+        }
+
+        Button(onClick = { viewModel.sendConfirmation(reservationMock)}, Modifier.fillMaxWidth(0.7f)) {
+            Text(text = "Book")
         }
     }
 }
@@ -64,6 +84,7 @@ fun ConfirmationScreenPreview() {
 
 @Composable
 fun DetailConfirmationScreen(reservation: Reservation) {
+    Log.i(CONFIRMATION_SCREEN,"Detail show data")
     val room = reservation.roomHotel
 
     val checkInTime= reservation.checkIn
@@ -129,3 +150,4 @@ fun DetailConfirmationScreen(reservation: Reservation) {
 }
 
 val subtitle = 10.sp
+const val RESERVATION="temporal_reservation"

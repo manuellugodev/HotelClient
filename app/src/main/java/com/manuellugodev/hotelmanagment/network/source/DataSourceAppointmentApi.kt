@@ -51,7 +51,7 @@ fun Appointment.toReservation(): Reservation {
 fun generateRandomReservation(): Reservation {
     val random = Random.Default
     val clientId = random.nextInt(1000).toString() // Generating a random client ID
-    val client = Customer(id = "1", firstName = "John", lastName = "Doe", email = "johndoe@example.com", phone = "+1234567890") // Replace with actual random data
+    val client = Customer(id = 1, firstName = "John", lastName = "Doe", email = "johndoe@example.com", phone = "+1234567890") // Replace with actual random data
 
     // Generating random room data
     val roomId = random.nextLong(1000)
@@ -65,9 +65,9 @@ fun generateRandomReservation(): Reservation {
 
     val checkIn = System.currentTimeMillis() + random.nextInt(1000) * 86400000L // Adding random days (in milliseconds) to current time
     val checkOut = checkIn + random.nextInt(10) * 86400000L // Adding random days (in milliseconds) to check-in date
-    val price2 = random.nextInt(200, 500) // Random price between 200 and 500
-    val taxPrice = (price * 0.1).toInt() // Assuming tax is 10% of the price
+    val price2 = random.nextDouble(200.0, 500.0) // Random price between 200 and 500
+    val taxPrice = (price * 0.1)// Assuming tax is 10% of the price
     val totalPrice = price + taxPrice // Total price including tax
 
-    return Reservation(clientId, client, room, checkIn, checkOut, price.toInt(), taxPrice, price2)
+    return Reservation(clientId.toInt(), client, room, checkIn, checkOut, price, taxPrice, price2)
 }

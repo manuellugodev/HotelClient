@@ -12,8 +12,8 @@ val roomMock = RoomHotel(
     2,
     200.0
 )
-val customer= Customer("2312312","Manuel","Lugo", email = "masa@gmail.com", phone = "+15642254512")
+val customer= Customer(2312312,"Manuel","Lugo", email = "masa@gmail.com", phone = "+15642254512")
 val reservationMock=Reservation(
-    null,customer, roomMock,1700799185000,1700971985000,120,12,132
+    1,customer, roomMock,1712188800000,1712880000000,120.0,12.0,132.0
 
 )

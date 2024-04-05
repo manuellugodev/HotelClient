@@ -9,6 +9,7 @@ import com.manuellugodev.hotelmanagment.data.RoomRepositoryImpl
 import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
 import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
+import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +31,7 @@ class DataModule {
     }
 
     @Provides
-    fun provideReservationRepository(@Named("api")dataSource:DataSourceReservation): ReservationRepository {
-        return ReservationRepositoryImpl(dataSource)
+    fun provideReservationRepository(@Named("api")dataSource:DataSourceReservation,dataSourceLocal: DataSourceReservationLocal): ReservationRepository {
+        return ReservationRepositoryImpl(dataSource,dataSourceLocal)
     }
 }

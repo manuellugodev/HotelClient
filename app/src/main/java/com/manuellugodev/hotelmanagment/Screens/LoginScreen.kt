@@ -1,5 +1,8 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import LOGIN_SCREEN
+import RESERVATION_SCREEN
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,6 +46,8 @@ import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
 
 @Composable
 fun LoginScreen(navController: NavController,viewModel: LoginViewModel= hiltViewModel()) {
+
+    Log.i(LOGIN_SCREEN,"Recomposition")
 
     val firebaseAuth = FirebaseAuth.getInstance()
     if (firebaseAuth.currentUser != null) {

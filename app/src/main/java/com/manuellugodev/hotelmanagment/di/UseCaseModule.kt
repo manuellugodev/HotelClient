@@ -4,7 +4,9 @@ import com.manuellugodev.hotelmanagment.data.LoginRepository
 import com.manuellugodev.hotelmanagment.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.data.RoomRepository
 import com.manuellugodev.hotelmanagment.usecases.GetReservations
+import com.manuellugodev.hotelmanagment.usecases.GetTemporalReservation
 import com.manuellugodev.hotelmanagment.usecases.LoginWithUsernameAndPassword
+import com.manuellugodev.hotelmanagment.usecases.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.usecases.SendConfirmationReservation
 import dagger.Module
@@ -34,5 +36,15 @@ class UseCaseModule {
     @Provides
     fun provideGetReservationsUsecase(repository: ReservationRepository):GetReservations{
         return GetReservations(repository)
+    }
+
+    @Provides
+    fun provideGetTemporalReservationUseCase(repository: ReservationRepository):GetTemporalReservation{
+        return GetTemporalReservation(repository)
+    }
+
+    @Provides
+    fun provideSaveTemporalReservationUseCase(repository: ReservationRepository):SaveTemporalReservation{
+        return SaveTemporalReservation(repository)
     }
 }

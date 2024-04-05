@@ -15,7 +15,7 @@ class ReservationFirebase(private val database:FirebaseFirestore) :DataSourceRes
 
             val dataUpdate= database.collection("rooms").document(reservation.roomHotel.id.toString()).update("available", false).await()
 
-            reservation.id= data.id
+            reservation.id= data.id.toInt()
             return DataResult.Success(reservation)
         }catch (e:Exception){
             DataResult.Error(e)

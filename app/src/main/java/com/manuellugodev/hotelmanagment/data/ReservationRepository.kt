@@ -8,4 +8,8 @@ interface ReservationRepository {
     suspend fun sendReservation(reservation: Reservation): DataResult<Reservation>
 
     suspend fun getReservations():DataResult<List<Reservation>>
+
+    suspend fun getTemporalReservation(id:Long):DataResult<Reservation>
+
+    suspend fun saveTemporalReservation(reservation: Reservation):DataResult<Reservation>
 }

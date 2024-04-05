@@ -1,5 +1,7 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import RESERVATION_SCREEN
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,7 +50,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
 import com.manuellugodev.hotelmanagment.utils.getSum
@@ -60,8 +61,8 @@ import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 @Composable
 fun ReservationScreen(
     navController: NavController
-    ,viewModel: ConfirmationViewModel = hiltViewModel()
 ) {
+    Log.i("Reservation_Screen","Recomposition")
     var dateVisibleState by remember { mutableStateOf(false) }
     var guestVisibleState by remember { mutableStateOf(false) }
 
@@ -85,6 +86,7 @@ fun ReservationScreen(
         Button(
             modifier = Modifier.padding(start = 10.dp),
             onClick = {
+                Log.i(RESERVATION_SCREEN,"Navigate to ROOm Type")
                 val startTime=stateDate.selectedStartDateMillis?:0
                 val endTime = stateDate.selectedEndDateMillis?:0
                 val guests = stateNumberGuest.getSum().toLong()

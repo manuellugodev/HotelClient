@@ -1,13 +1,19 @@
 package com.manuellugodev.hotelmanagment.ui
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.RoomTypeState
+import com.manuellugodev.hotelmanagment.data.ReservationRepository
+import com.manuellugodev.hotelmanagment.domain.model.Customer
+import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.usecases.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +21,9 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables) : ViewModel() {
+class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables,var useCaseSaveTemporalReservation: SaveTemporalReservation) : ViewModel() {
 
-    val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending(0))
+    val _statusRoom: MutableState<RoomTypeState> = mutableStateOf(RoomTypeState.Pending)
 
     fun searchRoomsAvailables(desiredStartTime:Long,desiredEndTime: Long,guests:Int) {
 
@@ -39,5 +45,44 @@ class RoomTypeViewModel @Inject constructor(var usecase: SearchRoomAvailables) :
 
             }
         }
+    }
+
+    fun saveReservation(
+        desiredStartTime: Long,
+        desiredEndTime: Long,
+        guests: Int,
+        roomHotel: RoomHotel
+    ) {
+
+
+        Log.i("VMROOMTYPE","SaveREservation")
+        val customer = Customer(1,"Manuel","Lugo","manuellugo2000ml@gmail.com","7872123124")
+        val reservation = Reservation(1,customer,roomHotel,desiredStartTime,desiredEndTime,roomHotel.price,0.0,roomHotel.price)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = useCaseSaveTemporalReservation(reservation)
+
+                when (result) {
+                    is DataResult.Success -> {
+
+                        _statusRoom.value=RoomTypeState.RoomSelected(result.data.id.toLong())
+                        Log.i("VMROOMTYPE","Success")
+                    }
+
+                    is DataResult.Error -> {
+                        _statusRoom.value = RoomTypeState.Error("Some is wrong,Try Again")
+                    }
+                }
+            } catch (e: Exception) {
+                _statusRoom.value = RoomTypeState.Error("Some is wrong,Try Again")
+
+            }
+        }
+
+    }
+
+    fun resetState() {
+        _statusRoom.value=RoomTypeState.Pending
     }
 }

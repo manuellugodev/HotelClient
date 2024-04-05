@@ -1,5 +1,8 @@
 package com.manuellugodev.hotelmanagment.Screens
 
+import ROOMTYPE_SCREEN
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +24,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,37 +47,61 @@ fun RoomTypeScreen(
     navController: NavController,
     desiredStartTime: Long,
     desiredEndTime: Long,
-    guests:Int,
-    viewModel: RoomTypeViewModel = hiltViewModel() ) {
+    guests: Int,
+    viewModel: RoomTypeViewModel = hiltViewModel()
+) {
 
-    LazyColumn(
-        Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        when (viewModel._statusRoom.value) {
-            is RoomTypeState.Error -> {
-                item { Text(text = "Error get lists") }
-            }
 
-            is RoomTypeState.Pending -> {
-                item { CircularProgressIndicator() }
-                viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime,guests)
-            }
+    Log.i(ROOMTYPE_SCREEN, "Recomposition")
 
-            is RoomTypeState.Success -> {
-                val list = (viewModel._statusRoom.value as RoomTypeState.Success).data
-                items(items = list) {
-                    RoomItem(room = it) { navController.navigate(Screen.ConfirmationScreen.route)  }
+    when (val status = viewModel._statusRoom.value) {
+        is RoomTypeState.Error -> {
+            Log.e(ROOMTYPE_SCREEN, "Error")
+            Text(text = "Error get lists")
+        }
+
+        is RoomTypeState.Pending -> {
+            Log.i(ROOMTYPE_SCREEN, "PENDING")
+            CircularProgressIndicator()
+
+            viewModel.searchRoomsAvailables(desiredStartTime, desiredEndTime, guests)
+        }
+
+        is RoomTypeState.Success -> {
+            Log.i(ROOMTYPE_SCREEN, "SUCCESS")
+            if (status.data.isNotEmpty()) {
+                LazyColumn(
+                    Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val list = status.data
+                    items(items = list) {
+                        RoomItem(room = it) {
+                            Log.i(ROOMTYPE_SCREEN, "CLic on item")
+                            viewModel.saveReservation(desiredStartTime, desiredEndTime, guests, it)
+                        }
+                    }
                 }
+            }
+
+        }
+
+        is RoomTypeState.RoomSelected -> {
+            LaunchedEffect(viewModel._statusRoom.value) {
+                val id =  (viewModel._statusRoom.value as RoomTypeState.RoomSelected).reservationId
+                Log.i(ROOMTYPE_SCREEN, "Navigate")
+                navController.navigate(Screen.ConfirmationScreen.withArgs(id))
+                viewModel.resetState()
 
             }
         }
     }
+
 }
 
 @Composable
-private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
+private fun RoomItem(room: RoomHotel, onClickItem: () -> Unit) {
 
     Card(
         Modifier
@@ -87,8 +116,10 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
                     .height(200.dp)
             ) {
                 AsyncImage(
-                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp)),
-                    model =room.pathImage,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(8.dp)),
+                    model = room.pathImage,
                     contentDescription = room.description,
                     contentScale = ContentScale.FillBounds,
 
@@ -122,4 +153,4 @@ private fun RoomItem(room: RoomHotel,onClickItem:()->Unit) {
 
 const val START_TIME = "startTime"
 const val END_TIME = "endTime"
-const val GUESTS="guests"
+const val GUESTS = "guests"
