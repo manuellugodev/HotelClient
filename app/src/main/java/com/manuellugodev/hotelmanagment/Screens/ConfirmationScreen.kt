@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.manuellugodev.hotelmanagment.ConfirmationState
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.utils.fakes.reservationMock
@@ -60,12 +61,13 @@ fun ConfirmationScreen(
             }
 
             is ConfirmationState.SavedReservation -> {
-                Log.i("Confirmation_Screen","Saved_Data")
-                navController.popBackStack()
+                Log.i("Confirmation_Screen", "Saved_Data")
+                navController.popBackStack(Screen.ReservationScreen.route, inclusive = true)
                 viewModel.resetStates()
             }
             is ConfirmationState.Error -> {
-                Log.i("Confirmation_Screen","Error")
+                Log.i("Confirmation_Screen", "Error : " + state.message)
+                Text(text = state.message)
             }
             is ConfirmationState.Pending -> {
                 Log.i("Confirmation_Screen","PEnding")

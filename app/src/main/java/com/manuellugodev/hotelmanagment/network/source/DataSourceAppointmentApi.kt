@@ -30,7 +30,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
             if (result.isSuccessful) {
                 return DataResult.Success(reservation)
             } else {
-                DataResult.Error(Exception("ERROR"))
+                DataResult.Error(Exception(result.errorBody()?.string()))
             }
         } catch (e: Exception) {
 

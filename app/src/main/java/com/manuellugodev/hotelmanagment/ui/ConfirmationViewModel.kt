@@ -26,8 +26,6 @@ class ConfirmationViewModel @Inject constructor(var sendConfirmationReservation:
     fun sendConfirmation(reservation: Reservation){
         viewModelScope.launch(Dispatchers.Main) {
 
-            _confirmationScreenState.value = ConfirmationState.Pending
-
             withContext(Dispatchers.IO){
 
                 val result = sendConfirmationReservation.invoke(reservation)
@@ -37,7 +35,8 @@ class ConfirmationViewModel @Inject constructor(var sendConfirmationReservation:
                     is DataResult.Success -> {
                         _confirmationScreenState.value=ConfirmationState.SavedReservation(result.data)                    }
                     is DataResult.Error -> {
-                        _confirmationScreenState.value=ConfirmationState.Error("Error saving reservation,please try again")
+                        _confirmationScreenState.value =
+                            ConfirmationState.Error(result.exception.message.toString())
                     }
                 }
             }
@@ -69,6 +68,9 @@ class ConfirmationViewModel @Inject constructor(var sendConfirmationReservation:
     }
 
     fun resetStates() {
-        _confirmationScreenState.value = ConfirmationState.Pending
+        viewModelScope.launch(Dispatchers.Main) {
+            _confirmationScreenState.value = ConfirmationState.Pending
+        }
+
     }
 }
