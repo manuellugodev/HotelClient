@@ -146,11 +146,11 @@ fun testLayouts() {
     }
     Box(
         Modifier
-            .fillMaxSize(1f)
+            .fillMaxWidth(1f)
+            .wrapContentHeight()
             .border(2.dp, Color.Black), contentAlignment = Alignment.BottomCenter
     ) {
         GuestInputScreen(stateNumberGuest = stateNumberGuest) {
-
         }
     }
 }
@@ -164,18 +164,18 @@ fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
     ) {
         Column() {
             GuestInputScreen(
-                title = "Adulto",
+                title = "Adults",
                 stateNumberGuest = stateNumberGuest.adults,
                 operation = { if ((stateNumberGuest.adults.value + it) > -1) stateNumberGuest.adults.value += it })
             GuestInputScreen(
-                title = "Menores",
+                title = "Children",
                 stateNumberGuest = stateNumberGuest.children,
                 operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
 
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .height(100.dp)
                     .padding(5.dp),
                 onClick = event
             ) {
