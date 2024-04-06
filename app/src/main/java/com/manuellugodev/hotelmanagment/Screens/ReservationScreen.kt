@@ -47,8 +47,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
@@ -62,16 +62,17 @@ import com.manuellugodev.hotelmanagment.utils.numberGuestSaver
 fun ReservationScreen(
     navController: NavController
 ) {
-    Log.i("Reservation_Screen","Recomposition")
+    Log.i("Reservation_Screen", "Recomposition")
     var dateVisibleState by remember { mutableStateOf(false) }
     var guestVisibleState by remember { mutableStateOf(false) }
+    var stateError by remember { mutableStateOf(false) }
 
     val stateDate = rememberDateRangePickerState()
     val stateNumberGuest by rememberSaveable(stateSaver = numberGuestSaver) {
         mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
     }
     Column {
-        CardFields(stateDate,stateNumberGuest, event = {
+        CardFields(stateDate, stateNumberGuest, event = {
             when (it) {
                 EventField.SEARCH -> {}
                 EventField.DATE -> {
@@ -86,14 +87,22 @@ fun ReservationScreen(
         Button(
             modifier = Modifier.padding(start = 10.dp),
             onClick = {
-                Log.i(RESERVATION_SCREEN,"Navigate to ROOm Type")
-                val startTime=stateDate.selectedStartDateMillis?:0
-                val endTime = stateDate.selectedEndDateMillis?:0
+                val startTime = stateDate.selectedStartDateMillis ?: 0
+                val endTime = stateDate.selectedEndDateMillis ?: 0
                 val guests = stateNumberGuest.getSum().toLong()
-                val url = Screen.RoomTypeScreen.withArgs(startTime,endTime,guests)
-                navController.navigate(url)
+
+                if (isDateValid(startTime, endTime) && guests != 0L) {
+                    val url = Screen.RoomTypeScreen.withArgs(startTime, endTime, guests)
+
+                    Log.i(RESERVATION_SCREEN, "Navigate to ROOm Type")
+                    navController.navigate(url)
+                } else {
+                    stateError = true
+                }
+
+
             }
-                ) {
+        ) {
             Text(text = "Search")
 
         }
@@ -111,12 +120,19 @@ fun ReservationScreen(
             Modifier
                 .fillMaxSize(1f)
                 .background(Color.White)
-                .padding(bottom = 10.dp),contentAlignment = Alignment.Center) {
+                .padding(bottom = 10.dp), contentAlignment = Alignment.Center
+        ) {
             GuestInputScreen(stateNumberGuest) {
                 guestVisibleState = guestVisibleState.not()
             }
         }
 
+    }
+
+    if (stateError) {
+        ErrorSnackbar(errorMessage = "Rellene los datos") {
+            stateError = false
+        }
     }
 
 
@@ -131,8 +147,9 @@ fun testLayouts() {
     Box(
         Modifier
             .fillMaxSize(1f)
-            .border(2.dp, Color.Black),contentAlignment = Alignment.BottomCenter) {
-        GuestInputScreen(stateNumberGuest =stateNumberGuest) {
+            .border(2.dp, Color.Black), contentAlignment = Alignment.BottomCenter
+    ) {
+        GuestInputScreen(stateNumberGuest = stateNumberGuest) {
 
         }
     }
@@ -221,10 +238,14 @@ fun DateInputScreen(stateDate: DateRangePickerState, event: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardFields(stateDate: DateRangePickerState,stateNumberGuest: NumberGuest, event: (EventField) -> Unit) {
+fun CardFields(
+    stateDate: DateRangePickerState,
+    stateNumberGuest: NumberGuest,
+    event: (EventField) -> Unit
+) {
 
     Card(Modifier.padding(10.dp)) {
-       // Field(Icons.Rounded.Search)
+        // Field(Icons.Rounded.Search)
         Field(
             Icons.Default.DateRange,
             "${convertLongToTime(stateDate.selectedStartDateMillis ?: 0)} - ${
@@ -234,16 +255,19 @@ fun CardFields(stateDate: DateRangePickerState,stateNumberGuest: NumberGuest, ev
             } ",
             event = { event(EventField.DATE) }
         )
-        Field(Icons.Filled.Person, text =stateNumberGuest.getText() ,event = { event(EventField.PERSON) })
+        Field(
+            Icons.Filled.Person,
+            text = stateNumberGuest.getText(),
+            event = { event(EventField.PERSON) })
 
     }
 
 }
 
-fun Int.isZero():String{
-    if(this==0){
+fun Int.isZero(): String {
+    if (this == 0) {
         return ""
-    }else{
+    } else {
         return this.toString()
     }
 }
@@ -289,3 +313,11 @@ fun Field(
     }
 
 }
+
+fun isDateValid(startDate: Long, endDate: Long): Boolean {
+    if (startDate == 0L || endDate == 0L) return false
+    if (startDate >= endDate) return false
+
+    return true
+}
+
