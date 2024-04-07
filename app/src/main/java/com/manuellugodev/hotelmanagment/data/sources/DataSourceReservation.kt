@@ -6,5 +6,6 @@ import com.manuellugodev.hotelmanagment.utils.vo.DataResult
 interface DataSourceReservation {
 
     suspend fun saveReservation(reservation: Reservation): DataResult<Reservation>
-    suspend fun getReservation():DataResult<List<Reservation>>
+    suspend fun getReservation(): DataResult<List<Reservation>>
+    suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>>
 }

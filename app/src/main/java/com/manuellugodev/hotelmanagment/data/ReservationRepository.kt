@@ -11,5 +11,6 @@ interface ReservationRepository {
 
     suspend fun getTemporalReservation(id:Long):DataResult<Reservation>
 
-    suspend fun saveTemporalReservation(reservation: Reservation):DataResult<Reservation>
+    suspend fun saveTemporalReservation(reservation: Reservation): DataResult<Reservation>
+    suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>>
 }

@@ -4,6 +4,7 @@ import com.manuellugodev.hotelmanagment.network.entities.Appointment
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.Date
 
@@ -20,4 +21,7 @@ interface AppointmentService {
         @Query("endTime") endTime: Date,     // Represented as Date
         @Query("purpose") purpose: String
     ): Response<String>
+
+    @GET("/appointment/guest/{idGuest}")
+    suspend fun getMyAppointments(@Path("idGuest") idGuest: Int): Response<List<Appointment>>
 }

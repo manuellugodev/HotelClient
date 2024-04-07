@@ -10,6 +10,7 @@ import com.manuellugodev.hotelmanagment.Screens.ConfirmationScreen
 import com.manuellugodev.hotelmanagment.Screens.END_TIME
 import com.manuellugodev.hotelmanagment.Screens.GUESTS
 import com.manuellugodev.hotelmanagment.Screens.LoginScreen
+import com.manuellugodev.hotelmanagment.Screens.MyReservationScreen
 import com.manuellugodev.hotelmanagment.Screens.RESERVATION
 import com.manuellugodev.hotelmanagment.Screens.ReservationScreen
 import com.manuellugodev.hotelmanagment.Screens.RoomTypeScreen
@@ -52,13 +53,16 @@ fun Navigation(navController: NavHostController) {
         }
         composable(route = Screen.ConfirmationScreen.route + "/{$RESERVATION}",
             arguments = listOf(
-                navArgument(RESERVATION){
+                navArgument(RESERVATION) {
                     type = NavType.LongType
                 }
             )
         ) {
-            val reservation=it.arguments?.getLong(RESERVATION)?:1
-            ConfirmationScreen(navController,reservationId = reservation.toInt() )
+            val reservation = it.arguments?.getLong(RESERVATION) ?: 1
+            ConfirmationScreen(navController, reservationId = reservation.toInt())
+        }
+        composable(route = Screen.MyReservationsScreen.route) {
+            MyReservationScreen()
         }
     }
 }

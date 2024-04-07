@@ -1,6 +1,5 @@
 package com.manuellugodev.hotelmanagment.data.sources
 
-import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
@@ -15,14 +14,18 @@ class ReservationFirebase(private val database:FirebaseFirestore) :DataSourceRes
 
             val dataUpdate= database.collection("rooms").document(reservation.roomHotel.id.toString()).update("available", false).await()
 
-            reservation.id= data.id.toInt()
+            reservation.id = data.id.toInt()
             return DataResult.Success(reservation)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             DataResult.Error(e)
         }
     }
 
     override suspend fun getReservation(): DataResult<List<Reservation>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>> {
         TODO("Not yet implemented")
     }
 }

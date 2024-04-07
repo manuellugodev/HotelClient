@@ -86,7 +86,7 @@ fun BottomBar(navController: NavHostController) {
             label = { Text("Home") })
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(Screen.MyReservationsScreen.route) },
             icon = { Icon(Icons.Default.Bed, "Reservations") },
             label = { Text("Reservations") })
         NavigationBarItem(

@@ -5,10 +5,13 @@ import com.manuellugodev.hotelmanagment.domain.model.Customer
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.network.entities.Appointment
+import com.manuellugodev.hotelmanagment.network.entities.toCustomer
 import com.manuellugodev.hotelmanagment.network.request.AppointmentBody
 import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.utils.vo.DataResult
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import kotlin.random.Random
 
 class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSourceReservation {
@@ -65,12 +68,45 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
         return DataResult.Error(Exception("error"))
 
     }
+
+    override suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>> {
+        return try {
+            val result = request.service.getMyAppointments(guest)
+            if (result.isSuccessful) {
+                DataResult.Success(result.body()!!.map { it.toReservation() })
+            } else {
+                DataResult.Error(Exception("Error getting reservations"))
+            }
+        } catch (e: Exception) {
+            DataResult.Error(e)
+        }
+    }
 }
 
 
 fun Appointment.toReservation(): Reservation {
 
-    return generateRandomReservation()
+    val dateString = "2024-04-06T00:00:00.000+00:00"
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+
+    try {
+        val dateStart = dateFormat.parse(startTime)
+        val dateEnd = dateFormat.parse(endTime)
+        return Reservation(
+            appointmentId,
+            guest.toCustomer(),
+            room.toRoomHotel(),
+            dateStart.time,
+            dateEnd.time,
+            purpose.toDouble(),
+            0.0,
+            purpose.toDouble()
+        )
+    } catch (e: Exception) {
+        println("Error parsing date: ${e.message}")
+    }
+
+    throw java.lang.Exception()
 }
 
 

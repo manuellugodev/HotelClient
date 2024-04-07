@@ -13,12 +13,16 @@ class ReservationRepositoryImpl(private val dataSourceReservation: DataSourceRes
        return dataSourceReservation.getReservation()
     }
 
-    override suspend fun getTemporalReservation(id:Long):DataResult<Reservation>{
+    override suspend fun getTemporalReservation(id: Long): DataResult<Reservation> {
 
         return dataSourceReservationLocal.getTemporalReservation(id)
     }
 
     override suspend fun saveTemporalReservation(reservation: Reservation): DataResult<Reservation> {
         return dataSourceReservationLocal.saveReservationLocal(reservation)
+    }
+
+    override suspend fun getMyReservations(guestId: Int): DataResult<List<Reservation>> {
+        return dataSourceReservation.getMyReservations(guestId)
     }
 }
