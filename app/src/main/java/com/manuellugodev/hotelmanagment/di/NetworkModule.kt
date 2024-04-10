@@ -26,17 +26,29 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideApointmentRequest(@Named("baseUrl") baseUrl: String): AppointmentRequest {
-        return AppointmentRequest(baseUrl)
+    fun provideApointmentRequest(
+        @Named("baseUrl") baseUrl: String,
+        @Named("User") user: Map<String, String>
+    ): AppointmentRequest {
+        return AppointmentRequest(baseUrl, user["username"] ?: "", user["password"] ?: "")
     }
 
     @Provides
-    fun provideRoomRequest(@Named("baseUrl") baseUrl: String):RoomRequest{
-        return RoomRequest(baseUrl)
+    fun provideRoomRequest(
+        @Named("baseUrl") baseUrl: String,
+        @Named("User") user: Map<String, String>
+    ): RoomRequest {
+        return RoomRequest(baseUrl, user["username"] ?: "", user["password"] ?: "")
     }
 
     @Provides
     @Singleton
     @Named("baseUrl")
     fun baseUrlProvider() = "http://10.0.2.2:8080"
+
+    @Provides
+    @Singleton
+    @Named("User")
+    fun userDefault() =
+        mapOf<String, String>(Pair("username", "Manuel"), Pair("password", "test123"))
 }

@@ -5,11 +5,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-abstract class BaseRequest<T : Any>(private val baseUrl: String) {
+abstract class BaseRequest<T : Any>(
+    private val baseUrl: String,
+    private val username: String,
+    private val password: String
+) {
 
     private val okHttpClient: OkHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(this).build()
+        OkHttpClient.Builder().addInterceptor(AuthInterceptor(username, password)).build()
     }
 
     inline fun <reified T : Any> getService(): T =
