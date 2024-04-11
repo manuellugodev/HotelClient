@@ -1,25 +1,22 @@
-package com.manuellugodev.hotelmanagment.network
+package com.manuellugodev.hotelmanagment.network.request
 
+import com.manuellugodev.hotelmanagment.network.service.LoginService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-abstract class BaseRequest<T : Any>(
-    private val baseUrl: String,
-    private val token: TokenProvider
-) {
+
+class LoginRequest(private val baseUrl: String) {
 
     private val okHttpClient: OkHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(AuthInterceptor(token)).build()
+        OkHttpClient.Builder().build()
     }
 
-    inline fun <reified T : Any> getService(): T =
-        buildRetrofit().run {
-            this.create(T::class.java)
-        }
-
+    fun getService(): LoginService {
+        return buildRetrofit().create(LoginService::class.java)
+    }
 
     fun buildRetrofit(): Retrofit =
         Retrofit.Builder()
@@ -28,6 +25,4 @@ abstract class BaseRequest<T : Any>(
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-
 }
-

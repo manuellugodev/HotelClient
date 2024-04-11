@@ -21,7 +21,7 @@ import javax.inject.Named
 class DataModule {
 
     @Provides
-    fun provideLoginRepository(dataSource:LoginDataSource):LoginRepository{
+    fun provideLoginRepository(@Named("api") dataSource: LoginDataSource): LoginRepository {
         return LoginRepositoryImpl(dataSource)
     }
 

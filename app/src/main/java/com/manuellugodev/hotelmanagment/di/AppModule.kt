@@ -15,8 +15,10 @@ import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRo
 import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
 import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
 import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
+import com.manuellugodev.hotelmanagment.network.request.LoginRequest
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.network.source.DataSourceAppointmentApi
+import com.manuellugodev.hotelmanagment.network.source.LoginDataSourceApi
 import com.manuellugodev.hotelmanagment.network.source.RoomDataSourceApi
 import dagger.Module
 import dagger.Provides
@@ -78,5 +80,10 @@ class AppModule {
         return db.reservationDao()
     }
 
+    @Provides
+    @Named("api")
+    fun provideLoginDataSourceApi(request: LoginRequest): LoginDataSource {
+        return LoginDataSourceApi(request)
+    }
 
 }
