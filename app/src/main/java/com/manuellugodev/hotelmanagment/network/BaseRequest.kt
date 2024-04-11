@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.network
 
+import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -7,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 abstract class BaseRequest<T : Any>(
     private val baseUrl: String,
-    private val token: TokenProvider
+    private val token: TokenManagment
 ) {
 
     private val okHttpClient: OkHttpClient = HttpLoggingInterceptor().run {

@@ -1,11 +1,11 @@
 package com.manuellugodev.hotelmanagment.network.request
 
+import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
 import com.manuellugodev.hotelmanagment.network.BaseRequest
-import com.manuellugodev.hotelmanagment.network.TokenProvider
 import com.manuellugodev.hotelmanagment.network.service.AppointmentService
 
-class AppointmentRequest(baseUrl: String, tokenProvider: TokenProvider) :
-    BaseRequest<AppointmentService>(baseUrl, tokenProvider) {
+class AppointmentRequest(baseUrl: String, tokenManagment: TokenManagment) :
+    BaseRequest<AppointmentService>(baseUrl, tokenManagment) {
 
     val service = getService<AppointmentService>()
 }

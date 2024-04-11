@@ -9,6 +9,7 @@ import com.manuellugodev.hotelmanagment.data.RoomRepositoryImpl
 import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
 import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
+import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 import dagger.Module
 import dagger.Provides
@@ -21,8 +22,11 @@ import javax.inject.Named
 class DataModule {
 
     @Provides
-    fun provideLoginRepository(@Named("api") dataSource: LoginDataSource): LoginRepository {
-        return LoginRepositoryImpl(dataSource)
+    fun provideLoginRepository(
+        @Named("api") dataSource: LoginDataSource,
+        tokenManagment: TokenManagment
+    ): LoginRepository {
+        return LoginRepositoryImpl(dataSource, tokenManagment)
     }
 
     @Provides

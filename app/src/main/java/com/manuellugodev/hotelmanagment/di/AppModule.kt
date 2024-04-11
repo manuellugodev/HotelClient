@@ -1,7 +1,10 @@
 package com.manuellugodev.hotelmanagment.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
@@ -10,6 +13,7 @@ import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
 import com.manuellugodev.hotelmanagment.data.sources.ReservationFirebase
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
 import com.manuellugodev.hotelmanagment.data.sources.RoomDataSourceFirebaseOperations
+import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRoomDB
 import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
@@ -20,6 +24,7 @@ import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.network.source.DataSourceAppointmentApi
 import com.manuellugodev.hotelmanagment.network.source.LoginDataSourceApi
 import com.manuellugodev.hotelmanagment.network.source.RoomDataSourceApi
+import com.manuellugodev.hotelmanagment.network.source.TokenManagmentImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,12 +38,12 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
-    fun loginDataSource(auth: FirebaseAuth):LoginDataSource{
+    fun loginDataSource(auth: FirebaseAuth): LoginDataSource {
         return FirebaseLogin(auth)
     }
 
     @Provides
-    fun roomDataSource(database:FirebaseFirestore):RoomDataSource{
+    fun roomDataSource(database: FirebaseFirestore): RoomDataSource {
         return RoomDataSourceFirebaseOperations(database)
     }
 
@@ -58,6 +63,7 @@ class AppModule {
     fun provideDataSourceRoomApi(request: RoomRequest): RoomDataSource {
         return RoomDataSourceApi(request)
     }
+
     @Provides
     fun provideDataSourceReservationLocal(daoReservation: ReservationDao): DataSourceReservationLocal {
         return DataSourceReservationRoomDB(daoReservation)
@@ -66,7 +72,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseRoom(@ApplicationContext applicationContext:Context): HotelDatabase {
+    fun provideDatabaseRoom(@ApplicationContext applicationContext: Context): HotelDatabase {
         val db = Room.databaseBuilder(
             applicationContext,
             HotelDatabase::class.java, "database-hotel"
@@ -85,5 +91,36 @@ class AppModule {
     fun provideLoginDataSourceApi(request: LoginRequest): LoginDataSource {
         return LoginDataSourceApi(request)
     }
+
+    @Provides
+    fun provideTokenManagment(sharedPreferences: SharedPreferences): TokenManagment {
+        return TokenManagmentImpl(sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreference(
+        @ApplicationContext context: Context,
+        masterKey: MasterKey
+    ): SharedPreferences {
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            context,
+            "my_secure_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        return sharedPreferences
+    }
+
+    @Provides
+    @Singleton
+    fun provideMasterKey(@ApplicationContext context: Context): MasterKey {
+        return MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    }
+
 
 }
