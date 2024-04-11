@@ -35,4 +35,8 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
         }
         return ""
     }
+
+    override fun tokenIsAvailable(): Boolean {
+        return sharedPreferences.contains("token_key")
+    }
 }

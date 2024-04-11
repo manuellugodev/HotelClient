@@ -18,5 +18,13 @@ class LoginRepositoryImpl(
         return result
     }
 
+    override suspend fun checkUserIsLogged(): LoginStatus {
+        return if (loginLocalSource.tokenIsAvailable()) {
+            LoginStatus.Success("Logged")
+        } else {
+            LoginStatus.Failure
+        }
+    }
+
 
 }

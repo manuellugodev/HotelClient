@@ -15,10 +15,15 @@ import com.manuellugodev.hotelmanagment.Screens.RESERVATION
 import com.manuellugodev.hotelmanagment.Screens.ReservationScreen
 import com.manuellugodev.hotelmanagment.Screens.RoomTypeScreen
 import com.manuellugodev.hotelmanagment.Screens.START_TIME
+import com.manuellugodev.hotelmanagment.Screens.WelcomeScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.LoginScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.WelcomeScreen.route) {
+
+        composable(route = Screen.WelcomeScreen.route) {
+            WelcomeScreen(navController)
+        }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)
         }
@@ -27,7 +32,8 @@ fun Navigation(navController: NavHostController) {
             ReservationScreen(navController)
         }
 
-        composable(route = Screen.RoomTypeScreen.route + "/{$START_TIME}/{$END_TIME}/{$GUESTS}",
+        composable(
+            route = Screen.RoomTypeScreen.route + "/{$START_TIME}/{$END_TIME}/{$GUESTS}",
             arguments = listOf(
                 navArgument(START_TIME){
                     type = NavType.LongType

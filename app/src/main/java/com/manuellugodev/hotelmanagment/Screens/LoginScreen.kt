@@ -1,9 +1,7 @@
 package com.manuellugodev.hotelmanagment.Screens
 
 import LOGIN_SCREEN
-import RESERVATION_SCREEN
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -37,41 +35,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import com.manuellugodev.hotelmanagment.LoginStatus
+import com.manuellugodev.hotelmanagment.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.ui.LoginViewModel
 import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
+import com.manuellugodev.hotelmanagment.utils.navigateAndCleanBackStack
 
 
 @Composable
 fun LoginScreen(navController: NavController,viewModel: LoginViewModel= hiltViewModel()) {
 
-    Log.i(LOGIN_SCREEN,"Recomposition")
+    Log.i(LOGIN_SCREEN, "Recomposition")
 
-    val firebaseAuth = FirebaseAuth.getInstance()
-    if (firebaseAuth.currentUser != null) {
-        navController.navigate(Screen.ReservationScreen.route)
+    val state by viewModel.statusLogin
+
+    when (state) {
+        LoginStatus.Loading -> {
+            CircularProgressIndicator(color = md_theme_light_primary)
+        }
+
+        else -> LoginContent(viewModel = viewModel)
     }
 
-    Box(Modifier.padding(start = 170.dp, top = 100.dp)) {
-        when (viewModel._statusLogin.value) {
-            is LoginStatus.Success -> {
-                Text(text = "Welcome")
-
-                navController.navigate(Screen.ReservationScreen.route)
-            }
-
-            LoginStatus.Failure -> {
-                Text(text = "Error Try Again")
-
-            }
-
-            LoginStatus.Pending -> {
-                CircularProgressIndicator(color = md_theme_light_primary)
-            }
+    if (state is LoginStatus.Success) {
+        navController.navigateAndCleanBackStack(Screen.ReservationScreen.route)
+    } else if (state is LoginStatus.Failure) {
+        ErrorSnackbar(errorMessage = "Bad Credentials") {
+            viewModel.byDefault()
         }
     }
+
+
+}
+
+@Composable
+fun LoginContent(viewModel: LoginViewModel) {
 
 
     var username by remember { mutableStateOf("") }

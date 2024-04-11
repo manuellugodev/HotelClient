@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.di
 import com.manuellugodev.hotelmanagment.data.LoginRepository
 import com.manuellugodev.hotelmanagment.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.data.RoomRepository
+import com.manuellugodev.hotelmanagment.usecases.CheckUserIsLogged
 import com.manuellugodev.hotelmanagment.usecases.GetMyReservations
 import com.manuellugodev.hotelmanagment.usecases.GetReservations
 import com.manuellugodev.hotelmanagment.usecases.GetTemporalReservation
@@ -52,5 +53,10 @@ class UseCaseModule {
     @Provides
     fun provideGetMyResertavionsUseCase(repository: ReservationRepository): GetMyReservations {
         return GetMyReservations(repository);
+    }
+
+    @Provides
+    fun provideCheckUserIsLoggedUseCase(repository: LoginRepository): CheckUserIsLogged {
+        return CheckUserIsLogged(repository)
     }
 }

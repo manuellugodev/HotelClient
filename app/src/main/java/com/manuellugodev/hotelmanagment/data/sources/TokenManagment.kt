@@ -6,4 +6,6 @@ interface TokenManagment {
     suspend fun saveToken(token: String): LoginStatus
 
     fun getToken(): String
+
+    fun tokenIsAvailable(): Boolean
 }
