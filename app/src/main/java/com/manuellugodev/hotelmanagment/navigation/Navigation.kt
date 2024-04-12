@@ -1,21 +1,23 @@
 package com.manuellugodev.hotelmanagment.navigation
 
+
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.manuellugodev.hotelmanagment.Screens.ConfirmationScreen
-import com.manuellugodev.hotelmanagment.Screens.END_TIME
-import com.manuellugodev.hotelmanagment.Screens.GUESTS
-import com.manuellugodev.hotelmanagment.Screens.LoginScreen
-import com.manuellugodev.hotelmanagment.Screens.MyReservationScreen
-import com.manuellugodev.hotelmanagment.Screens.RESERVATION
-import com.manuellugodev.hotelmanagment.Screens.ReservationScreen
-import com.manuellugodev.hotelmanagment.Screens.RoomTypeScreen
-import com.manuellugodev.hotelmanagment.Screens.START_TIME
-import com.manuellugodev.hotelmanagment.Screens.WelcomeScreen
+import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.LoginScreen
+import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.WelcomeScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ReservationScreen
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.END_TIME
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.GUESTS
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreen
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.START_TIME
+
 
 @Composable
 fun Navigation(navController: NavHostController) {

@@ -2,7 +2,7 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
+import com.manuellugodev.hotelmanagment.network.TokenManagment
 import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.network.request.LoginRequest
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest

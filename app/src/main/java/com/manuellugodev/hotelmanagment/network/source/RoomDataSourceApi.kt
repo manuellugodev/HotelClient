@@ -1,11 +1,11 @@
 package com.manuellugodev.hotelmanagment.network.source
 
 import android.util.Log
-import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.network.entities.RoomApi
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest
-import com.manuellugodev.hotelmanagment.utils.vo.DataResult
+import com.manuellugodev.hotelmanagment.utils.DataResult
 import java.util.Date
 
 class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {

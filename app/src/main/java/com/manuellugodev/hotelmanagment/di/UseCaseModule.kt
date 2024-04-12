@@ -1,16 +1,17 @@
 package com.manuellugodev.hotelmanagment.di
 
-import com.manuellugodev.hotelmanagment.data.LoginRepository
-import com.manuellugodev.hotelmanagment.data.ReservationRepository
-import com.manuellugodev.hotelmanagment.data.RoomRepository
-import com.manuellugodev.hotelmanagment.usecases.CheckUserIsLogged
-import com.manuellugodev.hotelmanagment.usecases.GetMyReservations
-import com.manuellugodev.hotelmanagment.usecases.GetReservations
-import com.manuellugodev.hotelmanagment.usecases.GetTemporalReservation
-import com.manuellugodev.hotelmanagment.usecases.LoginWithUsernameAndPassword
-import com.manuellugodev.hotelmanagment.usecases.SaveTemporalReservation
-import com.manuellugodev.hotelmanagment.usecases.SearchRoomAvailables
-import com.manuellugodev.hotelmanagment.usecases.SendConfirmationReservation
+import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
+import com.manuellugodev.hotelmanagment.features.auth.domain.CheckUserIsLogged
+import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
+import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetReservations
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
+import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTemporalReservation
+import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
+import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
+import com.manuellugodev.hotelmanagment.features.rooms.domain.SearchRoomAvailables
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,12 +32,12 @@ class UseCaseModule {
     }
 
     @Provides
-    fun provideSendConfirmationReservationUsecase(repository: ReservationRepository):SendConfirmationReservation{
+    fun provideSendConfirmationReservationUsecase(repository: ReservationRepository): SendConfirmationReservation {
         return SendConfirmationReservation(repository)
     }
 
     @Provides
-    fun provideGetReservationsUsecase(repository: ReservationRepository):GetReservations{
+    fun provideGetReservationsUsecase(repository: ReservationRepository): GetReservations {
         return GetReservations(repository)
     }
 

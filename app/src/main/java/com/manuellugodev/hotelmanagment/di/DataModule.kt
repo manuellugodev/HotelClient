@@ -1,16 +1,16 @@
 package com.manuellugodev.hotelmanagment.di
 
-import com.manuellugodev.hotelmanagment.data.LoginRepository
-import com.manuellugodev.hotelmanagment.data.LoginRepositoryImpl
-import com.manuellugodev.hotelmanagment.data.ReservationRepository
-import com.manuellugodev.hotelmanagment.data.ReservationRepositoryImpl
-import com.manuellugodev.hotelmanagment.data.RoomRepository
-import com.manuellugodev.hotelmanagment.data.RoomRepositoryImpl
-import com.manuellugodev.hotelmanagment.data.sources.DataSourceReservation
-import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
-import com.manuellugodev.hotelmanagment.data.sources.RoomDataSource
-import com.manuellugodev.hotelmanagment.data.sources.TokenManagment
+import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
+import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepositoryImpl
+import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
+import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
+import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepositoryImpl
+import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
+import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
+import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepositoryImpl
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
+import com.manuellugodev.hotelmanagment.network.TokenManagment
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +35,10 @@ class DataModule {
     }
 
     @Provides
-    fun provideReservationRepository(@Named("api")dataSource:DataSourceReservation,dataSourceLocal: DataSourceReservationLocal): ReservationRepository {
-        return ReservationRepositoryImpl(dataSource,dataSourceLocal)
+    fun provideReservationRepository(
+        @Named("api") dataSource: DataSourceReservation,
+        dataSourceLocal: DataSourceReservationLocal
+    ): ReservationRepository {
+        return ReservationRepositoryImpl(dataSource, dataSourceLocal)
     }
 }

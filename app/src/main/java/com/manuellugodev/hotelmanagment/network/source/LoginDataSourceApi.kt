@@ -1,8 +1,8 @@
 package com.manuellugodev.hotelmanagment.network.source
 
 import android.util.Log
-import com.manuellugodev.hotelmanagment.LoginStatus
-import com.manuellugodev.hotelmanagment.data.sources.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
 import com.manuellugodev.hotelmanagment.network.entities.LoginRequestBody
 import com.manuellugodev.hotelmanagment.network.request.LoginRequest
 
