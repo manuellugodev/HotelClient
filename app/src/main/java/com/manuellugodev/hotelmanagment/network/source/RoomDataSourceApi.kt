@@ -6,6 +6,7 @@ import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.network.entities.RoomApi
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.utils.DataResult
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
@@ -13,10 +14,20 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchRooms(desiredStartTime:Date,desiredEndTime:Date,guests:Int): DataResult<List<RoomHotel>> {
+    override suspend fun searchRooms(
+        desiredStartTime: Date,
+        desiredEndTime: Date,
+        guests: Int
+    ): DataResult<List<RoomHotel>> {
 
         return try {
-            val result = request.service.getAllRoomsAvailable(true,desiredStartTime,desiredEndTime,guests)
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val result = request.service.getAllRoomsAvailable(
+                true,
+                sdf.format(desiredStartTime),
+                sdf.format(desiredEndTime),
+                guests
+            )
 
             if (result.isSuccessful) {
                 DataResult.Success(result.body()!!.map { it.toRoomHotel() })
