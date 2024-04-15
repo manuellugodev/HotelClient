@@ -50,7 +50,11 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 Scaffold(
-                    topBar = { TopBar() },
+                    topBar = {
+                        if (currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route) {
+                            TopBar()
+                        }
+                    },
                     bottomBar = {
                         if (currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route) {
                             BottomBar(navController)
