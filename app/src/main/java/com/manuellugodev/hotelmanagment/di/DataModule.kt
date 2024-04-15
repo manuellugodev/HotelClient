@@ -3,6 +3,9 @@ package com.manuellugodev.hotelmanagment.di
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepositoryImpl
+import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
+import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
+import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepositoryImpl
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepositoryImpl
@@ -30,8 +33,13 @@ class DataModule {
     }
 
     @Provides
-    fun provideRoomRepository(@Named("api")dataSource: RoomDataSource): RoomRepository {
+    fun provideRoomRepository(@Named("api") dataSource: RoomDataSource): RoomRepository {
         return RoomRepositoryImpl(dataSource)
+    }
+
+    @Provides
+    fun provideProfileRepository(profileSource: DataSourceProfile): ProfileRepository {
+        return ProfileRepositoryImpl(profileSource)
     }
 
     @Provides

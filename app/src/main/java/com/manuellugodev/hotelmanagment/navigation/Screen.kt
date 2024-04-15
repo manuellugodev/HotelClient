@@ -11,6 +11,8 @@ sealed class Screen(val route:String){
 
     object MyReservationsScreen : Screen("my_reservation")
 
+    object MyProfileScreen : Screen("my_profile")
+
     fun withArgs(vararg args: Long): String {
         return buildString {
             append(route)

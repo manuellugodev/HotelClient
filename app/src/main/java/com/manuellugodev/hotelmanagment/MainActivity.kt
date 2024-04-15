@@ -91,7 +91,7 @@ fun BottomBar(navController: NavHostController) {
             label = { Text("Reservations") })
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(Screen.MyProfileScreen.route) },
             icon = { Icon(Icons.Default.Person, "Profile") },
             label = { Text("Profile") })
 

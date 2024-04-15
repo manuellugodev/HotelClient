@@ -8,4 +8,5 @@ interface TokenManagment {
     fun getToken(): String
 
     fun tokenIsAvailable(): Boolean
+    fun removeToken(): Boolean
 }

@@ -8,6 +8,7 @@ import androidx.security.crypto.MasterKey
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.firebase.login.FirebaseLogin
@@ -20,8 +21,10 @@ import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
 import com.manuellugodev.hotelmanagment.network.TokenManagment
 import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.network.request.LoginRequest
+import com.manuellugodev.hotelmanagment.network.request.ProfileRequest
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.network.source.DataSourceAppointmentApi
+import com.manuellugodev.hotelmanagment.network.source.DataSourceProfileApi
 import com.manuellugodev.hotelmanagment.network.source.LoginDataSourceApi
 import com.manuellugodev.hotelmanagment.network.source.RoomDataSourceApi
 import com.manuellugodev.hotelmanagment.network.source.TokenManagmentImpl
@@ -90,6 +93,11 @@ class AppModule {
     @Named("api")
     fun provideLoginDataSourceApi(request: LoginRequest): LoginDataSource {
         return LoginDataSourceApi(request)
+    }
+
+    @Provides
+    fun provideProfileDataSource(request: ProfileRequest): DataSourceProfile {
+        return DataSourceProfileApi(request)
     }
 
     @Provides

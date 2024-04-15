@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.network.TokenManagment
 import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.network.request.LoginRequest
+import com.manuellugodev.hotelmanagment.network.request.ProfileRequest
 import com.manuellugodev.hotelmanagment.network.request.RoomRequest
 import dagger.Module
 import dagger.Provides
@@ -46,6 +47,14 @@ class NetworkModule {
     @Provides
     fun provideLoginRequest(@Named("baseUrl") baseUrl: String): LoginRequest {
         return LoginRequest(baseUrl)
+    }
+
+    @Provides
+    fun provideProfileRequest(
+        @Named("baseUrl") baseUrl: String,
+        token: TokenManagment
+    ): ProfileRequest {
+        return ProfileRequest(baseUrl, token)
     }
 
     @Provides
