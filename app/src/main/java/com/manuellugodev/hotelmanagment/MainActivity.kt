@@ -26,10 +26,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.manuellugodev.hotelmanagment.navigation.Navigation
 import com.manuellugodev.hotelmanagment.navigation.Screen
@@ -41,12 +43,19 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             HotelManagmentTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
                 Scaffold(
                     topBar = { TopBar() },
-                    bottomBar = { BottomBar(navController) }) { innerPadding ->
+                    bottomBar = {
+                        if (currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route) {
+                            BottomBar(navController)
+                        }
+                    }) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         Navigation(navController)
                     }
