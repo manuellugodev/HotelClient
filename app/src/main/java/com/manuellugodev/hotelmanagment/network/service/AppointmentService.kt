@@ -6,7 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.Date
 
 interface AppointmentService {
 
@@ -17,8 +16,8 @@ interface AppointmentService {
     suspend fun sendAppointment(
         @Query("guestId") guestId: Int,
         @Query("roomId") roomId: Int,
-        @Query("startTime") startTime: Date, // Represented as Date
-        @Query("endTime") endTime: Date,     // Represented as Date
+        @Query("startTime") startTime: String,
+        @Query("endTime") endTime: String,
         @Query("purpose") purpose: String
     ): Response<String>
 
