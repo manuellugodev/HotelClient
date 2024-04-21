@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.features.profile
+package com.manuellugodev.hotelmanagment.features.profile.presentation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -24,13 +24,17 @@ class ProfileViewModel @Inject constructor(
         private set
 
 
+    init {
+        loadDataProfile()
+    }
+
     fun loadDataProfile() {
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 val result = withContext(Dispatchers.Main) { getDataProfile() }
                 if (result is DataResult.Success) {
 
-                    stateProfile.value = ProfileState.ShowProfile(result.data.name)
+                    stateProfile.value = ProfileState.ShowProfile(result.data)
                 } else {
                     stateProfile.value = ProfileState.Error("Some was wrong")
                 }

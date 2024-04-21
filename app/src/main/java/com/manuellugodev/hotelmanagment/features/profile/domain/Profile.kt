@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.features.profile
+package com.manuellugodev.hotelmanagment.features.profile.domain
 
 data class Profile(
     val username: String,

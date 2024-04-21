@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.LoginScreen
 import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.WelcomeScreen
-import com.manuellugodev.hotelmanagment.features.profile.ProfileScreen
+import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION

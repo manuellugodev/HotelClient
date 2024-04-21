@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.profile.data
 
-import com.manuellugodev.hotelmanagment.features.profile.Profile
+import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 import com.manuellugodev.hotelmanagment.utils.DataResult
 
 interface DataSourceProfile {
