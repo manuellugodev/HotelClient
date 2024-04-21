@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            HotelManagmentTheme {
+            HotelManagmentTheme(dynamicColor = false) {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
@@ -74,6 +74,10 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar() {
+
+    val color = MaterialTheme.colorScheme
+
+    val colorS = color.primary.toString();
     TopAppBar(
         title = {
             Text(stringResource(id = R.string.app_name), textAlign = TextAlign.Center)
