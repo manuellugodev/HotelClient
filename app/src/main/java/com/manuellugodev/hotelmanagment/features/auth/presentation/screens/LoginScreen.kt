@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -40,7 +41,6 @@ import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.Lo
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.navigation.navigateAndCleanBackStack
-import com.manuellugodev.hotelmanagment.ui.theme.md_theme_light_primary
 
 
 @Composable
@@ -52,7 +52,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
     when (state) {
         LoginStatus.Loading -> {
-            CircularProgressIndicator(color = md_theme_light_primary)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
 
         else -> LoginContent(viewModel = viewModel)

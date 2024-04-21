@@ -2,7 +2,6 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.scre
 
 import RESERVATION_SCREEN
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,12 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DateRangePicker
@@ -27,9 +27,12 @@ import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -40,7 +43,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
@@ -55,8 +57,6 @@ import com.manuellugodev.hotelmanagment.features.reservations.utils.getText
 import com.manuellugodev.hotelmanagment.features.reservations.utils.numberGuestSaver
 import com.manuellugodev.hotelmanagment.navigation.Screen
 import com.manuellugodev.hotelmanagment.utils.convertLongToTime
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,13 +118,15 @@ fun ReservationScreen(
     }
 
     if (guestVisibleState) {
+
         Box(
             Modifier
-                .fillMaxSize(1f)
-                .background(Color.White)
-                .padding(bottom = 10.dp), contentAlignment = Alignment.Center
+                .fillMaxWidth(1f)
+                .wrapContentHeight()
+                .padding(bottom = 10.dp),
+            contentAlignment = Alignment.Center
         ) {
-            GuestInputScreen(stateNumberGuest) {
+            BottomSheet(stateNumberGuest = stateNumberGuest) {
                 guestVisibleState = guestVisibleState.not()
             }
         }
@@ -157,34 +159,46 @@ fun testLayouts() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
-    Card(
-        Modifier
-            .padding(5.dp)
-            .border(2.dp, Color.Blue)
-    ) {
-        Column() {
-            GuestInputScreen(
-                title = "Adults",
-                stateNumberGuest = stateNumberGuest.adults,
-                operation = { if ((stateNumberGuest.adults.value + it) > -1) stateNumberGuest.adults.value += it })
-            GuestInputScreen(
-                title = "Children",
-                stateNumberGuest = stateNumberGuest.children,
-                operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
+fun BottomSheet(stateNumberGuest: NumberGuest, onDismiss: () -> Unit) {
+    val modalBottomSheetState = rememberModalBottomSheetState()
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(5.dp),
-                onClick = event
-            ) {
-                Text("Set", textAlign = TextAlign.Center)
-            }
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() },
+        sheetState = modalBottomSheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+    ) {
+        GuestInputScreen(stateNumberGuest) {
+            onDismiss()
         }
     }
+}
+
+@Composable
+fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
+
+    Column() {
+        GuestInputScreen(
+            title = "Adults",
+            stateNumberGuest = stateNumberGuest.adults,
+            operation = { if ((stateNumberGuest.adults.value + it) > -1) stateNumberGuest.adults.value += it })
+        GuestInputScreen(
+            title = "Children",
+            stateNumberGuest = stateNumberGuest.children,
+            operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .padding(top = 10.dp, bottom = 15.dp)
+                .align(Alignment.CenterHorizontally),
+            onClick = event,
+        ) {
+            Text("Set", textAlign = TextAlign.Center)
+        }
+    }
+
 
 }
 
@@ -192,30 +206,49 @@ fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
 @Composable
 fun GuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (Int) -> Unit) {
 
-    Card(Modifier.padding(10.dp)) {
-        Column() {
-            Row() {
-                Text(text = title, fontSize = 30.sp, textAlign = TextAlign.Center)
-                Button(
-                    onClick = { operation(-1) }, modifier = Modifier
-                        .width(80.dp)
-                        .height(40.dp)
-                ) {
-                    Text(text = "-", fontSize = 30.sp, modifier = Modifier.wrapContentHeight())
+    Box(Modifier.padding(10.dp)) {
+
+        Row(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(horizontal = 10.dp),
+                text = title, fontSize = 18.sp, textAlign = TextAlign.Left
+            )
+
+
+            Row(
+                modifier = Modifier.border(1.dp, Color.Black),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { operation(-1) }) {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Rounded.KeyboardArrowDown,
+                        contentDescription = ""
+                    )
                 }
-                Box(
-                    Modifier
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(Color.Gray)
-                ) {
-                    Text(text = stateNumberGuest.value.toString(), fontSize = 30.sp)
-                }
-                Button(onClick = { operation(1) }, modifier = Modifier.width(80.dp)) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "PLus")
+                Text(
+                    modifier = Modifier.padding(horizontal = 30.dp),
+                    text = stateNumberGuest.value.toString(),
+                    fontSize = 28.sp
+                )
+                IconButton(onClick = { operation(1) }) {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Rounded.KeyboardArrowUp,
+                        contentDescription = ""
+                    )
                 }
 
             }
+
+
         }
+
     }
 }
 
