@@ -38,8 +38,11 @@ class DataModule {
     }
 
     @Provides
-    fun provideProfileRepository(profileSource: DataSourceProfile): ProfileRepository {
-        return ProfileRepositoryImpl(profileSource)
+    fun provideProfileRepository(
+        profileSource: DataSourceProfile,
+        tokenManagment: TokenManagment
+    ): ProfileRepository {
+        return ProfileRepositoryImpl(profileSource, tokenManagment)
     }
 
     @Provides

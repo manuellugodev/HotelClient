@@ -5,5 +5,5 @@ import com.manuellugodev.hotelmanagment.utils.DataResult
 
 interface DataSourceProfile {
 
-    suspend fun getDataProfile(): DataResult<Profile>
+    suspend fun getDataProfile(username: String): DataResult<Profile>
 }

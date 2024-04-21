@@ -9,4 +9,5 @@ interface TokenManagment {
 
     fun tokenIsAvailable(): Boolean
     fun removeToken(): Boolean
+    fun getUsername(): String
 }

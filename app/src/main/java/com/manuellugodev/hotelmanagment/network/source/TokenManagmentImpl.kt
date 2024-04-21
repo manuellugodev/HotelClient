@@ -46,4 +46,19 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
         return tokenIsAvailable().not()
 
     }
+
+    override fun getUsername(): String {
+        try {
+            if (sharedPreferences.contains("username")) {
+                val username = sharedPreferences.getString("username", "")
+                if (!username.isNullOrEmpty()) {
+                    return username
+                }
+            }
+        } catch (e: Exception) {
+
+        }
+
+        return ""
+    }
 }
