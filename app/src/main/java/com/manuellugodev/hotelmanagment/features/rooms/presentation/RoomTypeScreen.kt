@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.material.icons.rounded.Bed
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Card
@@ -140,9 +141,12 @@ private fun RoomItem(room: RoomHotel, onClickItem: () -> Unit) {
                 Text(text = room.peopleQuantity.toString())
             }
             Row(horizontalArrangement = Arrangement.SpaceAround) {
-                Text(text = "Price", Modifier.padding(horizontal = 20.dp), fontSize = 22.sp)
+                Icon(
+                    imageVector = Icons.Rounded.AttachMoney,
+                    contentDescription = Icons.Rounded.AttachMoney.name
+                )
 
-                Text(text = room.price.toString(), fontSize = 22.sp, textAlign = TextAlign.Right)
+                Text(text = room.price.toString(), textAlign = TextAlign.Right)
             }
         }
     }
