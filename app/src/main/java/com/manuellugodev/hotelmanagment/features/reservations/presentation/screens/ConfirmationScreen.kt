@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -155,8 +156,6 @@ fun DetailConfirmationScreen(reservation: Reservation) {
 
 @Composable
 fun DetailConfirmationScreenNew(reservation: Reservation) {
-
-    Log.i(CONFIRMATION_SCREEN, "Detail show data")
     val room = reservation.roomHotel
 
     val checkInTime = reservation.checkIn
@@ -184,9 +183,17 @@ fun DetailConfirmationScreenNew(reservation: Reservation) {
             )
 
             Text(
-                modifier = Modifier.align(Alignment.BottomStart),
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            listOf(MaterialTheme.colorScheme.primary, Color.White),
+                        ), alpha = 0.3f
+                    )
+                    .fillMaxWidth(),
                 text = room.description,
-                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                fontWeight = FontWeight.Bold
             )
 
         }
