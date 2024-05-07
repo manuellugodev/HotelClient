@@ -13,6 +13,8 @@ sealed class Screen(val route:String){
 
     object MyProfileScreen : Screen("my_profile")
 
+    object RegisterScreen :Screen("register")
+
     fun withArgs(vararg args: Long): String {
         return buildString {
             append(route)

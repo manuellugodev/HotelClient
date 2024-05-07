@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -28,6 +29,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -55,7 +58,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
 
-        else -> LoginContent(viewModel = viewModel)
+        else -> LoginContent(viewModel = viewModel){
+            navController.navigate(Screen.RegisterScreen.route)
+        }
     }
 
     if (state is LoginStatus.Success) {
@@ -70,7 +75,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 }
 
 @Composable
-fun LoginContent(viewModel: LoginViewModel) {
+fun LoginContent(viewModel: LoginViewModel,onNavigateToRegister:()->Unit) {
 
 
     var username by remember { mutableStateOf("") }
@@ -101,6 +106,7 @@ fun LoginContent(viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = password,
+            placeholder = { Text(text = "Password") },
             onValueChange = { password = it },
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,6 +141,11 @@ fun LoginContent(viewModel: LoginViewModel) {
             contentPadding = PaddingValues(16.dp)
         ) {
             Text(text = "Log In")
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+        ClickableText(text = AnnotatedString("Don't have an Account?"), style = TextStyle.Default.copy(fontSize = 20.sp)) {
+            onNavigateToRegister()
         }
     }
 }

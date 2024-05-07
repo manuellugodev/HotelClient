@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     bottomBar = {
-                        if (currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route) {
+                        if (currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route && currentRoute!= Screen.RegisterScreen.route) {
                             BottomBar(navController)
                         }
                     }) { innerPadding ->
