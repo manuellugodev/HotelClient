@@ -5,15 +5,10 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
-import com.manuellugodev.hotelmanagment.firebase.login.FirebaseLogin
-import com.manuellugodev.hotelmanagment.firebase.reservations.ReservationFirebase
-import com.manuellugodev.hotelmanagment.firebase.rooms.RoomDataSourceFirebaseOperations
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRoomDB
 import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
@@ -40,20 +35,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @Provides
-    fun loginDataSource(auth: FirebaseAuth): LoginDataSource {
-        return FirebaseLogin(auth)
-    }
 
-    @Provides
-    fun roomDataSource(database: FirebaseFirestore): RoomDataSource {
-        return RoomDataSourceFirebaseOperations(database)
-    }
-
-    @Provides
-    fun provideDataSourceReservation(firestore: FirebaseFirestore): DataSourceReservation {
-        return ReservationFirebase(firestore)
-    }
 
     @Provides
     @Named("api")
