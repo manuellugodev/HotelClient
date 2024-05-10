@@ -1,9 +1,8 @@
 package com.manuellugodev.hotelmanagment.features.reservations.utils
 
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
-
-sealed class MyReservationState {
-    class ShowReservation(val listReservation: List<Reservation>) : MyReservationState()
-    class Failure(val e: Exception) : MyReservationState()
-    object Loading : MyReservationState()
-}
+data class MyReservationState(
+    val showReservation:List<Reservation> = emptyList(),
+    val showLoader:Boolean = false,
+    val showErrorMsg:String ="",
+)

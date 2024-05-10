@@ -16,8 +16,10 @@ import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScr
 import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreenRoot
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ReservationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.MyReservationsViewModel
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.END_TIME
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.GUESTS
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreen
@@ -75,7 +77,8 @@ fun Navigation(navController: NavHostController) {
             ConfirmationScreen(navController, reservationId = reservation.toInt())
         }
         composable(route = Screen.MyReservationsScreen.route) {
-            MyReservationScreen()
+           val myReservationVM :MyReservationsViewModel= hiltViewModel()
+            MyReservationScreenRoot(myReservationVM)
         }
 
         composable(route = Screen.MyProfileScreen.route) {
