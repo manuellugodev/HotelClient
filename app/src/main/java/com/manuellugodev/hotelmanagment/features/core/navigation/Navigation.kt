@@ -12,7 +12,8 @@ import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.Login
 import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.RegisterScreenRoot
 import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.WelcomeScreen
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.RegisterViewModel
-import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScreen
+import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScreenRoot
+import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
@@ -78,7 +79,8 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(route = Screen.MyProfileScreen.route) {
-            ProfileScreen(navController = navController)
+            val profileViewModel:ProfileViewModel = hiltViewModel()
+            ProfileScreenRoot(navController = navController, viewModel = profileViewModel)
         }
 
         composable(route = Screen.RegisterScreen.route){

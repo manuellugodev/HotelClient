@@ -20,7 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,13 +34,21 @@ import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndClea
 
 
 @Composable
-fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreenRoot(navController: NavController,viewModel: ProfileViewModel){
 
-    val state = viewModel.stateProfile
+    val state by viewModel.stateProfile.collectAsState()
 
-    LaunchedEffect(state.value is ProfileState.init) {
-        viewModel.loadDataProfile()
+    if (state.isLogOut) {
+        navController.navigateAndCleanBackStack(Screen.WelcomeScreen.route)
     }
+    ProfileScreen(state){
+        viewModel.logOutSession()
+    }
+}
+@Composable
+fun ProfileScreen(state:ProfileState,logOut:()->Unit) {
+
+
     Box(
         Modifier
             .fillMaxSize(1f)
@@ -53,29 +62,27 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                 .padding(top = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (state.value is ProfileState.ShowProfile) {
-                showDataProfile((state.value as ProfileState.ShowProfile).profile)
+            if (state.showProfile!=null) {
+                DataProfile(state.showProfile!!)
             }
 
             Button(
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .wrapContentSize(),
-                onClick = { viewModel.logOutSession() }) {
+                onClick = { logOut() }) {
                 Text(text = "Log out")
             }
         }
 
-        if (state.value is ProfileState.logOut) {
-            navController.navigateAndCleanBackStack(Screen.WelcomeScreen.route)
-        }
+
 
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun showDataProfile(data: Profile) {
+fun DataProfile(data: Profile) {
 
     Card(
         Modifier
@@ -137,7 +144,7 @@ fun showDataProfile(data: Profile) {
 @Preview
 fun ProfileScreen() {
 
-    showDataProfile(
+    DataProfile(
         data = Profile(
             "manuellugo",
             "Manuel Lugo",
