@@ -2,11 +2,11 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.manuellugodev.hotelmanagment.network.TokenManagment
-import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
-import com.manuellugodev.hotelmanagment.network.request.LoginRequest
-import com.manuellugodev.hotelmanagment.network.request.ProfileRequest
-import com.manuellugodev.hotelmanagment.network.request.RoomRequest
+import com.manuellugodev.hotelmanagment.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
+import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
+import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
+import com.manuellugodev.hotelmanagment.framework.network.request.RoomRequest
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,7 +61,7 @@ class NetworkModule {
     @Singleton
     @Named("baseUrl")
     fun baseUrlProvider() =
-        "http://10.0.2.2:8080/" //"https://app-hotel-5687665021bc.herokuapp.com/"
+        "https://app-hotel-5687665021bc.herokuapp.com/" //"http://10.0.2.2:8080/"
 
 
 }

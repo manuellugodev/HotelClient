@@ -1,11 +1,11 @@
-package com.manuellugodev.hotelmanagment.network.source
+package com.manuellugodev.hotelmanagment.framework.network.source
 
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
-import com.manuellugodev.hotelmanagment.network.entities.Appointment
-import com.manuellugodev.hotelmanagment.network.entities.toCustomer
-import com.manuellugodev.hotelmanagment.network.request.AppointmentBody
-import com.manuellugodev.hotelmanagment.network.request.AppointmentRequest
+import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
+import com.manuellugodev.hotelmanagment.framework.network.entities.toCustomer
+import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentBody
+import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.utils.DataResult
 import java.text.SimpleDateFormat
 import java.util.Date

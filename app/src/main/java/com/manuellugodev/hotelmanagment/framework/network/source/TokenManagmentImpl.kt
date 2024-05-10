@@ -1,8 +1,7 @@
-package com.manuellugodev.hotelmanagment.network.source
+package com.manuellugodev.hotelmanagment.framework.network.source
 
 import android.content.SharedPreferences
-import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
-import com.manuellugodev.hotelmanagment.network.TokenManagment
+import com.manuellugodev.hotelmanagment.domain.TokenManagment
 
 class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
     TokenManagment {

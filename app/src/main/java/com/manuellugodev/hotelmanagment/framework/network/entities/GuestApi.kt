@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.network.entities
+package com.manuellugodev.hotelmanagment.framework.network.entities
 
 import com.manuellugodev.hotelmanagment.domain.model.Customer
 

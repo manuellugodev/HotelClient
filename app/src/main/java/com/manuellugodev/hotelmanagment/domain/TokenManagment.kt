@@ -1,6 +1,4 @@
-package com.manuellugodev.hotelmanagment.network
-
-import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
+package com.manuellugodev.hotelmanagment.domain
 
 interface TokenManagment {
     suspend fun saveToken(token: String): Result<Unit>

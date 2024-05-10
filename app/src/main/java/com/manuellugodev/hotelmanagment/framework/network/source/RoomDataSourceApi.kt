@@ -1,10 +1,10 @@
-package com.manuellugodev.hotelmanagment.network.source
+package com.manuellugodev.hotelmanagment.framework.network.source
 
 import android.util.Log
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
-import com.manuellugodev.hotelmanagment.network.entities.RoomApi
-import com.manuellugodev.hotelmanagment.network.request.RoomRequest
+import com.manuellugodev.hotelmanagment.framework.network.entities.RoomApi
+import com.manuellugodev.hotelmanagment.framework.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.utils.DataResult
 import java.text.SimpleDateFormat
 import java.util.Date

@@ -1,6 +1,6 @@
-package com.manuellugodev.hotelmanagment.network.request
+package com.manuellugodev.hotelmanagment.framework.network.request
 
-import com.manuellugodev.hotelmanagment.network.service.LoginService
+import com.manuellugodev.hotelmanagment.framework.network.service.LoginService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

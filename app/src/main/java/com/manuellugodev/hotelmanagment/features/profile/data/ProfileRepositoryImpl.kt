@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.profile.data
 
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
-import com.manuellugodev.hotelmanagment.network.TokenManagment
+import com.manuellugodev.hotelmanagment.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.utils.DataResult
 
 class ProfileRepositoryImpl(

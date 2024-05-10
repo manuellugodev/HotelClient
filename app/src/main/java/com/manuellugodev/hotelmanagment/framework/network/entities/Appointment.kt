@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.network.entities
+package com.manuellugodev.hotelmanagment.framework.network.entities
 
 data class Appointment(
     val appointmentId:Int,

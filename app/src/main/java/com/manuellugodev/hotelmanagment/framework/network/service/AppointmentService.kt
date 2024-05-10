@@ -1,6 +1,6 @@
-package com.manuellugodev.hotelmanagment.network.service
+package com.manuellugodev.hotelmanagment.framework.network.service
 
-import com.manuellugodev.hotelmanagment.network.entities.Appointment
+import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST

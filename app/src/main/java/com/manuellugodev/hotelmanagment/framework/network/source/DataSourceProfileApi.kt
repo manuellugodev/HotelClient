@@ -1,8 +1,8 @@
-package com.manuellugodev.hotelmanagment.network.source
+package com.manuellugodev.hotelmanagment.framework.network.source
 
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
-import com.manuellugodev.hotelmanagment.network.request.ProfileRequest
+import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
 import com.manuellugodev.hotelmanagment.utils.DataResult
 
 class DataSourceProfileApi(private val request: ProfileRequest) : DataSourceProfile {

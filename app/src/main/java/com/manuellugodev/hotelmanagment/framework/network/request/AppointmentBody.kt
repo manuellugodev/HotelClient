@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.network.request
+package com.manuellugodev.hotelmanagment.framework.network.request
 
 data class AppointmentBody(
     val guestId: Int,

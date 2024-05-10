@@ -13,7 +13,7 @@ import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepositoryImpl
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
-import com.manuellugodev.hotelmanagment.network.TokenManagment
+import com.manuellugodev.hotelmanagment.domain.TokenManagment
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

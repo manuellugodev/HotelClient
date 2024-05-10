@@ -1,11 +1,11 @@
-package com.manuellugodev.hotelmanagment.network.source
+package com.manuellugodev.hotelmanagment.framework.network.source
 
 import android.net.http.HttpException
 import android.util.Log
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
-import com.manuellugodev.hotelmanagment.network.entities.LoginRequestBody
-import com.manuellugodev.hotelmanagment.network.request.LoginRequest
+import com.manuellugodev.hotelmanagment.framework.network.entities.LoginRequestBody
+import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
 
 class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
     override suspend fun loginWithEmailAndPassword(email: String, password: String): Result<String> {

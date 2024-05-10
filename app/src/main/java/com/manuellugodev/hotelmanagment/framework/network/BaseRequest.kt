@@ -1,5 +1,6 @@
-package com.manuellugodev.hotelmanagment.network
+package com.manuellugodev.hotelmanagment.framework.network
 
+import com.manuellugodev.hotelmanagment.domain.TokenManagment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +13,11 @@ abstract class BaseRequest<T : Any>(
 
     private val okHttpClient: OkHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(AuthInterceptor(token)).build()
+        OkHttpClient.Builder().addInterceptor(
+            com.manuellugodev.hotelmanagment.framework.network.AuthInterceptor(
+                token
+            )
+        ).build()
     }
 
     inline fun <reified T : Any> getService(): T =
