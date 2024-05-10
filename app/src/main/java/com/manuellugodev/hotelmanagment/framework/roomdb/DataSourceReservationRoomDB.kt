@@ -3,7 +3,7 @@ package com.manuellugodev.hotelmanagment.framework.roomdb
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.framework.roomdb.entities.toReservationDomain
 import com.manuellugodev.hotelmanagment.framework.roomdb.entities.toReservationLocal
-import com.manuellugodev.hotelmanagment.utils.DataResult
+import com.manuellugodev.hotelmanagment.domain.utils.DataResult
 import javax.inject.Inject
 
 class DataSourceReservationRoomDB @Inject constructor(private val dao: ReservationDao) :

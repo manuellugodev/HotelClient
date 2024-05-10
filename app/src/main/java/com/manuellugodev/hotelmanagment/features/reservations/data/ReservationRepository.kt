@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.reservations.data
 
 import com.manuellugodev.hotelmanagment.domain.model.Reservation
-import com.manuellugodev.hotelmanagment.utils.DataResult
+import com.manuellugodev.hotelmanagment.domain.utils.DataResult
 
 interface ReservationRepository {
 

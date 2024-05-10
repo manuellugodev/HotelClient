@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
-import com.manuellugodev.hotelmanagment.utils.DataResult
+import com.manuellugodev.hotelmanagment.domain.utils.DataResult
 
 
 interface LoginRepository {

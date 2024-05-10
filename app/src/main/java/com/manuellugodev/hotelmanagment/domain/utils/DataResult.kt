@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.utils
+package com.manuellugodev.hotelmanagment.domain.utils
 
 sealed class DataResult<out T : Any> {
     data class Success<out T : Any>(val data: T) : DataResult<T>()

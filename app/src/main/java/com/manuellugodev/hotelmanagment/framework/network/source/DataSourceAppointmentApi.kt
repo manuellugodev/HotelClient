@@ -6,7 +6,7 @@ import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import com.manuellugodev.hotelmanagment.framework.network.entities.toCustomer
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentBody
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
-import com.manuellugodev.hotelmanagment.utils.DataResult
+import com.manuellugodev.hotelmanagment.domain.utils.DataResult
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

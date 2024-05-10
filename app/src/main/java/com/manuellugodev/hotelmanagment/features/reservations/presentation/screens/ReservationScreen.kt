@@ -56,7 +56,7 @@ import com.manuellugodev.hotelmanagment.features.reservations.utils.getSum
 import com.manuellugodev.hotelmanagment.features.reservations.utils.getText
 import com.manuellugodev.hotelmanagment.features.reservations.utils.numberGuestSaver
 import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.domain.utils.convertLongToTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)

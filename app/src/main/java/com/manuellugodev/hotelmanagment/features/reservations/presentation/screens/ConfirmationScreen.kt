@@ -43,7 +43,7 @@ import com.manuellugodev.hotelmanagment.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
 import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.utils.convertLongToDateTimeRoom
+import com.manuellugodev.hotelmanagment.domain.utils.convertLongToDateTimeRoom
 
 
 @SuppressLint("RememberReturnType")

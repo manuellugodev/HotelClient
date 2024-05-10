@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.rooms.data
 
 import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
-import com.manuellugodev.hotelmanagment.utils.DataResult
+import com.manuellugodev.hotelmanagment.domain.utils.DataResult
 import java.util.Date
 
 interface RoomRepository {
