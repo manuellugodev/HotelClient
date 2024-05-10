@@ -6,13 +6,13 @@ import com.manuellugodev.hotelmanagment.network.TokenManagment
 
 class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
     TokenManagment {
-    override suspend fun saveToken(token: String): LoginStatus {
+    override suspend fun saveToken(token: String): Result<Unit> {
         try {
             sharedPreferences.edit().putString("token_key", token).apply()
-            return LoginStatus.Success("")
+            return Result.success(Unit)
         } catch (e: Exception) {
 
-            return LoginStatus.Failure
+            return Result.failure(e)
         }
 
     }

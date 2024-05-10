@@ -54,7 +54,7 @@ class ProfileViewModel @Inject constructor(
             try {
                 val result = withContext(Dispatchers.Main) { doLogOutSession() }
 
-                if (result is DataResult.Success) {
+                if (result.isSuccess) {
                     stateProfile.value = ProfileState.logOut
                 } else {
                     stateProfile.value = ProfileState.Error("Error log Out")

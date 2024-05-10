@@ -6,9 +6,9 @@ import com.manuellugodev.hotelmanagment.utils.DataResult
 
 interface LoginRepository {
 
-    suspend fun doLogin(email: String, password: String): LoginStatus
+    suspend fun doLogin(email: String, password: String): Result<Unit>
 
-    suspend fun doLogOut(): DataResult<Boolean>
+    suspend fun doLogOut(): Result<Unit>
 
-    suspend fun checkUserIsLogged(): LoginStatus
+    suspend fun checkUserIsLogged(): Result<Unit>
 }

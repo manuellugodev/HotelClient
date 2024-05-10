@@ -4,5 +4,5 @@ import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
 
 interface LoginDataSource {
 
-    suspend fun loginWithEmailAndPassword(email: String, password: String): LoginStatus
+    suspend fun loginWithEmailAndPassword(email: String, password: String): Result<String>
 }

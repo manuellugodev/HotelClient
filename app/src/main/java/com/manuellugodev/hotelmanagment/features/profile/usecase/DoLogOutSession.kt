@@ -5,7 +5,7 @@ import com.manuellugodev.hotelmanagment.utils.DataResult
 
 class DoLogOutSession(private val loginRepository: LoginRepository) {
 
-    suspend operator fun invoke(): DataResult<Boolean> {
+    suspend operator fun invoke(): Result<Unit> {
 
         return loginRepository.doLogOut()
     }

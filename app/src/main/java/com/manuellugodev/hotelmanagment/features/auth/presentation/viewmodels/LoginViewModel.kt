@@ -24,7 +24,11 @@ class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPasswo
         viewModelScope.launch(Dispatchers.IO) {
             val result = useCase(email, password)
 
-            statusLogin.value = result
+            if(result.isSuccess){
+                statusLogin.value = LoginStatus.Success("")
+            }else{
+                statusLogin.value = LoginStatus.Failure
+            }
         }
 
     }

@@ -8,32 +8,32 @@ class LoginRepositoryImpl(
     private val loginDataSource: LoginDataSource,
     private val loginLocalSource: TokenManagment
 ) : LoginRepository {
-    override suspend fun doLogin(email: String, password: String): LoginStatus {
+    override suspend fun doLogin(email: String, password: String): Result<Unit> {
 
         val result = loginDataSource.loginWithEmailAndPassword(email, password)
 
-        if (result is LoginStatus.Success) {
-            return loginLocalSource.saveToken(result.data)
+        if (result.isSuccess ) {
+            return loginLocalSource.saveToken(result.getOrDefault(""))
         }
-        return result
+        return Result.failure(result.exceptionOrNull()?:Exception())
     }
 
-    override suspend fun doLogOut(): DataResult<Boolean> {
+    override suspend fun doLogOut(): Result<Unit> {
 
         val result = loginLocalSource.removeToken()
 
         if (result) {
-            return DataResult.Success(result)
+            return Result.success(Unit)
         } else {
-            return DataResult.Error(Exception("Error when remove token"))
+            return Result.failure(Exception("Error when remove token"))
         }
     }
 
-    override suspend fun checkUserIsLogged(): LoginStatus {
+    override suspend fun checkUserIsLogged(): Result<Unit>{
         return if (loginLocalSource.tokenIsAvailable()) {
-            LoginStatus.Success("Logged")
+            Result.success(Unit)
         } else {
-            LoginStatus.Failure
+            Result.failure(Exception())
         }
     }
 

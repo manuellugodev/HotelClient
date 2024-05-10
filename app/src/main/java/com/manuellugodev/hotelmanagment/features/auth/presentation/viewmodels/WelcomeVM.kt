@@ -23,7 +23,7 @@ class WelcomeVM @Inject constructor(var checkUserIsLoggedUseCase: CheckUserIsLog
             val result = checkUserIsLoggedUseCase()
 
             withContext(Dispatchers.Main) {
-                if (result is LoginStatus.Success) {
+                if (result.isSuccess) {
                     stateWelcome.value = WelcomeState.IsLogged
                 } else {
                     stateWelcome.value = WelcomeState.Error("Bad Credentials")
