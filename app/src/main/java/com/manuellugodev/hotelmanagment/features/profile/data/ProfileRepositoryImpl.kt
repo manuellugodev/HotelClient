@@ -1,8 +1,8 @@
 package com.manuellugodev.hotelmanagment.features.profile.data
 
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
-import com.manuellugodev.hotelmanagment.domain.TokenManagment
-import com.manuellugodev.hotelmanagment.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class ProfileRepositoryImpl(
     private val sourceProfile: DataSourceProfile,

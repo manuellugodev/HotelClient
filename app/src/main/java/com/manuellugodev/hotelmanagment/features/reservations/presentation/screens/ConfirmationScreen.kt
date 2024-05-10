@@ -39,11 +39,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
-import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.domain.utils.convertLongToDateTimeRoom
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
 
 
 @SuppressLint("RememberReturnType")

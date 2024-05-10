@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.entities
 
-import com.manuellugodev.hotelmanagment.domain.model.Customer
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
 
 data class GuestApi(
     var guestId: Int = 0,

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.manuellugodev.hotelmanagment.domain.model.Customer
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
 
 @Entity
 data class CustomerLocal(
@@ -21,7 +21,7 @@ fun Customer.toCustomerLocal():CustomerLocal{
     return CustomerLocal(id, firstName, lastName, email, phone)
 }
 
-fun CustomerLocal.toCustomerDomain():Customer{
+fun CustomerLocal.toCustomerDomain(): Customer {
     return Customer(id, firstName, lastName, email, phone)
 }
 class CustomerLocalConverter() {

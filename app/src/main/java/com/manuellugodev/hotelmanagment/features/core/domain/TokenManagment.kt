@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.domain
+package com.manuellugodev.hotelmanagment.features.core.domain
 
 interface TokenManagment {
     suspend fun saveToken(token: String): Result<Unit>

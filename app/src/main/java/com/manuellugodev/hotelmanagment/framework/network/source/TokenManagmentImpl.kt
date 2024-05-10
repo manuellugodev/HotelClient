@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
 import android.content.SharedPreferences
-import com.manuellugodev.hotelmanagment.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 
 class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
     TokenManagment {

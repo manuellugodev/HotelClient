@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.ui.theme
+package com.manuellugodev.hotelmanagment.features.core.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

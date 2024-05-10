@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.composables
+package com.manuellugodev.hotelmanagment.features.core.composables
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Snackbar

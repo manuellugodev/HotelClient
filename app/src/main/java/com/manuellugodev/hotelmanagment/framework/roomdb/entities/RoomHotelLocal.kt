@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.manuellugodev.hotelmanagment.domain.model.Customer
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 
 @Entity
 data class RoomHotelLocal(
@@ -22,7 +22,7 @@ fun RoomHotel.toRoomHotelLocal():RoomHotelLocal{
     return RoomHotelLocal(id, description, roomType, pathImage, peopleQuantity, price)
 }
 
-fun RoomHotelLocal.toRoomHotelDomain():RoomHotel{
+fun RoomHotelLocal.toRoomHotelDomain(): RoomHotel {
     return RoomHotel(id, description, roomType, pathImage, peopleQuantity, price)
 }
 

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 
 @Entity
 data class ReservationLocal(
@@ -22,7 +22,7 @@ fun Reservation.toReservationLocal():ReservationLocal{
     return ReservationLocal(id,client.toCustomerLocal(),roomHotel.toRoomHotelLocal(),checkIn,checkOut,price,taxPrice,totalPrice)
 }
 
-fun ReservationLocal.toReservationDomain():Reservation{
+fun ReservationLocal.toReservationDomain(): Reservation {
     return Reservation(id,client.toCustomerDomain(),roomHotelLocal.toRoomHotelDomain(),checkIn,checkOut,price,taxPrice,totalPrice)
 }
 class ReservationLocalConverter() {

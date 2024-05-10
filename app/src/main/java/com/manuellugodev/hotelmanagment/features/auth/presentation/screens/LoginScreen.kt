@@ -40,11 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.manuellugodev.hotelmanagment.composables.ErrorSnackbar
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.LoginViewModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
-import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.navigation.navigateAndCleanBackStack
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
 
 
 @Composable

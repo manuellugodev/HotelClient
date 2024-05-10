@@ -7,8 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.WelcomeVM
 import com.manuellugodev.hotelmanagment.features.auth.utils.WelcomeState
-import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.navigation.navigateAndCleanBackStack
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
 
 @Composable
 fun WelcomeScreen(navHost: NavController, viewModel: WelcomeVM = hiltViewModel()) {

@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment
+package com.manuellugodev.hotelmanagment.features.core.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -33,9 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.manuellugodev.hotelmanagment.navigation.Navigation
-import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.ui.theme.HotelManagmentTheme
+import com.manuellugodev.hotelmanagment.features.core.navigation.Navigation
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.presentation.ui.theme.HotelManagmentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

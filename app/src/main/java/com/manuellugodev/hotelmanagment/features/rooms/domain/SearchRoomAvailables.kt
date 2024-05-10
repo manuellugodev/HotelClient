@@ -1,8 +1,8 @@
 package com.manuellugodev.hotelmanagment.features.rooms.domain
 
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
-import com.manuellugodev.hotelmanagment.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import java.util.Date
 
 class SearchRoomAvailables(val roomRepository: RoomRepository) {

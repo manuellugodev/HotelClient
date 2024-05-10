@@ -1,8 +1,8 @@
 package com.manuellugodev.hotelmanagment.features.reservations.data
 
-import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
-import com.manuellugodev.hotelmanagment.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class ReservationRepositoryImpl(
     private val dataSourceReservation: DataSourceReservation,

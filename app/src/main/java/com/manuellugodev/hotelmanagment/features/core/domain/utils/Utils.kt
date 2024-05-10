@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.domain.utils
+package com.manuellugodev.hotelmanagment.features.core.domain.utils
 
 import java.text.SimpleDateFormat
 

@@ -33,7 +33,7 @@ import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.RegisterViewModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterState
-import com.manuellugodev.hotelmanagment.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 
 
 @Composable

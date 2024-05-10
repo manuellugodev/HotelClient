@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.entities
 
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 
 data class RoomApi(
     val id: Int,

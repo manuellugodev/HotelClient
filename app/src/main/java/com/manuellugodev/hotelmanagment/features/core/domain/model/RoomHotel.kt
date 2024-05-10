@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.domain.model
+package com.manuellugodev.hotelmanagment.features.core.domain.model
 
 
 data class RoomHotel(

@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
-import com.manuellugodev.hotelmanagment.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 
 class LoginRepositoryImpl(
     private val loginDataSource: LoginDataSource,

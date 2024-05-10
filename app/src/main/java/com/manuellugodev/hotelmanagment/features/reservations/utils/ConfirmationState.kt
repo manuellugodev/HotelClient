@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.reservations.utils
 
-import com.manuellugodev.hotelmanagment.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 
 sealed class ConfirmationState {
     class SavedReservation(val data: Reservation) : ConfirmationState()

@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeState
-import com.manuellugodev.hotelmanagment.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 
 
 @Composable

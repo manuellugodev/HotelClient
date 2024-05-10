@@ -3,7 +3,7 @@ package com.manuellugodev.hotelmanagment.framework.network.source
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
-import com.manuellugodev.hotelmanagment.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class DataSourceProfileApi(private val request: ProfileRequest) : DataSourceProfile {
     override suspend fun getDataProfile(username: String): DataResult<Profile> {

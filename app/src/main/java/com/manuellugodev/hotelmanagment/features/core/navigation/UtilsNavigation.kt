@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.navigation
+package com.manuellugodev.hotelmanagment.features.core.navigation
 
 import androidx.navigation.NavController
 

@@ -50,13 +50,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.manuellugodev.hotelmanagment.composables.ErrorSnackbar
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.reservations.utils.NumberGuest
 import com.manuellugodev.hotelmanagment.features.reservations.utils.getSum
 import com.manuellugodev.hotelmanagment.features.reservations.utils.getText
 import com.manuellugodev.hotelmanagment.features.reservations.utils.numberGuestSaver
-import com.manuellugodev.hotelmanagment.navigation.Screen
-import com.manuellugodev.hotelmanagment.domain.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)

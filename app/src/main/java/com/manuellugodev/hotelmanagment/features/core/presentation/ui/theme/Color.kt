@@ -1,4 +1,4 @@
-package com.manuellugodev.hotelmanagment.ui.theme
+package com.manuellugodev.hotelmanagment.features.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

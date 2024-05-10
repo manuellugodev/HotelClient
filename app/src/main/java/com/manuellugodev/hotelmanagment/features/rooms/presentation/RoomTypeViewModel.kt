@@ -5,13 +5,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.domain.model.Customer
-import com.manuellugodev.hotelmanagment.domain.model.Reservation
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.features.rooms.domain.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeState
-import com.manuellugodev.hotelmanagment.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

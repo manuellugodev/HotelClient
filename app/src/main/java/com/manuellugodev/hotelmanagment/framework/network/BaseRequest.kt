@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network
 
-import com.manuellugodev.hotelmanagment.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

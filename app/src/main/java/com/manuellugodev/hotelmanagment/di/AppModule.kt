@@ -13,7 +13,7 @@ import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLo
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRoomDB
 import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
 import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
-import com.manuellugodev.hotelmanagment.domain.TokenManagment
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest

@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.rooms.utils
 
-import com.manuellugodev.hotelmanagment.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 
 sealed class RoomTypeState() {
     class Success(val data: List<RoomHotel>) : RoomTypeState()
