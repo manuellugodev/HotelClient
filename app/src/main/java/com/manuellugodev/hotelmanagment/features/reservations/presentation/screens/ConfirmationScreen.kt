@@ -55,11 +55,14 @@ import com.manuellugodev.hotelmanagment.features.reservations.utils.Confirmation
 fun ConfirmationScreenRoot(viewModel: ConfirmationViewModel,navController: NavController){
     val state by viewModel.confirmationState.collectAsState()
 
-    if(state.reservationSaved){
-        navController.popBackStack(Screen.ReservationScreen.route, inclusive = true)
+    ConfirmationScreen(state,viewModel::onEvent)
+
+    LaunchedEffect(key1 = state.reservationSaved) {
+        if(state.reservationSaved){
+            navController.popBackStack(Screen.ReservationScreen.route, inclusive = true)
+        }
     }
     Log.i(Screen.ConfirmationScreen.route,"Compose")
-    ConfirmationScreen(state,viewModel::onEvent)
 
 }
 @Composable

@@ -72,10 +72,8 @@ fun Navigation(navController: NavHostController) {
                     type = NavType.LongType
                 }
             )
-        ) {
-            val reservation = it.arguments?.getLong(RESERVATION) ?: 1
-            val viewModel:ConfirmationViewModel= hiltViewModel()
-            viewModel.setIdTemporal(reservation)
+        ) {backStackEntry->
+            val viewModel:ConfirmationViewModel= hiltViewModel(backStackEntry)
             ConfirmationScreenRoot(viewModel = viewModel,navController=navController)
         }
         composable(route = Screen.MyReservationsScreen.route) {

@@ -4,6 +4,7 @@ import CONFIRMATION_SCREEN
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
@@ -11,6 +12,7 @@ import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporal
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +25,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ConfirmationViewModel @Inject constructor(
     val sendConfirmationReservation: SendConfirmationReservation,
-    val getTemporalReservation: GetTemporalReservation
+    val getTemporalReservation: GetTemporalReservation,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var temporalId=0L
+    private var temporalId:Long=savedStateHandle.get(RESERVATION)?:-1L
 
     private val _confirmationState :MutableStateFlow<ConfirmationState> = MutableStateFlow(
         ConfirmationState()
@@ -83,10 +86,6 @@ class ConfirmationViewModel @Inject constructor(
             ConfirmationEvent.sendConfirmation -> sendConfirmation()
             ConfirmationEvent.getTemporalReservation ->getTempReservation()
         }
-    }
-
-    fun setIdTemporal(id:Long) {
-        temporalId=id
     }
 
 }
