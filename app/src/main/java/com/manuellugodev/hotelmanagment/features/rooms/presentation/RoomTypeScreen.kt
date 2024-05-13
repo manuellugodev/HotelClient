@@ -48,36 +48,23 @@ import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeEvent
 fun RoomTypeScreenRoot(
     navController: NavController,
     viewModel: RoomTypeViewModel,
-    desiredStartTime: Long,
-    desiredEndTime: Long,
-    guests: Int
 ) {
-
     val state by viewModel.statusRoom.collectAsState()
     RoomTypeScreen(
         viewModel::onEvent,
-        desiredStartTime = desiredStartTime,
-        desiredEndTime = desiredEndTime,
-        guests = guests,
         state = state
     )
-
-    if(state.navigateToBookId!=-1L){
-        navController.navigate(Screen.ConfirmationScreen.withArgs(state.navigateToBookId))
+    LaunchedEffect(state.navigateToBookId){
+        if(state.navigateToBookId!=-1L){
+            navController.navigate(Screen.ConfirmationScreen.withArgs(state.navigateToBookId))
+            viewModel.cleanNavigation()
+        }
     }
-
-    LaunchedEffect(true) {
-        viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime,guests)
-    }
-
 }
 
 @Composable
 fun RoomTypeScreen(
     onEvent: (RoomTypeEvent) -> Unit,
-    desiredStartTime: Long,
-    desiredEndTime: Long,
-    guests: Int,
     state: RoomTypeState
 ) {
     Box (contentAlignment = Alignment.Center){
@@ -87,17 +74,10 @@ fun RoomTypeScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val list = state.showRooms
-            items(items = list) {
-                RoomItem(room = it) {
-                    Log.i(ROOMTYPE_SCREEN, "CLic on item")
+            items(items = state.showRooms) {room->
+                RoomItem(room = room) {
                     onEvent(
-                        RoomTypeEvent.OnClickRoomSelected(
-                            desiredStartTime,
-                            desiredEndTime,
-                            guests,
-                            it
-                        )
+                        RoomTypeEvent.OnClickRoomSelected(room)
                     )
                 }
             }

@@ -1,6 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.rooms.presentation
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
@@ -24,13 +25,24 @@ import javax.inject.Inject
 class RoomTypeViewModel @Inject constructor(
     var usecase: SearchRoomAvailables,
     var useCaseSaveTemporalReservation: SaveTemporalReservation,
-    var useCaseGetMyProfileData: GetDataProfile
+    var useCaseGetMyProfileData: GetDataProfile,
+    savedStateHandle: SavedStateHandle
+
 ) : ViewModel() {
+
+    val desiredStartTime: Long = savedStateHandle.get(START_TIME)?:0L
+    val desiredEndTime: Long = savedStateHandle.get(END_TIME)?:0L
+    val guests: Long = savedStateHandle.get(GUESTS)?:0L
 
     private val _statusRoom: MutableStateFlow<RoomTypeState> = MutableStateFlow(RoomTypeState())
     val statusRoom:StateFlow<RoomTypeState> = _statusRoom
 
-    fun searchRoomsAvailables(desiredStartTime: Long, desiredEndTime: Long, guests: Int) {
+    init {
+        if (desiredStartTime!=0L && desiredEndTime!=0L && guests>0){
+            searchRoomsAvailables(desiredStartTime,desiredEndTime,guests.toInt())
+        }
+    }
+    private fun searchRoomsAvailables(desiredStartTime: Long, desiredEndTime: Long, guests: Int) {
 
         Log.i("Search","LLamada funcion Search")
         _statusRoom.value=statusRoom.value.copy(showLoader = true)
@@ -54,7 +66,7 @@ class RoomTypeViewModel @Inject constructor(
         }
     }
 
-    fun saveReservation(
+    private fun saveReservation(
         desiredStartTime: Long,
         desiredEndTime: Long,
         guests: Int,
@@ -89,11 +101,13 @@ class RoomTypeViewModel @Inject constructor(
         when(event){
             RoomTypeEvent.DismissError -> _statusRoom.value=statusRoom.value.copy(showError = "")
             is RoomTypeEvent.OnClickRoomSelected -> {
-                saveReservation(event.desiredStartTime,event.desiredEndTime,event.guests,event.room)
-            }
-            is RoomTypeEvent.SearchRooms->{
-
+                saveReservation(desiredStartTime,desiredEndTime,guests.toInt(),event.room)
             }
         }
     }
+
+    fun cleanNavigation() {
+        _statusRoom.value=statusRoom.value.copy(navigateToBookId = -1L)
+    }
+
 }

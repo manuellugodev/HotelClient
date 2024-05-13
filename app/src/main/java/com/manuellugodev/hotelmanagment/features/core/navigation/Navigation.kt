@@ -61,14 +61,9 @@ fun Navigation(navController: NavHostController) {
                     defaultValue = 0
                 }
             )
-        ) {
-
-            val desiredStartTime = it.arguments?.getLong(START_TIME)?:0L
-            val desiredEndTime = it.arguments?.getLong(END_TIME)?:0L
-            val guests = it.arguments?.getLong(GUESTS)?:0
-            val viewModel:RoomTypeViewModel= hiltViewModel()
-            RoomTypeScreenRoot(navController, viewModel,desiredStartTime, desiredEndTime,guests.toInt())
-
+        ) {backStackEntry ->
+            val viewModel:RoomTypeViewModel= hiltViewModel(backStackEntry)
+            RoomTypeScreenRoot(navController, viewModel)
 
         }
         composable(route = Screen.ConfirmationScreen.route + "/{$RESERVATION}",

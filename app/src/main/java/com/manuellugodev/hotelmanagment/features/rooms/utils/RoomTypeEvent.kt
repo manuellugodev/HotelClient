@@ -4,8 +4,6 @@ import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 
 sealed class RoomTypeEvent {
 
-    data class OnClickRoomSelected(val desiredStartTime: Long, val desiredEndTime: Long, val guests: Int, val room: RoomHotel):RoomTypeEvent()
+    data class OnClickRoomSelected(val room: RoomHotel):RoomTypeEvent()
     object DismissError:RoomTypeEvent()
-
-    data class SearchRooms(val name:String):RoomTypeEvent()
 }
