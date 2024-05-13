@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
@@ -107,7 +106,7 @@ fun DataProfile(data: Profile) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "") },
-            value = data.name,
+            value = data.firstName,
             onValueChange = {},
             label = { Text(text = "Name") },
             readOnly = true,
@@ -147,9 +146,10 @@ fun ProfileScreen() {
     DataProfile(
         data = Profile(
             "manuellugo",
-            "Manuel Lugo",
+            "Manuel ",
+            "Lugo",
             "manuellugo2000ml@gmail.com",
-            "78627815631"
+            "78627815631",
         )
     )
 }

@@ -25,6 +25,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,69 +35,84 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeState
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeEvent
 
 
 @Composable
-fun RoomTypeScreen(
+fun RoomTypeScreenRoot(
     navController: NavController,
+    viewModel: RoomTypeViewModel,
+    desiredStartTime: Long,
+    desiredEndTime: Long,
+    guests: Int
+) {
+
+    val state by viewModel.statusRoom.collectAsState()
+    RoomTypeScreen(
+        viewModel::onEvent,
+        desiredStartTime = desiredStartTime,
+        desiredEndTime = desiredEndTime,
+        guests = guests,
+        state = state
+    )
+
+    if(state.navigateToBookId!=-1L){
+        navController.navigate(Screen.ConfirmationScreen.withArgs(state.navigateToBookId))
+    }
+
+    LaunchedEffect(true) {
+        viewModel.searchRoomsAvailables(desiredStartTime,desiredEndTime,guests)
+    }
+
+}
+
+@Composable
+fun RoomTypeScreen(
+    onEvent: (RoomTypeEvent) -> Unit,
     desiredStartTime: Long,
     desiredEndTime: Long,
     guests: Int,
-    viewModel: RoomTypeViewModel = hiltViewModel()
+    state: RoomTypeState
 ) {
+    Box (contentAlignment = Alignment.Center){
 
-
-    Log.i(ROOMTYPE_SCREEN, "Recomposition")
-
-    when (val status = viewModel._statusRoom.value) {
-        is RoomTypeState.Error -> {
-            Log.e(ROOMTYPE_SCREEN, "Error")
-            Text(text = "Error get lists")
-        }
-
-        is RoomTypeState.Pending -> {
-            Log.i(ROOMTYPE_SCREEN, "PENDING")
-            CircularProgressIndicator()
-
-            viewModel.searchRoomsAvailables(desiredStartTime, desiredEndTime, guests)
-        }
-
-        is RoomTypeState.Success -> {
-            Log.i(ROOMTYPE_SCREEN, "SUCCESS")
-            if (status.data.isNotEmpty()) {
-                LazyColumn(
-                    Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    val list = status.data
-                    items(items = list) {
-                        RoomItem(room = it) {
-                            Log.i(ROOMTYPE_SCREEN, "CLic on item")
-                            viewModel.saveReservation(desiredStartTime, desiredEndTime, guests, it)
-                        }
-                    }
+        LazyColumn(
+            Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val list = state.showRooms
+            items(items = list) {
+                RoomItem(room = it) {
+                    Log.i(ROOMTYPE_SCREEN, "CLic on item")
+                    onEvent(
+                        RoomTypeEvent.OnClickRoomSelected(
+                            desiredStartTime,
+                            desiredEndTime,
+                            guests,
+                            it
+                        )
+                    )
                 }
             }
-
         }
-
-        is RoomTypeState.RoomSelected -> {
-            LaunchedEffect(viewModel._statusRoom.value) {
-                val id =  (viewModel._statusRoom.value as RoomTypeState.RoomSelected).reservationId
-                Log.i(ROOMTYPE_SCREEN, "Navigate")
-                navController.navigate(Screen.ConfirmationScreen.withArgs(id))
-                viewModel.resetState()
-
-            }
+        if (state.showLoader) {
+            CircularProgressIndicator()
         }
     }
+
+    if(state.showError.isNotEmpty()){
+        ErrorSnackbar(errorMessage = state.showError) {
+            onEvent(RoomTypeEvent.DismissError)
+        }
+    }
+
 
 }
 

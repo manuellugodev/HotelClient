@@ -6,21 +6,22 @@ import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class DataSourceProfileApi(private val request: ProfileRequest) : DataSourceProfile {
-    override suspend fun getDataProfile(username: String): DataResult<Profile> {
+    override suspend fun getDataProfile(username: String): Result<Profile> {
 
         val result = request.service.getProfileData(username)
 
         return if (result.isSuccessful) {
             val profileApi = result.body()!!
             val profile = Profile(
-                profileApi.username,
-                "${profileApi.guestId.firstName} ${profileApi.guestId.lastName}",
-                profileApi.guestId.email,
-                profileApi.guestId.phone
+               username =  profileApi.username,
+               firstName =  profileApi.guestId.firstName,
+               lastName =  profileApi.guestId.lastName,
+               email =  profileApi.guestId.email,
+               phone =  profileApi.guestId.phone
             )
-            DataResult.Success(profile)
+            Result.success(profile)
         } else {
-            DataResult.Error(Exception())
+            Result.failure(Exception())
         }
     }
 }

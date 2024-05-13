@@ -7,7 +7,7 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 class SaveTemporalReservation(private val repository: ReservationRepository) {
 
 
-    suspend operator fun invoke(reservation: Reservation): DataResult<Reservation> {
+    suspend operator fun invoke(reservation: Reservation): Result<Reservation> {
         return repository.saveTemporalReservation(reservation)
     }
 }

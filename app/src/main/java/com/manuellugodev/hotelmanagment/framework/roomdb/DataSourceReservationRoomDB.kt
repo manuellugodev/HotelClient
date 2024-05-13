@@ -17,12 +17,12 @@ class DataSourceReservationRoomDB @Inject constructor(private val dao: Reservati
         }
     }
 
-    override suspend fun saveReservationLocal(reservation: Reservation): DataResult<Reservation> {
+    override suspend fun saveReservationLocal(reservation: Reservation): Result<Reservation> {
         return try {
             dao.saveTemporalReservation(reservation.toReservationLocal())
-            DataResult.Success(reservation)
+            Result.success(reservation)
         } catch (e: Exception) {
-            DataResult.Error(e)
+            Result.failure(e)
         }
     }
 

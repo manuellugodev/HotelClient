@@ -22,7 +22,7 @@ class ReservationRepositoryImpl(
         return dataSourceReservationLocal.getTemporalReservation(id)
     }
 
-    override suspend fun saveTemporalReservation(reservation: Reservation): DataResult<Reservation> {
+    override suspend fun saveTemporalReservation(reservation: Reservation): Result<Reservation> {
         return dataSourceReservationLocal.saveReservationLocal(reservation)
     }
 

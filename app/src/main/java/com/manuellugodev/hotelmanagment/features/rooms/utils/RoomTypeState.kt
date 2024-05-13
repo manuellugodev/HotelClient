@@ -2,9 +2,9 @@ package com.manuellugodev.hotelmanagment.features.rooms.utils
 
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 
-sealed class RoomTypeState() {
-    class Success(val data: List<RoomHotel>) : RoomTypeState()
-    object Pending : RoomTypeState()
-    class Error(val message: String) : RoomTypeState()
-    class RoomSelected(val reservationId: Long) : RoomTypeState()
-}
+data class RoomTypeState(
+    val showRooms:List<RoomHotel> = emptyList(),
+    val showError:String="",
+    val showLoader:Boolean = false,
+    val navigateToBookId:Long=-1L,
+)

@@ -5,5 +5,5 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 interface ProfileRepository {
 
-    suspend fun getDataProfile(): DataResult<Profile>
+    suspend fun getDataProfile(): Result<Profile>
 }

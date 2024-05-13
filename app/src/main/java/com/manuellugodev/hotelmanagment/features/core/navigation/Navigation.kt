@@ -25,6 +25,8 @@ import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewm
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.END_TIME
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.GUESTS
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreen
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreenRoot
+import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeViewModel
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.START_TIME
 
 
@@ -64,7 +66,8 @@ fun Navigation(navController: NavHostController) {
             val desiredStartTime = it.arguments?.getLong(START_TIME)?:0L
             val desiredEndTime = it.arguments?.getLong(END_TIME)?:0L
             val guests = it.arguments?.getLong(GUESTS)?:0
-            RoomTypeScreen(navController, desiredStartTime, desiredEndTime,guests.toInt())
+            val viewModel:RoomTypeViewModel= hiltViewModel()
+            RoomTypeScreenRoot(navController, viewModel,desiredStartTime, desiredEndTime,guests.toInt())
 
 
         }

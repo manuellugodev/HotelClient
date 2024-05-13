@@ -6,7 +6,7 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class GetDataProfile(private val repository: ProfileRepository) {
 
-    suspend operator fun invoke(): DataResult<Profile> {
+    suspend operator fun invoke(): Result<Profile> {
         return repository.getDataProfile()
     }
 }

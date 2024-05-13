@@ -32,9 +32,9 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 val result = withContext(Dispatchers.IO) { getDataProfile() }
-                if (result is DataResult.Success) {
+                if (result.isSuccess) {
 
-                    _stateProfile.value=_stateProfile.value.copy(showProfile = result.data)
+                    _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
                 } else {
 
                     _stateProfile.value=_stateProfile.value.copy(showError = "Some was wrong")
