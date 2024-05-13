@@ -7,6 +7,10 @@ import com.manuellugodev.hotelmanagment.framework.network.entities.RoomApi
 import com.manuellugodev.hotelmanagment.framework.network.request.RoomRequest
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.Date
 
 class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
@@ -30,7 +34,12 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
             )
 
             if (result.isSuccessful) {
-                DataResult.Success(result.body()!!.map { it.toRoomHotel() })
+
+                val date1 = Instant.ofEpochMilli(desiredStartTime.time).atZone(ZoneId.systemDefault()).toLocalDate()
+                val date2 = Instant.ofEpochMilli(desiredEndTime.time).atZone(ZoneId.systemDefault()).toLocalDate()
+
+                val daysBetween = ChronoUnit.DAYS.between(date1, date2)
+                DataResult.Success(result.body()!!.map { it.toRoomHotel(daysBetween.toInt()) })
             } else {
                 DataResult.Error(Exception("Error DataSource Room APi"))
 
@@ -45,6 +54,6 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
     }
 }
 
-fun RoomApi.toRoomHotel(): RoomHotel {
-    return RoomHotel(this.id.toLong(), this.description, this.roomType, this.image?:"", this.capacity, this.price)
+fun RoomApi.toRoomHotel(days:Int): RoomHotel {
+    return RoomHotel(this.id.toLong(), this.description, this.roomType, this.image?:"", this.capacity, this.price *days)
 }

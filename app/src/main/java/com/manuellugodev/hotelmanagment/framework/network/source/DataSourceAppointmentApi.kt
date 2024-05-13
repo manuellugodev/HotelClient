@@ -92,7 +92,7 @@ fun Appointment.toReservation(): Reservation {
         val dateStart = dateFormat.parse(startTime)
         val dateEnd = dateFormat.parse(endTime)
         val guest = guest.toCustomer()
-        val room = room.toRoomHotel()
+        val room = room.toRoomHotel(1)
         return Reservation(
             appointmentId,
             guest,
