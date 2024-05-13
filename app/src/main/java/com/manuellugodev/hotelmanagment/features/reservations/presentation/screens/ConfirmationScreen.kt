@@ -59,7 +59,7 @@ fun ConfirmationScreenRoot(viewModel: ConfirmationViewModel,navController: NavCo
 
     LaunchedEffect(key1 = state.reservationSaved) {
         if(state.reservationSaved){
-            navController.popBackStack(Screen.ReservationScreen.route, inclusive = true)
+            navController.popBackStack(Screen.ReservationScreen.route,false)
         }
     }
     Log.i(Screen.ConfirmationScreen.route,"Compose")
