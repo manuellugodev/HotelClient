@@ -15,10 +15,12 @@ import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.Re
 import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScreenRoot
 import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreenRoot
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreenRoot
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ReservationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.MyReservationsViewModel
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.END_TIME
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.GUESTS
@@ -74,7 +76,9 @@ fun Navigation(navController: NavHostController) {
             )
         ) {
             val reservation = it.arguments?.getLong(RESERVATION) ?: 1
-            ConfirmationScreen(navController, reservationId = reservation.toInt())
+            val viewModel:ConfirmationViewModel= hiltViewModel()
+            viewModel.setIdTemporal(reservation)
+            ConfirmationScreenRoot(viewModel = viewModel,navController=navController)
         }
         composable(route = Screen.MyReservationsScreen.route) {
            val myReservationVM :MyReservationsViewModel= hiltViewModel()

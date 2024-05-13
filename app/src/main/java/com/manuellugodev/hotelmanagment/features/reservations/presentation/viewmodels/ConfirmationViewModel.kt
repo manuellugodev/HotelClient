@@ -11,71 +11,82 @@ import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporal
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmationViewModel @Inject constructor(
-    var sendConfirmationReservation: SendConfirmationReservation,
-    var getTemporalReservation: GetTemporalReservation
+    val sendConfirmationReservation: SendConfirmationReservation,
+    val getTemporalReservation: GetTemporalReservation
 ) : ViewModel() {
 
-    val _confirmationScreenState: MutableState<ConfirmationState> =
-        mutableStateOf(ConfirmationState.Pending)
+    private var temporalId=0L
 
-    fun sendConfirmation(reservation: Reservation) {
+    private val _confirmationState :MutableStateFlow<ConfirmationState> = MutableStateFlow(
+        ConfirmationState()
+    )
+    val confirmationState :StateFlow<ConfirmationState> = _confirmationState
+
+    init {
+        getTempReservation()
+    }
+    private fun sendConfirmation() {
         viewModelScope.launch(Dispatchers.Main) {
 
             withContext(Dispatchers.IO) {
 
-                val result = sendConfirmationReservation.invoke(reservation)
+                val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
 
                 when(result){
 
                     is DataResult.Success -> {
-                        _confirmationScreenState.value =
-                            ConfirmationState.SavedReservation(result.data)
-                    }
+                        _confirmationState.value=confirmationState.value.copy(reservationSaved = true) }
                     is DataResult.Error -> {
-                        _confirmationScreenState.value =
-                            ConfirmationState.Error(result.exception.message.toString())
+                        _confirmationState.value = confirmationState.value.copy(showError = result.exception.message.toString())
                     }
                 }
             }
         }
     }
 
-    fun getTemporalReservation(id:Long) {
+    private fun getTempReservation() {
 
         Log.i(CONFIRMATION_SCREEN, "getTemporalReservation")
         viewModelScope.launch(Dispatchers.Main) {
 
             withContext(Dispatchers.IO) {
 
-                val result = getTemporalReservation.invoke(id)
+                val result = getTemporalReservation.invoke(temporalId)
 
                 when (result) {
 
                     is DataResult.Success -> {
-                        _confirmationScreenState.value = ConfirmationState.ShowData(result.data)
+                        _confirmationState.value = confirmationState.value.copy(showReservation = result.data)
                     }
 
                     is DataResult.Error -> {
-                        _confirmationScreenState.value =
-                            ConfirmationState.Error("Error saving reservation,please try again")
+                    _confirmationState.value = confirmationState.value.copy(showError = result.exception.message.toString())
                     }
                 }
             }
         }
     }
 
-    fun resetStates() {
-        viewModelScope.launch(Dispatchers.Main) {
-            _confirmationScreenState.value = ConfirmationState.Pending
+    fun onEvent(confirmationEvent: ConfirmationEvent) {
+        when(confirmationEvent){
+            ConfirmationEvent.sendConfirmation -> sendConfirmation()
+            ConfirmationEvent.getTemporalReservation ->getTempReservation()
         }
-
     }
+
+    fun setIdTemporal(id:Long) {
+        temporalId=id
+    }
+
 }
