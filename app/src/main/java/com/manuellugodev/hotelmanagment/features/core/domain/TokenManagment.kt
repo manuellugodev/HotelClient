@@ -7,5 +7,8 @@ interface TokenManagment {
 
     fun tokenIsAvailable(): Boolean
     fun removeToken(): Boolean
-    fun getUsername(): String
+    suspend fun getUsername(): String
+    fun saveUsername(username: String):Result<Unit>
+    fun removeUsername(): Boolean
+    fun usernameIsAvailable(): Boolean
 }

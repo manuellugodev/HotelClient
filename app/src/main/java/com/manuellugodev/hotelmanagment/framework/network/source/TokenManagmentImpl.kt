@@ -38,6 +38,9 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
     override fun tokenIsAvailable(): Boolean {
         return sharedPreferences.contains("token_key")
     }
+    override fun usernameIsAvailable(): Boolean {
+        return sharedPreferences.contains("username")
+    }
 
     override fun removeToken(): Boolean {
         sharedPreferences.edit().remove("token_key").apply()
@@ -46,7 +49,12 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
 
     }
 
-    override fun getUsername(): String {
+    override fun removeUsername():Boolean{
+        sharedPreferences.edit().remove("username").apply()
+        return usernameIsAvailable().not()
+    }
+
+    override suspend fun getUsername(): String {
         try {
             if (sharedPreferences.contains("username")) {
                 val username = sharedPreferences.getString("username", "")
@@ -59,5 +67,14 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
         }
 
         return ""
+    }
+
+    override fun saveUsername(username: String):Result<Unit> {
+        try {
+            sharedPreferences.edit().putString("username", username).apply()
+            return Result.success(Unit)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 }
