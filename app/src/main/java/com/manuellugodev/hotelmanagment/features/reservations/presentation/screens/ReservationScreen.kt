@@ -34,55 +34,64 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
-import com.manuellugodev.hotelmanagment.features.reservations.utils.NumberGuest
-import com.manuellugodev.hotelmanagment.features.reservations.utils.getSum
-import com.manuellugodev.hotelmanagment.features.reservations.utils.getText
-import com.manuellugodev.hotelmanagment.features.reservations.utils.numberGuestSaver
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ReservationViewModel
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationEvent
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationState
 
+
+@Composable
+fun ReservationScreenRoot(navController: NavController,viewModel:ReservationViewModel){
+
+    val state by viewModel.stateReservation.collectAsState()
+    ReservationScreen(state =state,viewModel::onEvent )
+
+    LaunchedEffect(key1 = state.navigateToSearchRooms) {
+        if(state.navigateToSearchRooms!=null){
+            navController.navigate(Screen.RoomTypeScreen.withArgs(
+                state.navigateToSearchRooms!!.startTime,
+                state.navigateToSearchRooms!!.endTime,
+                state.navigateToSearchRooms!!.guests))
+
+            viewModel.onEvent(ReservationEvent.CleanNavigation)
+        }
+    }
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReservationScreen(
-    navController: NavController
+    state: ReservationState,
+    onEvent:(ReservationEvent)->Unit
 ) {
     Log.i("Reservation_Screen", "Recomposition")
-    var dateVisibleState by remember { mutableStateOf(false) }
-    var guestVisibleState by remember { mutableStateOf(false) }
-    var stateError by remember { mutableStateOf(false) }
 
     val stateDate = rememberDateRangePickerState()
-    val stateNumberGuest by rememberSaveable(stateSaver = numberGuestSaver) {
-        mutableStateOf(NumberGuest(mutableStateOf(0), mutableStateOf(0)))
-    }
+
     Column {
-        CardFields(stateDate, stateNumberGuest, event = {
+        CardFields(stateDate, state.numberGuestAdults,state.numberGuestChildren, event = {
             when (it) {
                 EventField.SEARCH -> {}
                 EventField.DATE -> {
-                    dateVisibleState = !dateVisibleState
+                    onEvent(ReservationEvent.OnVisibleDatePicker(visible =!state.showDatePicker))
                 }
 
                 EventField.PERSON -> {
-                    guestVisibleState = !guestVisibleState
+                    onEvent(ReservationEvent.OnVisibleGuestComposable(visible= !state.showGuestSelector))
                 }
             }
         })
@@ -91,15 +100,15 @@ fun ReservationScreen(
             onClick = {
                 val startTime = stateDate.selectedStartDateMillis ?: 0
                 val endTime = stateDate.selectedEndDateMillis ?: 0
-                val guests = stateNumberGuest.getSum().toLong()
+                val guests = (state.numberGuestAdults + state.numberGuestChildren).toLong()
 
                 if (isDateValid(startTime, endTime) && guests != 0L) {
                     val url = Screen.RoomTypeScreen.withArgs(startTime, endTime, guests)
 
                     Log.i(RESERVATION_SCREEN, "Navigate to ROOm Type")
-                    navController.navigate(url)
+                    onEvent(ReservationEvent.NavigateToSearchRooms(startTime,endTime,guests))
                 } else {
-                    stateError = true
+                    onEvent(ReservationEvent.ShowError(message = "Date invalid"))
                 }
 
 
@@ -111,14 +120,13 @@ fun ReservationScreen(
 
     }
 
-    if (dateVisibleState) {
+    if (state.showDatePicker) {
         DateInputScreen(stateDate) {
-            dateVisibleState = dateVisibleState.not()
+            onEvent(ReservationEvent.OnVisibleDatePicker(visible=false))
         }
     }
 
-    if (guestVisibleState) {
-
+    if (state.showGuestSelector) {
         Box(
             Modifier
                 .fillMaxWidth(1f)
@@ -126,74 +134,58 @@ fun ReservationScreen(
                 .padding(bottom = 10.dp),
             contentAlignment = Alignment.Center
         ) {
-            BottomSheet(stateNumberGuest = stateNumberGuest) {
-                guestVisibleState = guestVisibleState.not()
+            BottomSheet(state.numberGuestAdults,state.numberGuestChildren) {event->
+                onEvent(event)
             }
         }
 
     }
 
-    if (stateError) {
+    if (state.showError.isNotEmpty()) {
         ErrorSnackbar(errorMessage = "Rellene los datos") {
-            stateError = false
+            onEvent(ReservationEvent.DismissError)
         }
     }
 
 
 }
 
-@Preview
-@Composable
-fun testLayouts() {
-    val stateNumberGuest = remember {
-        NumberGuest(adults = mutableIntStateOf(0), mutableIntStateOf(0))
-    }
-    Box(
-        Modifier
-            .fillMaxWidth(1f)
-            .wrapContentHeight()
-            .border(2.dp, Color.Black), contentAlignment = Alignment.BottomCenter
-    ) {
-        GuestInputScreen(stateNumberGuest = stateNumberGuest) {
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(stateNumberGuest: NumberGuest, onDismiss: () -> Unit) {
+fun BottomSheet(stateNumberAdults: Int,stateNumberChildren: Int, onEvent: (ReservationEvent) -> Unit) {
     val modalBottomSheetState = rememberModalBottomSheetState()
 
     ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = { onEvent(ReservationEvent.OnVisibleGuestComposable(false)) },
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
-        GuestInputScreen(stateNumberGuest) {
-            onDismiss()
+        GuestInputScreen(stateNumberAdults,stateNumberChildren) { event ->
+            onEvent(event)
         }
     }
 }
 
 @Composable
-fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
+fun GuestInputScreen(adults:Int,children:Int, event: (ReservationEvent) -> Unit) {
 
     Column() {
         GuestInputScreen(
             title = "Adults",
-            stateNumberGuest = stateNumberGuest.adults,
-            operation = { if ((stateNumberGuest.adults.value + it) > -1) stateNumberGuest.adults.value += it })
+            stateNumberGuest = adults,
+            operation = {event(ReservationEvent.UpdateAdultsCount(it)) })
         GuestInputScreen(
             title = "Children",
-            stateNumberGuest = stateNumberGuest.children,
-            operation = { if ((stateNumberGuest.children.value + it) > -1) stateNumberGuest.children.value += it })
+            stateNumberGuest = children,
+            operation = { event(ReservationEvent.UpdateChildrenCount(it)) })
 
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .padding(top = 10.dp, bottom = 15.dp)
                 .align(Alignment.CenterHorizontally),
-            onClick = event,
+            onClick = { event(ReservationEvent.OnVisibleGuestComposable(false)) },
         ) {
             Text("Set", textAlign = TextAlign.Center)
         }
@@ -204,7 +196,7 @@ fun GuestInputScreen(stateNumberGuest: NumberGuest, event: () -> Unit) {
 
 
 @Composable
-fun GuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (Int) -> Unit) {
+fun GuestInputScreen(title: String, stateNumberGuest: Int, operation: (Int) -> Unit) {
 
     Box(Modifier.padding(10.dp)) {
 
@@ -233,7 +225,7 @@ fun GuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (In
                 }
                 Text(
                     modifier = Modifier.padding(horizontal = 30.dp),
-                    text = stateNumberGuest.value.toString(),
+                    text = stateNumberGuest.toString(),
                     fontSize = 28.sp
                 )
                 IconButton(onClick = { operation(1) }) {
@@ -254,7 +246,7 @@ fun GuestInputScreen(title: String, stateNumberGuest: State<Int>, operation: (In
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateInputScreen(stateDate: DateRangePickerState, event: () -> Unit) {
+fun DateInputScreen(stateDate: DateRangePickerState, closeEvent: () -> Unit) {
     Card(Modifier.padding(start = 5.dp, top = 5.dp, end = 5.dp, bottom = 20.dp)) {
         Column(Modifier.padding(10.dp)) {
             DateRangePicker(modifier = Modifier.weight(8f), state = stateDate)
@@ -263,7 +255,7 @@ fun DateInputScreen(stateDate: DateRangePickerState, event: () -> Unit) {
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(5.dp),
-                onClick = event
+                onClick = closeEvent
             ) {
                 Text("Set", textAlign = TextAlign.Center)
             }
@@ -275,12 +267,12 @@ fun DateInputScreen(stateDate: DateRangePickerState, event: () -> Unit) {
 @Composable
 fun CardFields(
     stateDate: DateRangePickerState,
-    stateNumberGuest: NumberGuest,
+    stateAdultsNumber:Int,
+    stateChildrenNumber: Int,
     event: (EventField) -> Unit
 ) {
 
     Card(Modifier.padding(10.dp)) {
-        // Field(Icons.Rounded.Search)
         Field(
             Icons.Default.DateRange,
             "${convertLongToTime(stateDate.selectedStartDateMillis ?: 0)} - ${
@@ -292,7 +284,7 @@ fun CardFields(
         )
         Field(
             Icons.Filled.Person,
-            text = stateNumberGuest.getText(),
+            text = "Adults: $stateAdultsNumber Children : $stateChildrenNumber",
             event = { event(EventField.PERSON) })
 
     }

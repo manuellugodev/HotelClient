@@ -14,17 +14,16 @@ import com.manuellugodev.hotelmanagment.features.auth.presentation.screens.Welco
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.RegisterViewModel
 import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileScreenRoot
 import com.manuellugodev.hotelmanagment.features.profile.presentation.ProfileViewModel
-import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ConfirmationScreenRoot
-import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.MyReservationScreenRoot
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ReservationScreen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.ReservationScreenRoot
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.MyReservationsViewModel
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ReservationViewModel
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.END_TIME
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.GUESTS
-import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreen
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeScreenRoot
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.RoomTypeViewModel
 import com.manuellugodev.hotelmanagment.features.rooms.presentation.START_TIME
@@ -42,7 +41,8 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(route = Screen.ReservationScreen.route) {
-            ReservationScreen(navController)
+            val viewModel:ReservationViewModel = hiltViewModel()
+            ReservationScreenRoot(navController,viewModel)
         }
 
         composable(
