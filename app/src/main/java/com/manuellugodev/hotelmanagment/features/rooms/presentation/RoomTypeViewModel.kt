@@ -1,9 +1,10 @@
 package com.manuellugodev.hotelmanagment.features.rooms.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.StandarDistpatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
@@ -14,10 +15,11 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -26,7 +28,8 @@ class RoomTypeViewModel @Inject constructor(
     var usecase: SearchRoomAvailables,
     var useCaseSaveTemporalReservation: SaveTemporalReservation,
     var useCaseGetMyProfileData: GetDataProfile,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    val distpatcher: DistpatcherProvider
 
 ) : ViewModel() {
 
@@ -34,33 +37,35 @@ class RoomTypeViewModel @Inject constructor(
     val desiredEndTime: Long = savedStateHandle.get(END_TIME)?:0L
     val guests: Long = savedStateHandle.get(GUESTS)?:0L
 
-    private val _statusRoom: MutableStateFlow<RoomTypeState> = MutableStateFlow(RoomTypeState())
+    var nTest = 0;
+
+    private val _statusRoom: MutableStateFlow<RoomTypeState> = MutableStateFlow(RoomTypeState(searchRooms = true))
     val statusRoom:StateFlow<RoomTypeState> = _statusRoom
 
-    init {
-        if (desiredStartTime!=0L && desiredEndTime!=0L && guests>0){
-            searchRoomsAvailables(desiredStartTime,desiredEndTime,guests.toInt())
-        }
-    }
     private fun searchRoomsAvailables(desiredStartTime: Long, desiredEndTime: Long, guests: Int) {
 
-        Log.i("Search","LLamada funcion Search")
         _statusRoom.value=statusRoom.value.copy(showLoader = true)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(distpatcher.io) {
             try {
-                val result = usecase(Date(desiredStartTime), Date(desiredEndTime), guests)
+                var result = usecase(Date(desiredStartTime), Date(desiredEndTime), guests)
 
-                when (result) {
-                    is DataResult.Success -> {
-                        _statusRoom.value = statusRoom.value.copy(showRooms = result.data, showLoader = false)
-                    }
+                withContext(distpatcher.main){
+                    when (result) {
+                        is DataResult.Success -> {
+                            _statusRoom.value = statusRoom.value.copy(showRooms = result.data, showLoader = false)
+                        }
 
-                    is DataResult.Error -> {
-                        _statusRoom.value = statusRoom.value.copy(showError = result.exception.message.toString(), showLoader = false)
+                        is DataResult.Error -> {
+                            _statusRoom.value = statusRoom.value.copy(showError = result.exception.message.toString(), showLoader = false)
+                        }
                     }
                 }
+
             } catch (e: Exception) {
-                _statusRoom.value = statusRoom.value.copy(showError = e.message.toString(), showLoader = false)
+                withContext(distpatcher.main){
+                    _statusRoom.value = statusRoom.value.copy(showError = e.message.toString(), showLoader = false)
+
+                }
 
             }
         }
@@ -73,7 +78,7 @@ class RoomTypeViewModel @Inject constructor(
         roomHotel: RoomHotel
     ) {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(distpatcher.io) {
             try {
                 val customerResult= useCaseGetMyProfileData()
                 if(customerResult.isSuccess){
@@ -99,9 +104,16 @@ class RoomTypeViewModel @Inject constructor(
     fun onEvent(event: RoomTypeEvent){
 
         when(event){
-            RoomTypeEvent.DismissError -> _statusRoom.value=statusRoom.value.copy(showError = "")
+            RoomTypeEvent.DismissError -> {
+                _statusRoom.value = _statusRoom.value.copy(showError = "")
+            }
             is RoomTypeEvent.OnClickRoomSelected -> {
                 saveReservation(desiredStartTime,desiredEndTime,guests.toInt(),event.room)
+            }
+
+            is RoomTypeEvent.SearchRooms -> {
+                _statusRoom.value= statusRoom.value.copy(searchRooms = false)
+                searchRoomsAvailables(desiredStartTime,desiredEndTime,guests.toInt())
             }
         }
     }

@@ -6,4 +6,6 @@ sealed class RoomTypeEvent {
 
     data class OnClickRoomSelected(val room: RoomHotel):RoomTypeEvent()
     object DismissError:RoomTypeEvent()
+
+    object SearchRooms:RoomTypeEvent()
 }
