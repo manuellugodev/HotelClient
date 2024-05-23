@@ -44,7 +44,7 @@ class RoomTypeViewModel @Inject constructor(
 
     private fun searchRoomsAvailables(desiredStartTime: Long, desiredEndTime: Long, guests: Int) {
 
-        _statusRoom.value=statusRoom.value.copy(showLoader = true)
+        _statusRoom.value=_statusRoom.value.copy(showLoader = true)
         viewModelScope.launch(distpatcher.io) {
             try {
                 var result = usecase(Date(desiredStartTime), Date(desiredEndTime), guests)
@@ -52,18 +52,18 @@ class RoomTypeViewModel @Inject constructor(
                 withContext(distpatcher.main){
                     when (result) {
                         is DataResult.Success -> {
-                            _statusRoom.value = statusRoom.value.copy(showRooms = result.data, showLoader = false)
+                            _statusRoom.value = _statusRoom.value.copy(showRooms = result.data, showLoader = false)
                         }
 
                         is DataResult.Error -> {
-                            _statusRoom.value = statusRoom.value.copy(showError = result.exception.message.toString(), showLoader = false)
+                            _statusRoom.value = _statusRoom.value.copy(showError = result.exception.message.toString(), showLoader = false)
                         }
                     }
                 }
 
             } catch (e: Exception) {
                 withContext(distpatcher.main){
-                    _statusRoom.value = statusRoom.value.copy(showError = e.message.toString(), showLoader = false)
+                    _statusRoom.value = _statusRoom.value.copy(showError = e.message.toString(), showLoader = false)
 
                 }
 
@@ -90,11 +90,15 @@ class RoomTypeViewModel @Inject constructor(
 
                     if (result.isSuccess){
                         val reservationSaved=result.getOrThrow()
-                        _statusRoom.value=statusRoom.value.copy(navigateToBookId = reservationSaved.id.toLong())
+                        _statusRoom.value=_statusRoom.value.copy(navigateToBookId = reservationSaved.id.toLong())
+                    }else{
+                        _statusRoom.value = _statusRoom.value.copy(showError = "Reservation not saved, try again")
                     }
+                }else{
+                    _statusRoom.value = _statusRoom.value.copy(showError = "Some is wrong with User")
                 }
             } catch (e: Exception) {
-                _statusRoom.value = statusRoom.value.copy(showError = "Some is Wrong try again")
+                _statusRoom.value = _statusRoom.value.copy(showError = "Some is Wrong ,try again")
 
             }
         }
@@ -112,14 +116,14 @@ class RoomTypeViewModel @Inject constructor(
             }
 
             is RoomTypeEvent.SearchRooms -> {
-                _statusRoom.value= statusRoom.value.copy(searchRooms = false)
+                _statusRoom.value= _statusRoom.value.copy(searchRooms = false)
                 searchRoomsAvailables(desiredStartTime,desiredEndTime,guests.toInt())
             }
         }
     }
 
     fun cleanNavigation() {
-        _statusRoom.value=statusRoom.value.copy(navigateToBookId = -1L)
+        _statusRoom.value=_statusRoom.value.copy(navigateToBookId = -1L)
     }
 
 }
