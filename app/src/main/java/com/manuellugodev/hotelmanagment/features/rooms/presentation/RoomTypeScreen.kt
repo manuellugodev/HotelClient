@@ -60,6 +60,11 @@ fun RoomTypeScreenRoot(
             viewModel.cleanNavigation()
         }
     }
+    LaunchedEffect(key1 = state.searchRooms) {
+        if (state.searchRooms){
+            viewModel.onEvent(RoomTypeEvent.SearchRooms)
+        }
+    }
 }
 
 @Composable

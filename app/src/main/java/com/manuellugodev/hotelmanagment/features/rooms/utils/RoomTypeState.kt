@@ -7,4 +7,5 @@ data class RoomTypeState(
     val showError:String="",
     val showLoader:Boolean = false,
     val navigateToBookId:Long=-1L,
+    val searchRooms:Boolean=false
 )

@@ -11,19 +11,20 @@ class LoginRepositoryImpl(
         val result = loginDataSource.loginWithEmailAndPassword(email, password)
 
         if (result.isSuccess ) {
-            return loginLocalSource.saveToken(result.getOrDefault(""))
+            loginLocalSource.saveToken(result.getOrDefault(""))
+            return loginLocalSource.saveUsername(email)
         }
         return Result.failure(result.exceptionOrNull()?:Exception())
     }
 
     override suspend fun doLogOut(): Result<Unit> {
 
-        val result = loginLocalSource.removeToken()
+        val result = loginLocalSource.removeToken() && loginLocalSource.removeUsername()
 
         if (result) {
             return Result.success(Unit)
         } else {
-            return Result.failure(Exception("Error when remove token"))
+            return Result.failure(Exception("Error when remove token or username"))
         }
     }
 

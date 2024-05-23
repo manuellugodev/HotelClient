@@ -9,7 +9,8 @@ class ProfileRepositoryImpl(
     private val tokenManagment: TokenManagment
 ) : ProfileRepository {
     override suspend fun getDataProfile(): Result<Profile> {
-        val username = "manuel"
+
+        val username = tokenManagment.getUsername()
         return sourceProfile.getDataProfile(username)
     }
 }
