@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
@@ -15,7 +16,6 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.screens.RESERVATION
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +26,8 @@ import javax.inject.Inject
 class ConfirmationViewModel @Inject constructor(
     val sendConfirmationReservation: SendConfirmationReservation,
     val getTemporalReservation: GetTemporalReservation,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val distpatcher: DistpatcherProvider
 ) : ViewModel() {
 
     private var temporalId:Long=savedStateHandle.get(RESERVATION)?:-1L
@@ -40,9 +41,9 @@ class ConfirmationViewModel @Inject constructor(
         getTempReservation()
     }
     private fun sendConfirmation() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(distpatcher.main) {
 
-            withContext(Dispatchers.IO) {
+            withContext(distpatcher.io) {
 
                 val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
 
@@ -61,9 +62,9 @@ class ConfirmationViewModel @Inject constructor(
     private fun getTempReservation() {
 
         Log.i(CONFIRMATION_SCREEN, "getTemporalReservation")
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(distpatcher.main) {
 
-            withContext(Dispatchers.IO) {
+            withContext(distpatcher.io) {
 
                 val result = getTemporalReservation.invoke(temporalId)
 

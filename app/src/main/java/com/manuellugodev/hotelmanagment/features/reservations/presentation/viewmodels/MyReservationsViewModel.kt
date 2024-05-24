@@ -1,15 +1,14 @@
 package com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: GetMyReservations) :
+class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: GetMyReservations,private val distparcher:DistpatcherProvider) :
     ViewModel() {
 
    private val _stateMyReservation : MutableStateFlow<MyReservationState> = MutableStateFlow(MyReservationState())
@@ -28,13 +27,13 @@ class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: 
        getMyReservations(1)
    }
     fun getMyReservations(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(distparcher.io) {
 
             try {
 
                 val result = getMyReservationsUseCase(id)
 
-                withContext(Dispatchers.Main) {
+                withContext(distparcher.main) {
                     if (result is DataResult.Success) {
                         _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data)
                     } else {
@@ -42,7 +41,7 @@ class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: 
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(distparcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error")}
 
             }
