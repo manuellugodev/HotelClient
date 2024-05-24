@@ -42,16 +42,21 @@ class ConfirmationViewModel @Inject constructor(
 
             withContext(distpatcher.io) {
 
-                val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
+                if(confirmationState.value.showReservation!=null){
+                    val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
 
-                when(result){
+                    when(result){
 
-                    is DataResult.Success -> {
-                        _confirmationState.value=confirmationState.value.copy(reservationSaved = true) }
-                    is DataResult.Error -> {
-                        _confirmationState.value = confirmationState.value.copy(showError = result.exception.message.toString())
+                        is DataResult.Success -> {
+                            _confirmationState.value=_confirmationState.value.copy(reservationSaved = true) }
+                        is DataResult.Error -> {
+                            _confirmationState.value =_confirmationState.value.copy(showError = result.exception.message.toString())
+                        }
                     }
+                }else{
+                    _confirmationState.value=_confirmationState.value.copy(showError = "Some is wrong, reservation invalid")
                 }
+
             }
         }
     }
