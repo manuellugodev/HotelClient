@@ -37,7 +37,6 @@ class RoomTypeViewModel @Inject constructor(
     val desiredEndTime: Long = savedStateHandle.get(END_TIME)?:0L
     val guests: Long = savedStateHandle.get(GUESTS)?:0L
 
-    var nTest = 0;
 
     private val _statusRoom: MutableStateFlow<RoomTypeState> = MutableStateFlow(RoomTypeState(searchRooms = true))
     val statusRoom:StateFlow<RoomTypeState> = _statusRoom

@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPassword) : ViewModel() {
+class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPassword,private val distpatcher: DistpatcherProvider) : ViewModel() {
 
     private val _statusLogin: MutableStateFlow<LoginStatus> = MutableStateFlow(LoginStatus())
     val statusLogin =_statusLogin.asStateFlow()
@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPasswo
     private fun tryLogin() {
         _statusLogin.value = statusLogin.value.copy(showLoader = true)
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(distpatcher.io) {
             val result = useCase(statusLogin.value.usernameEnter, statusLogin.value.passwordeEnter)
 
             if(result.isSuccess){
