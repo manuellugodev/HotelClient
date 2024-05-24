@@ -62,7 +62,12 @@ fun ConfirmationScreenRoot(viewModel: ConfirmationViewModel,navController: NavCo
             navController.popBackStack(Screen.ReservationScreen.route,false)
         }
     }
-    Log.i(Screen.ConfirmationScreen.route,"Compose")
+
+    LaunchedEffect(key1 = state.searchReservation) {
+        if(state.searchReservation){
+            viewModel.onEvent(ConfirmationEvent.getTemporalReservation)
+        }
+    }
 
 }
 @Composable
@@ -70,7 +75,6 @@ fun ConfirmationScreen(
 state:ConfirmationState,onEvent:(ConfirmationEvent)->Unit
 ) {
 
-    Log.i(CONFIRMATION_SCREEN, "Recomposition")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.background(
@@ -85,7 +89,6 @@ state:ConfirmationState,onEvent:(ConfirmationEvent)->Unit
 
 
         if (state.showReservation != null) {
-            Log.i("Confirmation_Screen", "Show_Data")
 
             DetailConfirmationScreenNew(state.showReservation)
             Button(
@@ -290,5 +293,4 @@ fun DetailConfirmationScreenNew(reservation: Reservation) {
 
 }
 
-val subtitle = 10.sp
 const val RESERVATION = "temporal_reservation"

@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmationViewModel @Inject constructor(
-    val sendConfirmationReservation: SendConfirmationReservation,
-    val getTemporalReservation: GetTemporalReservation,
+    private val sendConfirmationReservation: SendConfirmationReservation,
+    private val getTemporalReservation: GetTemporalReservation,
     savedStateHandle: SavedStateHandle,
     private val distpatcher: DistpatcherProvider
 ) : ViewModel() {
@@ -33,13 +33,10 @@ class ConfirmationViewModel @Inject constructor(
     private var temporalId:Long=savedStateHandle.get(RESERVATION)?:-1L
 
     private val _confirmationState :MutableStateFlow<ConfirmationState> = MutableStateFlow(
-        ConfirmationState()
+        ConfirmationState(searchReservation = true)
     )
     val confirmationState :StateFlow<ConfirmationState> = _confirmationState
 
-    init {
-        getTempReservation()
-    }
     private fun sendConfirmation() {
         viewModelScope.launch(distpatcher.main) {
 
@@ -61,7 +58,6 @@ class ConfirmationViewModel @Inject constructor(
 
     private fun getTempReservation() {
 
-        Log.i(CONFIRMATION_SCREEN, "getTemporalReservation")
         viewModelScope.launch(distpatcher.main) {
 
             withContext(distpatcher.io) {
