@@ -17,16 +17,13 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: GetMyReservations,private val distparcher:DistpatcherProvider) :
+class MyReservationsViewModel @Inject constructor(private val getMyReservationsUseCase: GetMyReservations,private val distparcher:DistpatcherProvider) :
     ViewModel() {
 
-   private val _stateMyReservation : MutableStateFlow<MyReservationState> = MutableStateFlow(MyReservationState())
+   private val _stateMyReservation : MutableStateFlow<MyReservationState> = MutableStateFlow(MyReservationState(searchMyReservations = true))
    val stateMyReservation :StateFlow<MyReservationState> = _stateMyReservation
 
-   init {
-       getMyReservations(1)
-   }
-    fun getMyReservations(id: Int) {
+    private fun getReservations(id: Int=1) {
         viewModelScope.launch(distparcher.io) {
 
             try {
@@ -35,14 +32,14 @@ class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: 
 
                 withContext(distparcher.main) {
                     if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data)
+                        _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data, searchMyReservations = false)
                     } else {
-                        _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = (result as DataResult.Error).exception.message?:"Error")
+                        _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = (result as DataResult.Error).exception.message?:"Error", searchMyReservations = false)
                     }
                 }
             } catch (e: Exception) {
                 withContext(distparcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error")}
+                    _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error", searchMyReservations = false)}
 
             }
 
@@ -53,6 +50,7 @@ class MyReservationsViewModel @Inject constructor(val getMyReservationsUseCase: 
     fun onEvent(myReservationEvent: MyReservationEvent) {
         when(myReservationEvent){
             MyReservationEvent.OnDismissError -> _stateMyReservation.value= stateMyReservation.value.copy(showErrorMsg = "")
+            MyReservationEvent.GetMyReservations -> getReservations()
         }
     }
 
