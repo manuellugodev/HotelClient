@@ -4,4 +4,8 @@ sealed class MyReservationEvent {
 
     object OnDismissError:MyReservationEvent()
 
+    object GetMyReservations:MyReservationEvent()
+
+    
+
 }
