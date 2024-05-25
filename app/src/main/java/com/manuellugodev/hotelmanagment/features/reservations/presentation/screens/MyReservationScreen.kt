@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +30,13 @@ import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservatio
 fun MyReservationScreenRoot(viewModel: MyReservationsViewModel){
     val state by viewModel.stateMyReservation.collectAsState()
     MyReservationScreen(state,viewModel::onEvent)
+
+    LaunchedEffect(key1 = state.searchMyReservations) {
+        if(state.searchMyReservations){
+            viewModel.onEvent(MyReservationEvent.GetMyReservations)
+        }
+
+    }
 }
 @Composable
 fun MyReservationScreen(state:MyReservationState,onEvent:(MyReservationEvent)->Unit) {
