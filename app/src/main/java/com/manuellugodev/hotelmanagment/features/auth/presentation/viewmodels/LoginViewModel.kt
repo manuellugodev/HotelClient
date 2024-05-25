@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPassword,private val distpatcher: DistpatcherProvider) : ViewModel() {
+class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameAndPassword,private val distpatcher: DistpatcherProvider) : ViewModel() {
 
     private val _statusLogin: MutableStateFlow<LoginStatus> = MutableStateFlow(LoginStatus())
     val statusLogin =_statusLogin.asStateFlow()
@@ -37,14 +37,12 @@ class LoginViewModel @Inject constructor(var useCase: LoginWithUsernameAndPasswo
 
     fun onEvent(event: LoginEvent){
         when(event){
-            LoginEvent.doLoginEvent -> tryLogin()
-            is LoginEvent.onPasswordEnter -> {_statusLogin.value=statusLogin.value.copy(passwordeEnter = event.password)}
-            is LoginEvent.onUsernameEnter -> {_statusLogin.value =statusLogin.value.copy(usernameEnter = event.username)}
-            is LoginEvent.visibilityPassword ->{_statusLogin.value=statusLogin.value.copy(showPassword = event.isVisible)}
+            LoginEvent.DoLoginEvent -> tryLogin()
+            is LoginEvent.OnPasswordEnter -> {_statusLogin.value=statusLogin.value.copy(passwordeEnter = event.password)}
+            is LoginEvent.OnUsernameEnter -> {_statusLogin.value =statusLogin.value.copy(usernameEnter = event.username)}
+            is LoginEvent.VisibilityPassword ->{_statusLogin.value=statusLogin.value.copy(showPassword = event.isVisible)}
+            LoginEvent.DismissError -> {_statusLogin.value=_statusLogin.value.copy(showError = "")}
         }
     }
 
-    fun byDefault() {
-        _statusLogin.value = statusLogin.value.copy(showError = "")
-    }
 }
