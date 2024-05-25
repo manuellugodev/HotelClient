@@ -1,7 +1,5 @@
 package com.manuellugodev.hotelmanagment.features.auth.presentation.screens
 
-import LOGIN_SCREEN
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,10 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.LoginViewModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
 
@@ -48,7 +46,6 @@ import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndClea
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
 
-    Log.i(LOGIN_SCREEN, "Recomposition")
 
     val state by viewModel.statusLogin.collectAsState()
 
@@ -58,7 +55,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
         navController.navigateAndCleanBackStack(Screen.ReservationScreen.route)
     } else if (state.showError.isNotEmpty()) {
         ErrorSnackbar(errorMessage = state.showError) {
-            viewModel.byDefault()
+            viewModel.onEvent(LoginEvent.DismissError)
         }
     }
 
@@ -87,7 +84,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
 
         TextField(
             value = state.usernameEnter,
-            onValueChange = { onEvent(LoginEvent.onUsernameEnter(it)) },
+            onValueChange = { onEvent(LoginEvent.OnUsernameEnter(it)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -99,7 +96,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
         TextField(
             value = state.passwordeEnter,
             placeholder = { Text(text = "Password") },
-            onValueChange = { onEvent(LoginEvent.onPasswordEnter(it)) },
+            onValueChange = { onEvent(LoginEvent.OnPasswordEnter(it)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -108,7 +105,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             trailingIcon = {
                 IconButton(
-                    onClick = { onEvent(LoginEvent.visibilityPassword(!state.showPassword)) },
+                    onClick = { onEvent(LoginEvent.VisibilityPassword(!state.showPassword)) },
                     modifier = Modifier
                         .padding(8.dp)
                         .size(24.dp)
@@ -125,7 +122,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
         Button(
             onClick = {
                 focusManager.clearFocus()
-                onEvent(LoginEvent.doLoginEvent)
+                onEvent(LoginEvent.DoLoginEvent)
             },
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
