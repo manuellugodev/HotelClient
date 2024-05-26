@@ -4,8 +4,8 @@ import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
 import com.manuellugodev.hotelmanagment.features.auth.domain.CheckUserIsLogged
 import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
-import com.manuellugodev.hotelmanagment.features.profile.usecase.DoLogOutSession
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetReservations
