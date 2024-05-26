@@ -1,7 +1,6 @@
-package com.manuellugodev.hotelmanagment.features.profile.usecase
+package com.manuellugodev.hotelmanagment.features.profile.domain.usecase
 
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
-import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class DoLogOutSession(private val loginRepository: LoginRepository) {
 

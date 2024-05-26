@@ -2,8 +2,8 @@ package com.manuellugodev.hotelmanagment.features.profile.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
-import com.manuellugodev.hotelmanagment.features.profile.usecase.DoLogOutSession
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

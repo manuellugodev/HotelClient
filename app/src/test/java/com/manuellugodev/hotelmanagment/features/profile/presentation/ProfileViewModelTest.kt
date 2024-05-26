@@ -2,8 +2,8 @@ package com.manuellugodev.hotelmanagment.features.profile.presentation
 
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
 import com.manuellugodev.hotelmanagment.TestDistpatchers
-import com.manuellugodev.hotelmanagment.features.profile.usecase.DoLogOutSession
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.utils.fakeProfile
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -11,15 +11,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class ProfileViewModelTest{
 
-    private val getDataProfile:GetDataProfile = mockk()
-    private val doLogOutSession:DoLogOutSession = mockk()
+    private val getDataProfile: GetDataProfile = mockk()
+    private val doLogOutSession: DoLogOutSession = mockk()
     private val standarTest= StandardTestDispatcher()
     private lateinit var viewModel: ProfileViewModel
 
