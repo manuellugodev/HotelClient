@@ -2,18 +2,13 @@ package com.manuellugodev.hotelmanagment.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
-import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
-import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRoomDB
-import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
-import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
-import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
@@ -23,6 +18,10 @@ import com.manuellugodev.hotelmanagment.framework.network.source.DataSourceProfi
 import com.manuellugodev.hotelmanagment.framework.network.source.LoginDataSourceApi
 import com.manuellugodev.hotelmanagment.framework.network.source.RoomDataSourceApi
 import com.manuellugodev.hotelmanagment.framework.network.source.TokenManagmentImpl
+import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
+import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationRoomDB
+import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
+import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,11 +57,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDatabaseRoom(@ApplicationContext applicationContext: Context): HotelDatabase {
-        val db = Room.databaseBuilder(
-            applicationContext,
-            HotelDatabase::class.java, "database-hotel"
-        ).build()
-        return db
+        return HotelDatabase.create(applicationContext)
     }
 
     @Provides
