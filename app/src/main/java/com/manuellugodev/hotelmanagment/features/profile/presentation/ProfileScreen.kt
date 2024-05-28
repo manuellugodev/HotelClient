@@ -28,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
+import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 
 
 @Composable
@@ -69,7 +69,7 @@ fun ProfileScreen(state:ProfileState,onEvent:(ProfileEvent)->Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.showProfile!=null) {
-                DataProfile(state.showProfile!!)
+                DataProfile(state.showProfile)
             }
 
             Button(
