@@ -5,5 +5,6 @@ data class ConfirmationState(
     val showReservation:Reservation?=null,
     val loading:Boolean = false,
     val showError:String = "",
-    val reservationSaved:Boolean=false
+    val reservationSaved:Boolean=false,
+    val searchReservation:Boolean=false
 )

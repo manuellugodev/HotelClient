@@ -1,10 +1,12 @@
 package com.manuellugodev.hotelmanagment.features.auth.utils
 sealed class LoginEvent{
-    data class onUsernameEnter(val username:String):LoginEvent()
+    data class OnUsernameEnter(val username:String):LoginEvent()
 
-    data class onPasswordEnter(val password:String):LoginEvent()
+    data class OnPasswordEnter(val password:String):LoginEvent()
 
-    data class visibilityPassword(val isVisible:Boolean):LoginEvent()
+    data class VisibilityPassword(val isVisible:Boolean):LoginEvent()
 
-    object doLoginEvent:LoginEvent()
+    object DoLoginEvent:LoginEvent()
+
+    object DismissError:LoginEvent()
 }

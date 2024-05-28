@@ -6,5 +6,6 @@ data class ProfileState(
     val showProfile :Profile? = null,
     val showError:String ="",
     val showLoader:Boolean=false,
-    val isLogOut:Boolean=false
+    val isLogOut:Boolean=false,
+    val getDataProfile:Boolean=false
 )

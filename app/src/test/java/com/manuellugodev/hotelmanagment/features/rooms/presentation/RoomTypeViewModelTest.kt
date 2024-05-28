@@ -3,14 +3,12 @@ package com.manuellugodev.hotelmanagment.features.rooms.presentation
 import androidx.lifecycle.SavedStateHandle
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
 import com.manuellugodev.hotelmanagment.TestDistpatchers
-import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.features.rooms.domain.SearchRoomAvailables
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeEvent
-import com.manuellugodev.hotelmanagment.utils.fakeListHotel
 import com.manuellugodev.hotelmanagment.utils.fakeProfile
 import com.manuellugodev.hotelmanagment.utils.fakeReservation
 import com.manuellugodev.hotelmanagment.utils.fakeRoomHotel
@@ -19,17 +17,13 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import kotlin.Exception
 
 @OptIn(ExperimentalCoroutinesApi::class)
 
@@ -38,7 +32,7 @@ class RoomTypeViewModelTest{
     private lateinit var viewModel:RoomTypeViewModel
     private val searchRoomAvailables:SearchRoomAvailables = mockk(relaxed = true)
     private val saveTemporalReservation:SaveTemporalReservation = mockk(relaxed = true)
-    private val getDataProfile :GetDataProfile = mockk(relaxed = true)
+    private val getDataProfile : GetDataProfile = mockk(relaxed = true)
     private val savedStateHandle:SavedStateHandle = mockk(relaxed = true)
 
     private val standarTest= StandardTestDispatcher()

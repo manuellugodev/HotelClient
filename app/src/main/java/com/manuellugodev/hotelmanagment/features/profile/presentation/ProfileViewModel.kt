@@ -1,14 +1,10 @@
 package com.manuellugodev.hotelmanagment.features.profile.presentation
-
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.profile.usecase.DoLogOutSession
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
-import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,20 +14,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getDataProfile: GetDataProfile,
-    private val doLogOutSession: DoLogOutSession
+    private val doLogOutSession: DoLogOutSession,
+    private val distpatcher: DistpatcherProvider
 ) :ViewModel() {
 
-    private val _stateProfile :MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState())
+    private val _stateProfile :MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState(getDataProfile = true))
     val stateProfile :StateFlow<ProfileState> = _stateProfile
 
-    init {
-        loadDataProfile()
-    }
-
-    fun loadDataProfile() {
-        viewModelScope.launch(Dispatchers.Main) {
+    private fun loadDataProfile() {
+        viewModelScope.launch(distpatcher.main) {
             try {
-                val result = withContext(Dispatchers.IO) { getDataProfile() }
+                val result = withContext(distpatcher.io) { getDataProfile() }
                 if (result.isSuccess) {
 
                     _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
@@ -48,11 +41,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun logOutSession() {
+    private fun logOutSession() {
 
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(distpatcher.main) {
             try {
-                val result = withContext(Dispatchers.IO) { doLogOutSession() }
+                val result = withContext(distpatcher.io) { doLogOutSession() }
 
                 if (result.isSuccess) {
                     _stateProfile.value = stateProfile.value.copy(isLogOut = true)
@@ -67,5 +60,13 @@ class ProfileViewModel @Inject constructor(
 
     }
 
+
+    fun onEvent(event:ProfileEvent){
+        when(event){
+            ProfileEvent.LoadProfile -> loadDataProfile()
+            ProfileEvent.LogOutSession -> logOutSession()
+        }
+
+    }
 
 }

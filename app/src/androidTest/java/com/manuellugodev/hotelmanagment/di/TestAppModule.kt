@@ -2,6 +2,7 @@ package com.manuellugodev.hotelmanagment.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
@@ -24,17 +25,18 @@ import com.manuellugodev.hotelmanagment.framework.roomdb.HotelDatabase
 import com.manuellugodev.hotelmanagment.framework.roomdb.ReservationDao
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-class AppModule {
-
-
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [AppModule::class]
+)
+class TestAppModule {
 
     @Provides
     @Named("api")
@@ -57,7 +59,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDatabaseRoom(@ApplicationContext applicationContext: Context): HotelDatabase {
-        return HotelDatabase.create(applicationContext)
+        return Room.inMemoryDatabaseBuilder(applicationContext,HotelDatabase::class.java).build()
     }
 
     @Provides

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
+import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
 
 
 @Composable
@@ -37,15 +38,21 @@ fun ProfileScreenRoot(navController: NavController,viewModel: ProfileViewModel){
 
     val state by viewModel.stateProfile.collectAsState()
 
-    if (state.isLogOut) {
-        navController.navigateAndCleanBackStack(Screen.WelcomeScreen.route)
+    LaunchedEffect(key1 = state.isLogOut) {
+        if (state.isLogOut) {
+            navController.navigateAndCleanBackStack(Screen.WelcomeScreen.route)
+        }
     }
-    ProfileScreen(state){
-        viewModel.logOutSession()
+    ProfileScreen(state,viewModel::onEvent)
+    LaunchedEffect(key1 = state.getDataProfile) {
+        if(state.getDataProfile){
+            viewModel.onEvent(ProfileEvent.LoadProfile)
+        }
     }
+
 }
 @Composable
-fun ProfileScreen(state:ProfileState,logOut:()->Unit) {
+fun ProfileScreen(state:ProfileState,onEvent:(ProfileEvent)->Unit) {
 
 
     Box(
@@ -62,14 +69,14 @@ fun ProfileScreen(state:ProfileState,logOut:()->Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.showProfile!=null) {
-                DataProfile(state.showProfile!!)
+                DataProfile(state.showProfile)
             }
 
             Button(
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .wrapContentSize(),
-                onClick = { logOut() }) {
+                onClick = { onEvent(ProfileEvent.LogOutSession) }) {
                 Text(text = "Log out")
             }
         }

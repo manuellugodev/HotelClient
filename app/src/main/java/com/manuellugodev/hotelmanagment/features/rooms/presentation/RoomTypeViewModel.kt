@@ -4,20 +4,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
-import com.manuellugodev.hotelmanagment.features.core.domain.StandarDistpatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.features.rooms.domain.SearchRoomAvailables
-import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeState
-import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
-import com.manuellugodev.hotelmanagment.features.profile.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeEvent
+import com.manuellugodev.hotelmanagment.features.rooms.utils.RoomTypeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -37,7 +35,6 @@ class RoomTypeViewModel @Inject constructor(
     val desiredEndTime: Long = savedStateHandle.get(END_TIME)?:0L
     val guests: Long = savedStateHandle.get(GUESTS)?:0L
 
-    var nTest = 0;
 
     private val _statusRoom: MutableStateFlow<RoomTypeState> = MutableStateFlow(RoomTypeState(searchRooms = true))
     val statusRoom:StateFlow<RoomTypeState> = _statusRoom
