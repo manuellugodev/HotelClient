@@ -2,6 +2,7 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
 import com.manuellugodev.hotelmanagment.features.auth.domain.CheckUserIsLogged
+import com.manuellugodev.hotelmanagment.features.auth.domain.DoSignUpUseCase
 import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
@@ -72,5 +73,10 @@ class UseCaseModule {
     @Provides
     fun provideDoLogOutUseCase(loginRepository: LoginRepository): DoLogOutSession {
         return DoLogOutSession(loginRepository)
+    }
+
+    @Provides
+    fun provideDoSignUpUseCase(loginRepository: LoginRepository): DoSignUpUseCase {
+        return DoSignUpUseCase(loginRepository)
     }
 }

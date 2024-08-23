@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 
 class LoginRepositoryImpl(
@@ -34,6 +35,10 @@ class LoginRepositoryImpl(
         } else {
             Result.failure(Exception())
         }
+    }
+
+    override suspend fun registerNewUser(userRegisterModel: UserRegisterModel): Result<Unit> {
+        return loginDataSource.registerNewUser(userRegisterModel)
     }
 
 

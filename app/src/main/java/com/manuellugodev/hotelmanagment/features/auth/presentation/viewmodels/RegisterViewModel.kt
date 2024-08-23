@@ -4,13 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.manuellugodev.hotelmanagment.features.auth.domain.DoSignUpUseCase
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterState
+import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor():ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val doSignUpUsecase: DoSignUpUseCase,
+    private val distpatcher: DistpatcherProvider
+) : ViewModel() {
 
     var state by mutableStateOf(RegisterState())
         private set
@@ -31,7 +39,29 @@ class RegisterViewModel @Inject constructor():ViewModel() {
 
     private fun sendDataUser() {
 
-        state=state.copy(navigateToLogin = true)
+        val username = state.username
+        val password = state.password
+        val firstName = state.firstName
+        val lastName = state.lastName
+        val email = state.email
+        val phone = state.phone
+
+        val userToRegister =
+            UserRegisterModel(username, password, firstName, lastName, email, phone)
+
+        viewModelScope.launch(distpatcher.io) {
+
+            val result = doSignUpUsecase(userToRegister)
+
+            if (result.isSuccess) {
+                state = state.copy(navigateToLogin = true)
+            } else {
+                state = state.copy(msgError = "Some was wrong")
+            }
+
+        }
+
+
     }
 
 }
