@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.service
 
+import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 interface AppointmentService {
 
     @GET("/appointment")
-    suspend fun getAppointments(): Response<List<Appointment>>
+    suspend fun getAppointments(): Response<ApiResponse<List<Appointment>>>
 
     @POST("/appointment")
     suspend fun sendAppointment(
@@ -22,5 +23,5 @@ interface AppointmentService {
     ): Response<String>
 
     @GET("/appointment/guest/{idGuest}")
-    suspend fun getMyAppointments(@Path("idGuest") idGuest: Int): Response<List<Appointment>>
+    suspend fun getMyAppointments(@Path("idGuest") idGuest: Int): Response<ApiResponse<List<Appointment>>>
 }

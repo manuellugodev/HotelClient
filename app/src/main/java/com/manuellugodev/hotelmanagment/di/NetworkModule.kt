@@ -61,7 +61,7 @@ class NetworkModule {
     @Singleton
     @Named("baseUrl")
     fun baseUrlProvider() =
-        "https://app-hotel-5687665021bc.herokuapp.com/" // "http://10.0.2.2:8080/"
+        "http://10.0.2.2:8080/" //"https://app-hotel-5687665021bc.herokuapp.com/"
 
 
 }

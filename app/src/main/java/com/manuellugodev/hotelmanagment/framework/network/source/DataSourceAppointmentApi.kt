@@ -1,12 +1,12 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import com.manuellugodev.hotelmanagment.framework.network.entities.toCustomer
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentBody
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
-import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,7 +49,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
             val result = request.service.getAppointments()
 
             if (result.isSuccessful) {
-                val reservations = result.body()
+                val reservations = result.body()?.data
 
                 if (!reservations.isNullOrEmpty()) {
                     return DataResult.Success(reservations.map { it.toReservation() })
@@ -73,7 +73,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
         return try {
             val result = request.service.getMyAppointments(guest)
             if (result.isSuccessful) {
-                DataResult.Success(result.body()!!.map { it.toReservation() })
+                DataResult.Success(result.body()?.data!!.map { it.toReservation() })
             } else {
                 DataResult.Error(Exception("Error getting reservations"))
             }

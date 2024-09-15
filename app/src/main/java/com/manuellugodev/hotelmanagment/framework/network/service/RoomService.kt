@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.service
 
+import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.RoomApi
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,5 +14,5 @@ interface RoomService {
         @Query("dStartTime") desiredStartTime: String,
         @Query("dEndTime") desiredEndTime: String,
         @Query("guests") guestNumber: Int
-    ): Response<List<RoomApi>>
+    ): Response<ApiResponse<List<RoomApi>>>
 }

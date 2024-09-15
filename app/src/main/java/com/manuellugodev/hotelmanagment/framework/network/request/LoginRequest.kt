@@ -14,6 +14,7 @@ class LoginRequest(private val baseUrl: String) {
         OkHttpClient.Builder().build()
     }
 
+
     fun getService(): LoginService {
         return buildRetrofit().create(LoginService::class.java)
     }

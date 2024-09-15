@@ -1,10 +1,12 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.UsernameAlreadyExist
+import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.LoginRequestBody
 import com.manuellugodev.hotelmanagment.framework.network.entities.SignUpRequestBody
 import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
@@ -18,9 +20,32 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
             if (result.isSuccessful) {
 
 
-                return Result.success(result.body()!!.token)
+                return Result.success(result.body()!!.data!!.token)
             } else {
-                return Result.failure(Exception())
+
+                val errorBody = result.errorBody()
+
+                val raw = errorBody?.string()
+
+                if (raw != null) {
+                    try {
+                        // Parse the error body into ServerResponse using Gson or Moshi
+                        val gson = Gson()
+
+                        val errorResponse: ApiResponse<*>? =
+                            gson.fromJson(raw, ApiResponse::class.java)
+
+                        // Access specific fields from the parsed error response
+                        val errorType = errorResponse?.errorType
+                        val errorMessage = errorResponse?.message
+
+                        return Result.failure(Exception(errorType))
+
+                    } catch (e: Exception) {
+                        return Result.failure(e)
+                    }
+                }
+                return Result.failure(Exception(result.body()?.errorType))
             }
         } catch (e: Exception) {
             return Result.failure(e)
@@ -56,7 +81,7 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
         return SignUpRequestBody(userName, password, firstName, lastName, email, phone)
     }
 
-    private fun getException(response: Response<Unit>): Exception {
+    private fun getException(response: Response<ApiResponse<Unit>>): Exception {
         val errorResponse = response.errorBody()?.string()
 
         val jsonObject: JsonObject = JsonParser.parseString(errorResponse).asJsonObject
