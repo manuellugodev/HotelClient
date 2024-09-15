@@ -2,6 +2,7 @@ package com.manuellugodev.hotelmanagment.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.manuellugodev.hotelmanagment.BuildConfig
 import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
@@ -61,7 +62,7 @@ class NetworkModule {
     @Singleton
     @Named("baseUrl")
     fun baseUrlProvider() =
-        "http://10.0.2.2:8080/" //"https://app-hotel-5687665021bc.herokuapp.com/"
+        BuildConfig.BASE_URL
 
 
 }
