@@ -25,14 +25,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.RegisterViewModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterState
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 
 
@@ -74,6 +73,13 @@ fun RegisterScreen(state:RegisterState,onEvent:(RegisterEvent)->Unit,onNavigateT
                 onValueChange = { onEvent(RegisterEvent.onUsernameEnter(it)) },
                 label = { Text(text = "Username") },
                 singleLine = true,
+                supportingText = {
+                    if (state.usernameError.isNotEmpty()) {
+                        Text(text = state.usernameError)
+                    }
+                },
+                isError = state.usernameError.isNotEmpty()
+
 
                 )
 
@@ -84,6 +90,7 @@ fun RegisterScreen(state:RegisterState,onEvent:(RegisterEvent)->Unit,onNavigateT
                 modifier = Modifier
                     .fillMaxWidth(),
                 singleLine = true,
+                isError = state.passwordError.isNotEmpty(),
                 visualTransformation = if (state.isShowingPassword) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 leadingIcon = {
@@ -129,6 +136,12 @@ fun RegisterScreen(state:RegisterState,onEvent:(RegisterEvent)->Unit,onNavigateT
                 onValueChange = { onEvent(RegisterEvent.onEmailEnter(it)) },
                 label = { Text(text = "Email") },
                 singleLine = true,
+                isError = state.emailError.isNotEmpty(),
+                supportingText = {
+                    if (state.emailError.isNotEmpty()) {
+                        Text(text = "Enter a valid Email")
+                    }
+                }
 
                 )
 
@@ -148,6 +161,14 @@ fun RegisterScreen(state:RegisterState,onEvent:(RegisterEvent)->Unit,onNavigateT
         Button(onClick = { onEvent(RegisterEvent.submitDataUser) }) {
             Text(text = "Submit")
         }
+
+        if (state.msgError.isNotEmpty()) {
+            ErrorSnackbar(errorMessage = state.msgError) {
+                onEvent(RegisterEvent.dismissError)
+            }
+        }
+
+
     }
 
 

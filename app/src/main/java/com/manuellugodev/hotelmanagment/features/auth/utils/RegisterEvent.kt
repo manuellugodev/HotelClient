@@ -18,5 +18,7 @@ sealed class RegisterEvent {
 
     object submitDataUser : RegisterEvent()
 
+    object dismissError : RegisterEvent()
+
 
 }

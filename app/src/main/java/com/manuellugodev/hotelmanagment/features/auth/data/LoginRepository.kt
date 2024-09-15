@@ -1,7 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
-import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
-import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 
 
 interface LoginRepository {
@@ -11,4 +10,6 @@ interface LoginRepository {
     suspend fun doLogOut(): Result<Unit>
 
     suspend fun checkUserIsLogged(): Result<Unit>
+
+    suspend fun registerNewUser(userRegisterModel: UserRegisterModel): Result<Unit>
 }
