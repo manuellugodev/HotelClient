@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.service
 
+import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.LoginRequestBody
 import com.manuellugodev.hotelmanagment.framework.network.entities.LoginResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.SignUpRequestBody
@@ -10,10 +11,10 @@ import retrofit2.http.POST
 interface LoginService {
 
     @POST("/login")
-    suspend fun doLogin(@Body authRequest: LoginRequestBody): Response<LoginResponse>
+    suspend fun doLogin(@Body authRequest: LoginRequestBody): Response<ApiResponse<LoginResponse>>
 
     @POST("user/register")
-    suspend fun signUpUser(@Body singUpRequest: SignUpRequestBody): Response<Unit>
+    suspend fun signUpUser(@Body singUpRequest: SignUpRequestBody): Response<ApiResponse<Unit>>
 
 
 }

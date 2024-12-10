@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.features.core.domain.utils
 import java.text.SimpleDateFormat
 
 import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 fun convertLongToTime(time: Long): String {
@@ -15,11 +16,16 @@ fun convertLongToTime(time: Long): String {
     return format.format(date)
 }
 
-fun convertLongToDateTimeRoom(time:Long): String {
+fun convertLongToDateTimeRoom(time: Long, pattern: String = "dd MMM yyyy"): String {
     val date=Date(time)
-    val format = SimpleDateFormat("dd MMM yyyy")
+    val format = SimpleDateFormat(pattern)
     format.timeZone= TimeZone.getTimeZone("UTC")
     return format.format(date)
 }
 
+fun convertDateToString(date: Date): String {
+    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+    format.timeZone = TimeZone.getTimeZone("GMT")
+    return format.format(date)
+}
 
