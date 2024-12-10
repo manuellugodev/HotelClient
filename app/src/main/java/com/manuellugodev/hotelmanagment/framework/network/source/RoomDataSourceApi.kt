@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertDateToString
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.framework.network.entities.RoomApi
 import com.manuellugodev.hotelmanagment.framework.network.request.RoomRequest
@@ -13,6 +14,8 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
     override suspend fun searchRooms(): DataResult<List<RoomHotel>> {
@@ -27,11 +30,13 @@ class RoomDataSourceApi(private val request: RoomRequest) : RoomDataSource {
     ): DataResult<List<RoomHotel>> {
 
         return try {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+            sdf.timeZone = TimeZone.getTimeZone("GMT")
+
             val result = request.service.getAllRoomsAvailable(
                 true,
-                sdf.format(desiredStartTime),
-                sdf.format(desiredEndTime),
+                convertDateToString(desiredStartTime),
+                convertDateToString(desiredEndTime),
                 guests
             )
 

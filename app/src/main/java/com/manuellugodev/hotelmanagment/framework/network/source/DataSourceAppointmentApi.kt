@@ -2,21 +2,20 @@ package com.manuellugodev.hotelmanagment.framework.network.source
 
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import com.manuellugodev.hotelmanagment.framework.network.entities.toCustomer
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentBody
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSourceReservation {
     override suspend fun saveReservation(reservation: Reservation): DataResult<Reservation> {
         return try {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val checkIn = dateFormat.format(Date(reservation.checkIn))
-            val checkOut = dateFormat.format(Date(reservation.checkOut));
+            val checkIn = convertLongToDateTimeRoom(reservation.checkIn, pattern = "yyyy-MM-dd")
+            val checkOut = convertLongToDateTimeRoom(reservation.checkOut, pattern = "yyyy-MM-dd")
             val bodyAppointment = AppointmentBody(
                 reservation.client.id.toInt(), reservation.roomHotel.id.toInt(),
                 checkIn, checkOut, reservation.price.toString()
