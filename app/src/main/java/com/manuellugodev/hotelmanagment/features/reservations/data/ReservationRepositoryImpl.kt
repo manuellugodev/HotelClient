@@ -1,12 +1,14 @@
 package com.manuellugodev.hotelmanagment.features.reservations.data
 
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
-import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
 
 class ReservationRepositoryImpl(
     private val dataSourceReservation: DataSourceReservation,
-    private val dataSourceReservationLocal: DataSourceReservationLocal
+    private val dataSourceReservationLocal: DataSourceReservationLocal,
+    private val tokenManagment: TokenManagment
 ) :
     ReservationRepository {
 
@@ -27,6 +29,7 @@ class ReservationRepositoryImpl(
     }
 
     override suspend fun getMyReservations(guestId: Int): DataResult<List<Reservation>> {
-        return dataSourceReservation.getMyReservations(guestId)
+        val id = tokenManagment.getGuestId()
+        return dataSourceReservation.getMyReservations(id)
     }
 }

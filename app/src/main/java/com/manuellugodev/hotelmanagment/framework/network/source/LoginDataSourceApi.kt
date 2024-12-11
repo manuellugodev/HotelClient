@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserCredentials
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.UsernameAlreadyExist
 import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
@@ -13,14 +14,19 @@ import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
 import retrofit2.Response
 
 class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
-    override suspend fun loginWithEmailAndPassword(email: String, password: String): Result<String> {
+    override suspend fun loginWithEmailAndPassword(
+        email: String,
+        password: String
+    ): Result<UserCredentials> {
         try {
 
             val result = request.getService().doLogin(LoginRequestBody(email, password))
             if (result.isSuccessful) {
 
+                val data = result.body()!!.data!!
+                val userCredentials = UserCredentials(data.token, data.guestId)
 
-                return Result.success(result.body()!!.data!!.token)
+                return Result.success(userCredentials)
             } else {
 
                 val errorBody = result.errorBody()

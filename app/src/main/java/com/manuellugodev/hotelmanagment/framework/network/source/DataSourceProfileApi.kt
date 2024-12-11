@@ -16,7 +16,8 @@ class DataSourceProfileApi(private val request: ProfileRequest) : DataSourceProf
                firstName =  profileApi.guestId.firstName,
                lastName =  profileApi.guestId.lastName,
                email =  profileApi.guestId.email,
-               phone =  profileApi.guestId.phone
+                phone = profileApi.guestId.phone,
+                guestId = profileApi.guestId.guestId
             )
             Result.success(profile)
         } else {

@@ -157,6 +157,7 @@ fun ProfileScreen() {
             "Lugo",
             "manuellugo2000ml@gmail.com",
             "78627815631",
+            1
         )
     )
 }

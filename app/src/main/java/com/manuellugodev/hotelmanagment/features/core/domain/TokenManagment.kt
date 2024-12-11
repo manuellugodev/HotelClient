@@ -8,7 +8,8 @@ interface TokenManagment {
     fun tokenIsAvailable(): Boolean
     fun removeToken(): Boolean
     suspend fun getUsername(): String
-    fun saveUsername(username: String):Result<Unit>
+    fun saveUsernameAndGuestId(username: String, guestId: Int): Result<Unit>
     fun removeUsername(): Boolean
     fun usernameIsAvailable(): Boolean
+    fun getGuestId(): Int
 }

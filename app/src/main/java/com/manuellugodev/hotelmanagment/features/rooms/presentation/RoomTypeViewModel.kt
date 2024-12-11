@@ -80,7 +80,13 @@ class RoomTypeViewModel @Inject constructor(
                 val customerResult= useCaseGetMyProfileData()
                 if(customerResult.isSuccess){
                     val profile=customerResult.getOrThrow()
-                    val customer = Customer(1,profile.firstName,profile.lastName,profile.email,profile.phone)
+                    val customer = Customer(
+                        profile.guestId.toLong(),
+                        profile.firstName,
+                        profile.lastName,
+                        profile.email,
+                        profile.phone
+                    )
                     val reservationToSave = Reservation(1,customer,roomHotel,desiredStartTime,desiredEndTime,roomHotel.price,0.0,roomHotel.price)
 
                     val result = useCaseSaveTemporalReservation(reservationToSave)

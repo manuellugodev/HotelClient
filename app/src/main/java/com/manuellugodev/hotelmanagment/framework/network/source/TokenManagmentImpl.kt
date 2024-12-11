@@ -69,9 +69,25 @@ class TokenManagmentImpl(private val sharedPreferences: SharedPreferences) :
         return ""
     }
 
-    override fun saveUsername(username: String):Result<Unit> {
+    override fun getGuestId(): Int {
+        try {
+            if (sharedPreferences.contains("guestId")) {
+                val guestId = sharedPreferences.getInt("guestId", 0)
+                if (guestId != 0) {
+                    return guestId
+                }
+            }
+        } catch (e: Exception) {
+
+        }
+
+        return 0
+    }
+
+    override fun saveUsernameAndGuestId(username: String, guestId: Int): Result<Unit> {
         try {
             sharedPreferences.edit().putString("username", username).apply()
+            sharedPreferences.edit().putInt("guestId", guestId).apply()
             return Result.success(Unit)
         } catch (e: Exception) {
             return Result.failure(e)
