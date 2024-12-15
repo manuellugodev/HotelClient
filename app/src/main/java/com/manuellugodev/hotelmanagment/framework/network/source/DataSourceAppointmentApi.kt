@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
+import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
@@ -71,10 +72,17 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
     override suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>> {
         return try {
             val result = request.service.getMyAppointments(guest)
+
+
             if (result.isSuccessful) {
                 DataResult.Success(result.body()?.data!!.map { it.toReservation() })
             } else {
-                DataResult.Error(Exception("Error getting reservations"))
+                if (result.code() == 404) {
+                    DataResult.Error(AppointmentsNotFound())
+                } else {
+                    DataResult.Error(Exception("Error getting reservations"))
+
+                }
             }
         } catch (e: Exception) {
             DataResult.Error(e)
