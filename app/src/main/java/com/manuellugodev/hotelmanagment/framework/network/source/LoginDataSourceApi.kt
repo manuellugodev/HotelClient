@@ -92,7 +92,7 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
 
         val jsonObject: JsonObject = JsonParser.parseString(errorResponse).asJsonObject
 
-        val error = jsonObject.get("error").asString ?: ""
+        val error = jsonObject.get("errorType").asString ?: ""
 
         return when (error) {
             "UsernameAlreadyExist" -> {
