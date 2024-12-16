@@ -4,10 +4,11 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.view
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
-import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
-import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
+import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
+import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +35,19 @@ class MyReservationsViewModel @Inject constructor(private val getMyReservationsU
                     if (result is DataResult.Success) {
                         _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data, searchMyReservations = false)
                     } else {
-                        _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = (result as DataResult.Error).exception.message?:"Error", searchMyReservations = false)
+                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
+                            _stateMyReservation.value = stateMyReservation.value.copy(
+                                showErrorMsg = "Appointments Not Found",
+                                searchMyReservations = false
+                            )
+
+                        } else {
+                            _stateMyReservation.value = stateMyReservation.value.copy(
+                                showErrorMsg = (result as DataResult.Error).exception.message
+                                    ?: "Error", searchMyReservations = false
+                            )
+
+                        }
                     }
                 }
             } catch (e: Exception) {

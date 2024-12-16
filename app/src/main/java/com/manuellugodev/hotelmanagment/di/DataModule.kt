@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.di
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepositoryImpl
+import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
 import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepositoryImpl
@@ -13,7 +14,6 @@ import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepositoryImpl
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
-import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,8 +48,9 @@ class DataModule {
     @Provides
     fun provideReservationRepository(
         @Named("api") dataSource: DataSourceReservation,
-        dataSourceLocal: DataSourceReservationLocal
+        dataSourceLocal: DataSourceReservationLocal,
+        tokenManagment: TokenManagment
     ): ReservationRepository {
-        return ReservationRepositoryImpl(dataSource, dataSourceLocal)
+        return ReservationRepositoryImpl(dataSource, dataSourceLocal, tokenManagment)
     }
 }

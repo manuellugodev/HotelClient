@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserCredentials
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 
@@ -12,8 +13,9 @@ class LoginRepositoryImpl(
         val result = loginDataSource.loginWithEmailAndPassword(email, password)
 
         if (result.isSuccess ) {
-            loginLocalSource.saveToken(result.getOrDefault(""))
-            return loginLocalSource.saveUsername(email)
+            val credentials = result.getOrDefault(UserCredentials("", 0))
+            loginLocalSource.saveToken(credentials.token)
+            return loginLocalSource.saveUsernameAndGuestId(email, credentials.guestId)
         }
         return Result.failure(result.exceptionOrNull()?:Exception())
     }

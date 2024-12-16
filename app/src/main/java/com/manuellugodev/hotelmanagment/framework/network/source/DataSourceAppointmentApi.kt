@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
+import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
@@ -18,7 +19,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
             val checkOut = convertLongToDateTimeRoom(reservation.checkOut, pattern = "yyyy-MM-dd")
             val bodyAppointment = AppointmentBody(
                 reservation.client.id.toInt(), reservation.roomHotel.id.toInt(),
-                checkIn, checkOut, reservation.price.toString()
+                checkIn, checkOut, "Travel", reservation.totalPrice
             )
 
             val result = request.service.sendAppointment(
@@ -26,7 +27,8 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
                 bodyAppointment.roomId,
                 bodyAppointment.startTime,
                 bodyAppointment.endTime,
-                bodyAppointment.purpose
+                bodyAppointment.purpose,
+                bodyAppointment.total
             )
 
             if (result.isSuccessful) {
@@ -51,7 +53,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
                 val reservations = result.body()?.data
 
                 if (!reservations.isNullOrEmpty()) {
-                    return DataResult.Success(reservations.map { it.toReservation() })
+                    return DataResult.Success(reservations.map { it.toReservationPreview() })
                 }
 
             } else {
@@ -71,10 +73,17 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
     override suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>> {
         return try {
             val result = request.service.getMyAppointments(guest)
+
+
             if (result.isSuccessful) {
                 DataResult.Success(result.body()?.data!!.map { it.toReservation() })
             } else {
-                DataResult.Error(Exception("Error getting reservations"))
+                if (result.code() == 404) {
+                    DataResult.Error(AppointmentsNotFound())
+                } else {
+                    DataResult.Error(Exception("Error getting reservations"))
+
+                }
             }
         } catch (e: Exception) {
             DataResult.Error(e)
@@ -83,7 +92,7 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
 }
 
 
-fun Appointment.toReservation(): Reservation {
+fun Appointment.toReservationPreview(): Reservation {
 
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -108,4 +117,32 @@ fun Appointment.toReservation(): Reservation {
 
     throw java.lang.Exception()
 }
+
+fun Appointment.toReservation(): Reservation {
+
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+    try {
+        val dateStart = dateFormat.parse(startTime)
+        val dateEnd = dateFormat.parse(endTime)
+        val guest = guest.toCustomer()
+        val room = room.toRoomHotel(1)
+        return Reservation(
+            appointmentId,
+            guest,
+            room,
+            dateStart.time,
+            dateEnd.time,
+            room.price,
+            0.0,
+            total
+        )
+    } catch (e: Exception) {
+        println("Error parsing date: ${e.message}")
+    }
+
+    throw java.lang.Exception()
+}
+
+
 

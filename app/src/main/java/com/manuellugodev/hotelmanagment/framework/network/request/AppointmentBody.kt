@@ -5,5 +5,6 @@ data class AppointmentBody(
     val roomId: Int,
     val startTime: String,
     val endTime: String,
-    val purpose: String
+    val purpose: String,
+    val total: Double
 )

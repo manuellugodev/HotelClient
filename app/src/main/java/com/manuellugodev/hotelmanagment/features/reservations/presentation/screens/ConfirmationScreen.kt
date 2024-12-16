@@ -1,7 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.reservations.presentation.screens
 
 import CONFIRMATION_SCREEN
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material3.Button
@@ -39,16 +39,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
-import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
-import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
-import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
+import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ConfirmationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationEvent
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ConfirmationState
 
 
 @Composable
@@ -136,6 +134,7 @@ fun DetailConfirmationScreen(reservation: Reservation) {
                 fontSize = 24.sp
             )
 
+
             Row {
                 Icon(imageVector = Icons.Default.DateRange, contentDescription = "Check In")
                 Text("Check in :  " + convertLongToDateTimeRoom(checkInTime))
@@ -144,6 +143,10 @@ fun DetailConfirmationScreen(reservation: Reservation) {
             Row {
                 Icon(imageVector = Icons.Default.DateRange, contentDescription = "Check Out")
                 Text("Check Out :  " + convertLongToDateTimeRoom(checkOutTime))
+            }
+            Row {
+                Icon(imageVector = Icons.Default.AttachMoney, contentDescription = "Total Price")
+                Text(text = "Total: ${reservation.totalPrice}")
             }
 
 

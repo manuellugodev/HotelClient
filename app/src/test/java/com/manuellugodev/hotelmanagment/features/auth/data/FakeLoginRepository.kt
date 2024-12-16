@@ -1,5 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.auth.data
 
+import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
+
 class FakeLoginRepository:LoginRepository {
 
     var shouldReturnError: Boolean = false
@@ -26,5 +28,9 @@ class FakeLoginRepository:LoginRepository {
         }else{
             Result.success(Unit)
         }
+    }
+
+    override suspend fun registerNewUser(userRegisterModel: UserRegisterModel): Result<Unit> {
+        TODO("Not yet implemented")
     }
 }
