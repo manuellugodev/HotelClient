@@ -19,7 +19,8 @@ interface AppointmentService {
         @Query("roomId") roomId: Int,
         @Query("startTime") startTime: String,
         @Query("endTime") endTime: String,
-        @Query("purpose") purpose: String
+        @Query("purpose") purpose: String,
+        @Query("total") total: Double
     ): Response<String>
 
     @GET("/appointment/guest/{idGuest}")

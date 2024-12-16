@@ -7,6 +7,7 @@ data class Appointment(
     val startTime:String,
     val endTime:String,
     val purpose:String,
-    val status:String
+    val status: String,
+    val total: Double
 
 )
