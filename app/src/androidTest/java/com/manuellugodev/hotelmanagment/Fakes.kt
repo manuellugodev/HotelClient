@@ -56,5 +56,5 @@ fun fakeRoomHotel():RoomHotel{
 }
 
 fun fakeProfile():Profile{
-    return Profile("Manuelg20","Manuel","Lugo","example@gmail.com","12345678")
+    return Profile("Manuelg20", "Manuel", "Lugo", "example@gmail.com", "12345678", 1)
 }
