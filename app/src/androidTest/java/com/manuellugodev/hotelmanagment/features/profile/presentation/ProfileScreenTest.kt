@@ -21,7 +21,14 @@ class ProfileScreenTest:HotelManagmentTest(){
     @Test
     fun assertProfileIsDisplayedWithNameEmailAndPhone()= runBlocking<Unit> {
 
-        val profile =Profile(username = "manuellugo", firstName = "Manuel", lastName = "Lugo","manuel@gmail.com","123456789")
+        val profile = Profile(
+            username = "manuellugo",
+            firstName = "Manuel",
+            lastName = "Lugo",
+            "manuel@gmail.com",
+            "123456789",
+            1
+        )
         val state=ProfileState(showProfile = profile)
 
         startProfileScreen(state)
