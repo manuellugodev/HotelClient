@@ -5,5 +5,6 @@ data class MyReservationState(
     val showReservation:List<Reservation> = emptyList(),
     val showLoader:Boolean = false,
     val showErrorMsg:String ="",
-    val searchMyReservations:Boolean=false
+    val searchMyReservations: Boolean = false,
+    val optionSelected: Int = 0
 )

@@ -4,6 +4,7 @@ import com.manuellugodev.hotelmanagment.features.auth.data.LoginRepository
 import com.manuellugodev.hotelmanagment.features.auth.domain.CheckUserIsLogged
 import com.manuellugodev.hotelmanagment.features.auth.domain.DoSignUpUseCase
 import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
+import com.manuellugodev.hotelmanagment.features.core.domain.TimeProvider
 import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
@@ -11,6 +12,7 @@ import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRe
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTemporalReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
@@ -78,5 +80,13 @@ class UseCaseModule {
     @Provides
     fun provideDoSignUpUseCase(loginRepository: LoginRepository): DoSignUpUseCase {
         return DoSignUpUseCase(loginRepository)
+    }
+
+    @Provides
+    fun provideUpcomingAppointmentUseCase(
+        repository: ReservationRepository,
+        timeProvider: TimeProvider
+    ): GetUpcomingReservations {
+        return GetUpcomingReservations(repository, timeProvider)
     }
 }
