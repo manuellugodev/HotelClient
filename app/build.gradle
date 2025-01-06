@@ -14,8 +14,8 @@ android {
     defaultConfig {
         applicationId "com.manuellugodev.hotelmanagment"
         minSdk 24
-        targetSdk 33
-        versionCode 1
+        targetSdk 34
+        versionCode 2
         versionName "1.0"
 
         testInstrumentationRunner "com.manuellugodev.hotelmanagment.CustomTestRunner"

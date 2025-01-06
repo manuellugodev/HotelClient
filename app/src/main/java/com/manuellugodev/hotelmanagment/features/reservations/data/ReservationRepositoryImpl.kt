@@ -4,6 +4,7 @@ import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.framework.roomdb.DataSourceReservationLocal
+import java.util.Date
 
 class ReservationRepositoryImpl(
     private val dataSourceReservation: DataSourceReservation,
@@ -32,4 +33,22 @@ class ReservationRepositoryImpl(
         val id = tokenManagment.getGuestId()
         return dataSourceReservation.getMyReservations(id)
     }
+
+    override suspend fun getUpcomingReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        val id = tokenManagment.getGuestId()
+        return dataSourceReservation.getUpcomingReservations(id, date)
+    }
+
+    override suspend fun getPastReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        val id = tokenManagment.getGuestId()
+        return dataSourceReservation.getPastReservations(id, date)
+    }
+
+
 }

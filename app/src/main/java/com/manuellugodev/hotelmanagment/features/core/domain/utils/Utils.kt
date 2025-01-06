@@ -29,3 +29,9 @@ fun convertDateToString(date: Date): String {
     return format.format(date)
 }
 
+fun convertDateToStringDefaultTimeZone(date: Date): String {
+    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    format.timeZone = TimeZone.getDefault()
+    return format.format(date)
+}
+

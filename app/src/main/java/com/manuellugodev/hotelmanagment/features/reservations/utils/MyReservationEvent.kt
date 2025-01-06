@@ -6,6 +6,11 @@ sealed class MyReservationEvent {
 
     object GetMyReservations:MyReservationEvent()
 
-    
+    object GetUpcomingReservations : MyReservationEvent()
+
+    object GetPastReservations : MyReservationEvent()
+
+
+
 
 }

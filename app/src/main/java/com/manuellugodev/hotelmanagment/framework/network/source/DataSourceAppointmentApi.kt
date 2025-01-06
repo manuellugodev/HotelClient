@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.framework.network.source
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertDateToStringDefaultTimeZone
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToDateTimeRoom
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
@@ -10,6 +11,7 @@ import com.manuellugodev.hotelmanagment.framework.network.entities.toCustomer
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentBody
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSourceReservation {
@@ -89,6 +91,58 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
             DataResult.Error(e)
         }
     }
+
+    override suspend fun getUpcomingReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        return try {
+            val result = request.service.getUpcomingAppointments(
+                guest,
+                convertDateToStringDefaultTimeZone(date)
+            )
+
+            if (result.isSuccessful) {
+                DataResult.Success(result.body()?.data!!.map { it.toReservation() })
+            } else {
+                if (result.code() == 404) {
+                    DataResult.Error(AppointmentsNotFound())
+                } else {
+                    DataResult.Error(Exception("Error getting reservations"))
+                }
+            }
+
+        } catch (e: Exception) {
+            DataResult.Error(e)
+        }
+    }
+
+
+    override suspend fun getPastReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        return try {
+            val result = request.service.getPastAppointments(
+                guest,
+                convertDateToStringDefaultTimeZone(date)
+            )
+
+            if (result.isSuccessful) {
+                DataResult.Success(result.body()?.data!!.map { it.toReservation() })
+            } else {
+                if (result.code() == 404) {
+                    DataResult.Error(AppointmentsNotFound())
+                } else {
+                    DataResult.Error(Exception("Error getting reservations"))
+                }
+            }
+
+        } catch (e: Exception) {
+            DataResult.Error(e)
+        }
+    }
+
 }
 
 
