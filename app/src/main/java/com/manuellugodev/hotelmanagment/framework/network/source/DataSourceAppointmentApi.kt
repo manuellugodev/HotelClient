@@ -117,6 +117,32 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
         }
     }
 
+
+    override suspend fun getPastReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        return try {
+            val result = request.service.getPastAppointments(
+                guest,
+                convertDateToStringDefaultTimeZone(date)
+            )
+
+            if (result.isSuccessful) {
+                DataResult.Success(result.body()?.data!!.map { it.toReservation() })
+            } else {
+                if (result.code() == 404) {
+                    DataResult.Error(AppointmentsNotFound())
+                } else {
+                    DataResult.Error(Exception("Error getting reservations"))
+                }
+            }
+
+        } catch (e: Exception) {
+            DataResult.Error(e)
+        }
+    }
+
 }
 
 

@@ -31,4 +31,10 @@ interface AppointmentService {
         @Path("idGuest") idGuest: Int,
         @Query("dStartTime") date: String
     ): Response<ApiResponse<List<Appointment>>>
+
+    @GET("/appointment/guest/{idGuest}/past")
+    suspend fun getPastAppointments(
+        @Path("idGuest") idGuest: Int,
+        @Query("dStartTime") date: String
+    ): Response<ApiResponse<List<Appointment>>>
 }

@@ -10,6 +10,7 @@ import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOut
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
@@ -88,5 +89,13 @@ class UseCaseModule {
         timeProvider: TimeProvider
     ): GetUpcomingReservations {
         return GetUpcomingReservations(repository, timeProvider)
+    }
+
+    @Provides
+    fun providePastAppointmentUseCase(
+        repository: ReservationRepository,
+        timeProvider: TimeProvider
+    ): GetPastReservations {
+        return GetPastReservations(repository, timeProvider)
     }
 }

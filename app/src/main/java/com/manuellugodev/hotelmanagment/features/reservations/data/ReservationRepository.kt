@@ -16,4 +16,5 @@ interface ReservationRepository {
     suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>>
 
     suspend fun getUpcomingReservations(guest: Int, date: Date): DataResult<List<Reservation>>
+    suspend fun getPastReservations(guest: Int, date: Date): DataResult<List<Reservation>>
 }

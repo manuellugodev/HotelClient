@@ -42,5 +42,13 @@ class ReservationRepositoryImpl(
         return dataSourceReservation.getUpcomingReservations(id, date)
     }
 
+    override suspend fun getPastReservations(
+        guest: Int,
+        date: Date
+    ): DataResult<List<Reservation>> {
+        val id = tokenManagment.getGuestId()
+        return dataSourceReservation.getPastReservations(id, date)
+    }
+
 
 }
