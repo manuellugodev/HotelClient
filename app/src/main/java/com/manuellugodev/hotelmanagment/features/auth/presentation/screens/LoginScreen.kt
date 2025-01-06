@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.auth.presentation.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -131,7 +133,14 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
         }
 
         Spacer(modifier = Modifier.height(20.dp))
-        ClickableText(text = AnnotatedString("Don't have an Account?"), style = TextStyle.Default.copy(fontSize = 20.sp)) {
+
+        ClickableText(
+            text = AnnotatedString("Don't have an Account?"),
+            style = TextStyle.Default.copy(
+                fontSize = 20.sp,
+                color = if (isSystemInDarkTheme()) Color.White else Color.Black
+            )
+        ) {
             navigateToRegister()
         }
     }

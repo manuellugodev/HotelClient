@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.scre
 import CONFIRMATION_SCREEN
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,32 +51,41 @@ import com.manuellugodev.hotelmanagment.features.reservations.utils.Confirmation
 
 
 @Composable
-fun ConfirmationScreenRoot(viewModel: ConfirmationViewModel,navController: NavController){
+fun ConfirmationScreenRoot(viewModel: ConfirmationViewModel, navController: NavController) {
     val state by viewModel.confirmationState.collectAsState()
 
-    ConfirmationScreen(state,viewModel::onEvent)
+    ConfirmationScreen(state, viewModel::onEvent)
 
     LaunchedEffect(key1 = state.reservationSaved) {
-        if(state.reservationSaved){
-            navController.popBackStack(Screen.ReservationScreen.route,false)
+        if (state.reservationSaved) {
+            navController.popBackStack(Screen.ReservationScreen.route, false)
         }
     }
 
     LaunchedEffect(key1 = state.searchReservation) {
-        if(state.searchReservation){
+        if (state.searchReservation) {
             viewModel.onEvent(ConfirmationEvent.getTemporalReservation)
         }
     }
 
 }
-@Composable
-fun ConfirmationScreen(
-state:ConfirmationState,onEvent:(ConfirmationEvent)->Unit
-) {
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background(
+@Composable
+private fun chooseBackground(): Modifier {
+    return if (isSystemInDarkTheme()) {
+
+        Modifier.background(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.inversePrimary,
+                    Color.Black
+                ), startY = 40f
+            )
+        )
+
+
+    } else {
+        Modifier.background(
             brush = Brush.verticalGradient(
                 colors = listOf(
                     MaterialTheme.colorScheme.primary,
@@ -83,6 +93,18 @@ state:ConfirmationState,onEvent:(ConfirmationEvent)->Unit
                 ), startY = 40f
             )
         )
+
+    }
+}
+
+@Composable
+fun ConfirmationScreen(
+    state: ConfirmationState, onEvent: (ConfirmationEvent) -> Unit
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = chooseBackground().fillMaxHeight()
     ) {
 
 
@@ -155,6 +177,19 @@ fun DetailConfirmationScreen(reservation: Reservation) {
     }
 }
 
+@Composable
+private fun chooseBackgroundText(): Brush {
+    return if (isSystemInDarkTheme()) {
+        Brush.horizontalGradient(
+            listOf(MaterialTheme.colorScheme.inversePrimary, Color.Black),
+        )
+    } else {
+        Brush.horizontalGradient(
+            listOf(MaterialTheme.colorScheme.primary, Color.White),
+        )
+    }
+}
+
 
 @Composable
 fun DetailConfirmationScreenNew(reservation: Reservation) {
@@ -188,9 +223,7 @@ fun DetailConfirmationScreenNew(reservation: Reservation) {
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .background(
-                        brush = Brush.horizontalGradient(
-                            listOf(MaterialTheme.colorScheme.primary, Color.White),
-                        ), alpha = 0.3f
+                        brush = chooseBackgroundText(), alpha = 0.8f
                     )
                     .fillMaxWidth(),
                 text = room.description,

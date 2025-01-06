@@ -1,5 +1,6 @@
 package com.manuellugodev.hotelmanagment.features.core.composables
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
@@ -21,18 +22,15 @@ fun ErrorSnackbar(
                 Text(
                     text = "Dismiss",
                     modifier = Modifier.padding(8.dp),
-                    color = Color.White,
-
+                    if (isSystemInDarkTheme()) Color.Black else Color.White
                     )
             }
 
 
         },
-        contentColor = Color.Red,
         content = {
             Text(
                 text = errorMessage,
-                color = Color.White
             )
         },
 

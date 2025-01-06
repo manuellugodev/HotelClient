@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
@@ -42,7 +43,7 @@ fun MyReservationScreen(state: MyReservationState, onEvent: (MyReservationEvent)
     Column {
         TabRow(
             selectedTabIndex = state.optionSelected,
-            modifier = Modifier.padding(bottom = 10.dp)
+            modifier = Modifier.padding(bottom = 10.dp), contentColor = Color.White
         ) {
 
             Tab(
