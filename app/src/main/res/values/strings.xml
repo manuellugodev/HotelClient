@@ -2,4 +2,5 @@
     <string name="app_name">HotelManagment</string>
     <string name="not_found_appointments">Appointments not Found</string>
     <string name="complete_fields">Complete the fields</string>
+    <string name="success_message_register">User Registered Successfully</string>
 </resources>
