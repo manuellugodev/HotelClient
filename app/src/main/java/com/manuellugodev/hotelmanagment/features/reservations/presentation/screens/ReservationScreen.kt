@@ -41,13 +41,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.R
 import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
-import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.convertLongToTime
+import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.ReservationViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationEvent
 import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationState
@@ -142,7 +144,7 @@ fun ReservationScreen(
     }
 
     if (state.showError.isNotEmpty()) {
-        ErrorSnackbar(errorMessage = "Rellene los datos") {
+        ErrorSnackbar(errorMessage = stringResource(id = R.string.complete_fields)) {
             onEvent(ReservationEvent.DismissError)
         }
     }

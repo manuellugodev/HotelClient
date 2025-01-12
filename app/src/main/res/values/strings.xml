@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HotelManagment</string>
+    <string name="not_found_appointments">Appointments not Found</string>
+    <string name="complete_fields">Complete the fields</string>
 </resources>

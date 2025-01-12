@@ -158,12 +158,14 @@ class MyReservationsViewModel @Inject constructor(
             MyReservationEvent.OnDismissError -> _stateMyReservation.value= stateMyReservation.value.copy(showErrorMsg = "")
             MyReservationEvent.GetMyReservations -> getReservations()
             MyReservationEvent.GetUpcomingReservations -> {
-                _stateMyReservation.value = stateMyReservation.value.copy(optionSelected = 0)
+                _stateMyReservation.value =
+                    stateMyReservation.value.copy(optionSelected = 0, showReservation = listOf())
                 getUpcomingReservation()
             }
 
             MyReservationEvent.GetPastReservations -> {
-                _stateMyReservation.value = stateMyReservation.value.copy(optionSelected = 1)
+                _stateMyReservation.value =
+                    stateMyReservation.value.copy(optionSelected = 1, showReservation = listOf())
                 getPastReservationVm()
             }
         }
