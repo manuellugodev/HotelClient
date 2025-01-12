@@ -5,6 +5,7 @@ data class RegisterState(
     val username:String="",
     val usernameError: String = "",
     val password:String ="",
+    val confirmPassword: String = "",
     val passwordError: String = "",
     val firstName:String="",
     val lastName:String="",

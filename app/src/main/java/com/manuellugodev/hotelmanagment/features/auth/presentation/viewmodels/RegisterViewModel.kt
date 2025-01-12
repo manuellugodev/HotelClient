@@ -32,7 +32,16 @@ class RegisterViewModel @Inject constructor(
 
             is RegisterEvent.onFirstNameEnter -> state = state.copy(firstName = event.firstName)
             is RegisterEvent.onLastNameEnter -> state = state.copy(lastName = event.lastName)
-            is RegisterEvent.onPasswordEnter -> state = state.copy(password = event.password)
+            is RegisterEvent.onPasswordEnter -> {
+                state = state.copy(password = event.password)
+                verifyPasswordMatch()
+            }
+
+            is RegisterEvent.onPasswordConfirmationEnter -> {
+                state = state.copy(confirmPassword = event.confimrationPassword)
+                verifyPasswordMatch()
+            }
+
             is RegisterEvent.onPhoneEnter -> state = state.copy(phone = event.phone)
             is RegisterEvent.onUsernameEnter -> {
                 state = state.copy(username = event.username, usernameError = "")
@@ -43,6 +52,15 @@ class RegisterViewModel @Inject constructor(
 
             RegisterEvent.submitDataUser -> sendDataUser()
             RegisterEvent.dismissError -> state = state.copy(msgError = "")
+        }
+    }
+
+    private fun verifyPasswordMatch() {
+        if (state.password != state.confirmPassword) {
+            state = state.copy(passwordError = "Passwords do not match")
+            return
+        } else {
+            state = state.copy(passwordError = "")
         }
     }
 

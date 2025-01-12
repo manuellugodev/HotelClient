@@ -6,6 +6,8 @@ sealed class RegisterEvent {
 
     data class onPasswordEnter(val password:String):RegisterEvent()
 
+    data class onPasswordConfirmationEnter(val confimrationPassword: String) : RegisterEvent()
+
     data class onFirstNameEnter(val firstName:String):RegisterEvent()
 
     data class onLastNameEnter(val lastName:String):RegisterEvent()
