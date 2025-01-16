@@ -157,7 +157,7 @@ fun MyReservationScreen(state: MyReservationState, onEvent: (MyReservationEvent)
                         DetailMyReservationScreen(it) {
                             onEvent(
                                 MyReservationEvent.IntentDeleteAppointment(
-                                    it.id
+                                    it
                                 )
                             )
                         }

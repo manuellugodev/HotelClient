@@ -8,5 +8,5 @@ data class MyReservationState(
     val searchMyReservations: Boolean = false,
     val optionSelected: Int = 0,
     val showConfirmDelete: Boolean = false,
-    val reservationSelectedId: Int = -1
+    val reservationSelectedId: Reservation? = null
 )

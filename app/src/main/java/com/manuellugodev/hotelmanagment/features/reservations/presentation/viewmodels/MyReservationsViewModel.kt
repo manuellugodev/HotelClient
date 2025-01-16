@@ -158,13 +158,20 @@ class MyReservationsViewModel @Inject constructor(
     private fun deleteReservation() {
         viewModelScope.launch(distparcher.io) {
             try {
-                if (stateMyReservation.value.reservationSelectedId != -1) {
-                    removeReservationUsecase(stateMyReservation.value.reservationSelectedId)
+                if (stateMyReservation.value.reservationSelectedId != null) {
+                    removeReservationUsecase(stateMyReservation.value.reservationSelectedId!!.id)
+
+
                     withContext(distparcher.main) {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showConfirmDelete = false,
-                            reservationSelectedId = -1
+                            reservationSelectedId = null
                         )
+
+                        when (stateMyReservation.value.optionSelected) {
+                            0 -> onEvent(MyReservationEvent.GetUpcomingReservations)
+                            1 -> onEvent(MyReservationEvent.GetPastReservations)
+                        }
                     }
 
                 }
@@ -172,7 +179,7 @@ class MyReservationsViewModel @Inject constructor(
                 withContext(distparcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showConfirmDelete = false,
-                        reservationSelectedId = -1
+                        reservationSelectedId = null
                     )
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showErrorMsg = e.message ?: "Error",
@@ -204,14 +211,14 @@ class MyReservationsViewModel @Inject constructor(
             is MyReservationEvent.IntentDeleteAppointment -> {
                 _stateMyReservation.value = stateMyReservation.value.copy(
                     showConfirmDelete = true,
-                    reservationSelectedId = myReservationEvent.reservationId
+                    reservationSelectedId = myReservationEvent.reservation
                 )
             }
 
             MyReservationEvent.DismissDeleteAppointment -> {
                 _stateMyReservation.value = stateMyReservation.value.copy(
                     showConfirmDelete = false,
-                    reservationSelectedId = -1
+                    reservationSelectedId = null
                 )
             }
 
