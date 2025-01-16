@@ -50,5 +50,9 @@ class ReservationRepositoryImpl(
         return dataSourceReservation.getPastReservations(id, date)
     }
 
+    override suspend fun deleteReservation(id: Int): DataResult<String> {
+        return dataSourceReservation.deleteReservation(id)
+    }
+
 
 }

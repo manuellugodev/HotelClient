@@ -31,4 +31,8 @@ class FakeSourceAppointment:DataSourceReservation {
     ): DataResult<List<Reservation>> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun deleteReservation(id: Int): DataResult<String> {
+        TODO("Not yet implemented")
+    }
 }

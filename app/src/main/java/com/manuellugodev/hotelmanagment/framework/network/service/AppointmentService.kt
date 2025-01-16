@@ -3,6 +3,7 @@ package com.manuellugodev.hotelmanagment.framework.network.service
 import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.Appointment
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -37,4 +38,7 @@ interface AppointmentService {
         @Path("idGuest") idGuest: Int,
         @Query("dStartTime") date: String
     ): Response<ApiResponse<List<Appointment>>>
+
+    @DELETE("/appointment")
+    suspend fun deleteAppointment(@Query("id") appointmentId: Int): Response<ApiResponse<String>>
 }

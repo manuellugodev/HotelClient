@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
@@ -24,6 +25,7 @@ class MyReservationsViewModel @Inject constructor(
     private val getMyReservationsUseCase: GetMyReservations,
     private val getUpcomingReservations: GetUpcomingReservations,
     private val getPastReservations: GetPastReservations,
+    private val removeReservationUsecase: DeleteReservation,
     private val distparcher: DistpatcherProvider
 ) :
     ViewModel() {
@@ -153,6 +155,36 @@ class MyReservationsViewModel @Inject constructor(
         }
     }
 
+    private fun deleteReservation() {
+        viewModelScope.launch(distparcher.io) {
+            try {
+                if (stateMyReservation.value.reservationSelectedId != -1) {
+                    removeReservationUsecase(stateMyReservation.value.reservationSelectedId)
+                    withContext(distparcher.main) {
+                        _stateMyReservation.value = stateMyReservation.value.copy(
+                            showConfirmDelete = false,
+                            reservationSelectedId = -1
+                        )
+                    }
+
+                }
+            } catch (e: Exception) {
+                withContext(distparcher.main) {
+                    _stateMyReservation.value = stateMyReservation.value.copy(
+                        showConfirmDelete = false,
+                        reservationSelectedId = -1
+                    )
+                    _stateMyReservation.value = stateMyReservation.value.copy(
+                        showErrorMsg = e.message ?: "Error",
+                        searchMyReservations = false
+                    )
+                }
+
+            }
+        }
+
+    }
+
     fun onEvent(myReservationEvent: MyReservationEvent) {
         when(myReservationEvent){
             MyReservationEvent.OnDismissError -> _stateMyReservation.value= stateMyReservation.value.copy(showErrorMsg = "")
@@ -167,6 +199,24 @@ class MyReservationsViewModel @Inject constructor(
                 _stateMyReservation.value =
                     stateMyReservation.value.copy(optionSelected = 1, showReservation = listOf())
                 getPastReservationVm()
+            }
+
+            is MyReservationEvent.IntentDeleteAppointment -> {
+                _stateMyReservation.value = stateMyReservation.value.copy(
+                    showConfirmDelete = true,
+                    reservationSelectedId = myReservationEvent.reservationId
+                )
+            }
+
+            MyReservationEvent.DismissDeleteAppointment -> {
+                _stateMyReservation.value = stateMyReservation.value.copy(
+                    showConfirmDelete = false,
+                    reservationSelectedId = -1
+                )
+            }
+
+            MyReservationEvent.ConfirmDeleteAppointment -> {
+                deleteReservation()
             }
         }
     }

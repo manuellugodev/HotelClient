@@ -10,7 +10,11 @@ sealed class MyReservationEvent {
 
     object GetPastReservations : MyReservationEvent()
 
+    class IntentDeleteAppointment(val reservationId: Int) : MyReservationEvent()
 
+    object DismissDeleteAppointment : MyReservationEvent()
+
+    object ConfirmDeleteAppointment : MyReservationEvent()
 
 
 }
