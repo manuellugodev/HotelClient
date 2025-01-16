@@ -6,10 +6,12 @@ import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
+import com.manuellugodev.hotelmanagment.features.core.domain.TimeProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.TokenManagment
 import com.manuellugodev.hotelmanagment.features.profile.data.DataSourceProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.DataSourceReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomDataSource
+import com.manuellugodev.hotelmanagment.framework.TimeAndroid
 import com.manuellugodev.hotelmanagment.framework.network.request.AppointmentRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.LoginRequest
 import com.manuellugodev.hotelmanagment.framework.network.request.ProfileRequest
@@ -107,6 +109,12 @@ class TestAppModule {
         return MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimeAndroid(): TimeProvider {
+        return TimeAndroid()
     }
 
 
