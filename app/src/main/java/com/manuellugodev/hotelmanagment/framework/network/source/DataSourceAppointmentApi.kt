@@ -143,6 +143,21 @@ class DataSourceAppointmentApi(private val request: AppointmentRequest) : DataSo
         }
     }
 
+    override suspend fun deleteReservation(id: Int): DataResult<String> {
+        return try {
+            val result = request.service.deleteAppointment(id)
+
+            if (result.isSuccessful) {
+                DataResult.Success("Deleted Success")
+            } else {
+                DataResult.Error(Exception("Error Trying delete Reservation"))
+            }
+        } catch (e: Exception) {
+            DataResult.Error(exception = e)
+        }
+
+    }
+
 }
 
 

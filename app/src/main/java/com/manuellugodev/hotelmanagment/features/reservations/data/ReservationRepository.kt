@@ -17,4 +17,6 @@ interface ReservationRepository {
 
     suspend fun getUpcomingReservations(guest: Int, date: Date): DataResult<List<Reservation>>
     suspend fun getPastReservations(guest: Int, date: Date): DataResult<List<Reservation>>
+
+    suspend fun deleteReservation(id: Int): DataResult<String>
 }

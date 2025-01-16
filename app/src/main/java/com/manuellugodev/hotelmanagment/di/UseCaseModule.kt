@@ -9,6 +9,7 @@ import com.manuellugodev.hotelmanagment.features.profile.data.ProfileRepository
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.features.reservations.data.ReservationRepository
+import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastReservations
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetReservations
@@ -18,7 +19,6 @@ import com.manuellugodev.hotelmanagment.features.reservations.domain.SaveTempora
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
 import com.manuellugodev.hotelmanagment.features.rooms.data.RoomRepository
 import com.manuellugodev.hotelmanagment.features.rooms.domain.SearchRoomAvailables
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,5 +97,10 @@ class UseCaseModule {
         timeProvider: TimeProvider
     ): GetPastReservations {
         return GetPastReservations(repository, timeProvider)
+    }
+
+    @Provides
+    fun provideDeleteReservationUseCase(repository: ReservationRepository): DeleteReservation {
+        return DeleteReservation(repository)
     }
 }

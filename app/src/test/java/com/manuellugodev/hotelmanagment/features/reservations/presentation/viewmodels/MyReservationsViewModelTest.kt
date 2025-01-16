@@ -3,7 +3,10 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.view
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
 import com.manuellugodev.hotelmanagment.TestDistpatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
+import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastReservations
+import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
 import com.manuellugodev.hotelmanagment.utils.fakeReservation
 import io.mockk.coEvery
@@ -22,13 +25,22 @@ class MyReservationsViewModelTest{
 
     private val standardTest = StandardTestDispatcher()
     private val getMyReservations:GetMyReservations = mockk(relaxed = true)
+    private val getUpcomingReservations: GetUpcomingReservations = mockk(relaxed = true)
+    private val getPastReservations: GetPastReservations = mockk(relaxed = true)
+    private val deleteReservation: DeleteReservation = mockk(relaxed = true)
     private lateinit var viewmodel:MyReservationsViewModel
     @get:Rule
     val rule= MainCoroutineExtension(standardTest)
 
     @Before
     fun setUp(){
-        viewmodel= MyReservationsViewModel(getMyReservations,TestDistpatchers(standardTest))
+        viewmodel = MyReservationsViewModel(
+            getMyReservations,
+            getUpcomingReservations,
+            getPastReservations,
+            deleteReservation,
+            TestDistpatchers(standardTest)
+        )
     }
     @Test
     fun `WHEN event GetMyReservation THEN call GetMyReservationUseCase`()=runTest{
