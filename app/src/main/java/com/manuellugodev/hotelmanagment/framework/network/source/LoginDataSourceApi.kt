@@ -1,11 +1,14 @@
 package com.manuellugodev.hotelmanagment.framework.network.source
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.manuellugodev.hotelmanagment.features.auth.data.LoginDataSource
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserCredentials
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
+import com.manuellugodev.hotelmanagment.features.auth.domain.exceptions.AuthenticationFailedException
+import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.GeneralExceptionApp
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.UsernameAlreadyExist
 import com.manuellugodev.hotelmanagment.framework.network.entities.ApiResponse
 import com.manuellugodev.hotelmanagment.framework.network.entities.LoginRequestBody
@@ -19,6 +22,8 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
         password: String
     ): Result<UserCredentials> {
         try {
+
+            FirebaseCrashlytics.getInstance().setCustomKey("Login_source_error", "LoginDataSource")
 
             val result = request.getService().doLogin(LoginRequestBody(email, password))
             if (result.isSuccessful) {
@@ -43,18 +48,33 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
 
                         // Access specific fields from the parsed error response
                         val errorType = errorResponse?.errorType
-                        val errorMessage = errorResponse?.message
+                        var errorMessage = errorResponse?.message
 
-                        return Result.failure(Exception(errorType))
+                        if (errorType == "IncorrectCredentials") {
+                            return Result.failure(AuthenticationFailedException())
+                        }
+
+                        return Result.failure(GeneralExceptionApp("Some is wrong"))
 
                     } catch (e: Exception) {
-                        return Result.failure(e)
+
+                        FirebaseCrashlytics.getInstance()
+                            .log("The code is trying interprete the exception")
+                        FirebaseCrashlytics.getInstance().recordException(e)
+                        return Result.failure(GeneralExceptionApp("Some is Wrong"))
                     }
                 }
-                return Result.failure(Exception(result.body()?.errorType))
+
+                val exception = GeneralExceptionApp(result.body()?.errorType)
+                FirebaseCrashlytics.getInstance().log("The result was not success")
+                FirebaseCrashlytics.getInstance().recordException(exception)
+
+                return Result.failure(GeneralExceptionApp("Some is wrong"))
             }
         } catch (e: Exception) {
-            return Result.failure(e)
+            FirebaseCrashlytics.getInstance().log("Some failed trying solve the request")
+            FirebaseCrashlytics.getInstance().recordException(e)
+            return Result.failure(GeneralExceptionApp("Some is wrong"))
         }
 
 

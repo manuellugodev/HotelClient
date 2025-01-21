@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -37,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.R
+import com.manuellugodev.hotelmanagment.features.auth.domain.exceptions.AuthenticationFailedException
 import com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels.LoginViewModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginStatus
@@ -55,8 +58,12 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
     if (state.loginSuccess) {
         navController.navigateAndCleanBackStack(Screen.ReservationScreen.route)
-    } else if (state.showError.isNotEmpty()) {
-        ErrorSnackbar(errorMessage = state.showError) {
+    } else if (state.showError != null) {
+        var message = state.showError!!.message
+        if (state.showError is AuthenticationFailedException) {
+            message = stringResource(id = R.string.failed_authentication)
+        }
+        ErrorSnackbar(errorMessage = message ?: "Some is wrong") {
             viewModel.onEvent(LoginEvent.DismissError)
         }
     }
