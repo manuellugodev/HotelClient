@@ -12,11 +12,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ErrorSnackbar(
+    modifier: Modifier = Modifier,
     errorMessage: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     Snackbar(
-        modifier = Modifier.padding(16.dp),
+        modifier = modifier.padding(16.dp),
         action = {
             TextButton(onClick = onDismiss) {
                 Text(

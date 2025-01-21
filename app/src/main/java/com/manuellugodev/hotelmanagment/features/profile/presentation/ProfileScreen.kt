@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.manuellugodev.hotelmanagment.features.core.composables.ErrorSnackbar
 import com.manuellugodev.hotelmanagment.features.core.navigation.Screen
 import com.manuellugodev.hotelmanagment.features.core.navigation.navigateAndCleanBackStack
 import com.manuellugodev.hotelmanagment.features.profile.domain.Profile
@@ -60,6 +61,14 @@ fun ProfileScreen(state:ProfileState,onEvent:(ProfileEvent)->Unit) {
             .fillMaxSize(1f)
     ) {
 
+        if (state.showError.isNotEmpty()) {
+            ErrorSnackbar(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                errorMessage = state.showError
+            ) {
+                onEvent(ProfileEvent.DismissError)
+            }
+        }
 
         Column(
             Modifier
