@@ -29,7 +29,10 @@ class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameA
                 _statusLogin.value = _statusLogin.value.copy(showLoader = false, loginSuccess = true)
             }else{
                 val exception = result.exceptionOrNull()
-                _statusLogin.value = _statusLogin.value.copy(showLoader = false, showError =exception?.message?:"Something is Wrong")
+
+                _statusLogin.value =
+                    _statusLogin.value.copy(showLoader = false, showError = exception)
+
             }
         }
 
@@ -41,7 +44,9 @@ class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameA
             is LoginEvent.OnPasswordEnter -> {_statusLogin.value=statusLogin.value.copy(passwordeEnter = event.password)}
             is LoginEvent.OnUsernameEnter -> {_statusLogin.value =statusLogin.value.copy(usernameEnter = event.username)}
             is LoginEvent.VisibilityPassword ->{_statusLogin.value=statusLogin.value.copy(showPassword = event.isVisible)}
-            LoginEvent.DismissError -> {_statusLogin.value=_statusLogin.value.copy(showError = "")}
+            LoginEvent.DismissError -> {
+                _statusLogin.value = _statusLogin.value.copy(showError = null)
+            }
         }
     }
 

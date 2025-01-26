@@ -5,4 +5,5 @@ sealed class ProfileEvent {
 
     object LoadProfile:ProfileEvent()
     object LogOutSession:ProfileEvent()
+    object DismissError : ProfileEvent()
 }

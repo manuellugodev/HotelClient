@@ -65,6 +65,8 @@ class ProfileViewModel @Inject constructor(
         when(event){
             ProfileEvent.LoadProfile -> loadDataProfile()
             ProfileEvent.LogOutSession -> logOutSession()
+            ProfileEvent.DismissError -> _stateProfile.value =
+                stateProfile.value.copy(showError = "")
         }
 
     }
