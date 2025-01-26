@@ -39,6 +39,30 @@ maintainability, scalability, and testability. The architecture layers include:
 
 ---
 
+## Screenshots
+
+### Login Screen (Dark Mode)
+
+![Login Screen (Dark Mode)](images/Login_DarkMode.webp)
+
+### Calendar Screen (Dark Mode)
+
+![Calendar Screen (Dark Mode)](images/calendar_darkmode.webp)
+
+### Guest Counter Screen
+
+![Guest Counter Screen](images/guestCounter.webp)
+
+### My Reservations Screen (Dark Mode)
+
+![My Reservations Screen (Dark Mode)](images/MyReservationsDarkMode.webp)
+
+### Profile Screen (Dark Mode)
+
+![Profile Screen (Dark Mode)](images/ProfileDarkMode.webp)
+
+---
+
 ## Prerequisites
 
 Before setting up the project, ensure you have the following installed:
