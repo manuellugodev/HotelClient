@@ -30,7 +30,7 @@ features.
 
 ### Architecture
 
-This project follows **MVVM (Model-View-ViewModel)** combined with **Clean Architecture**, ensuring
+This project follows **MVI (Model-View-Intent)** combined with **Clean Architecture**, ensuring
 maintainability, scalability, and testability. The architecture layers include:
 
 - **Presentation Layer**: Views and ViewModels, handling UI and user interactions.
