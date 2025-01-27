@@ -10,8 +10,8 @@ features.
 ## Features
 
 - **Booking Management**: View, modify, and cancel reservations.
-- **User Authentication**: Secure login and signup using email, Google, or social media accounts.
-- **Multi-language Support**: Available in English, Spanish, and more.
+- **User Authentication**: Secure login and signup using email
+- **Multi-language Support**: Available in English, Spanish
 
 ---
 
