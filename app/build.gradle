@@ -17,8 +17,8 @@ android {
         applicationId "com.manuellugodev.hotelmanagment"
         minSdk 24
         targetSdk 34
-        versionCode 8
-        versionName "1.4"
+        versionCode 9
+        versionName "1.5"
 
         testInstrumentationRunner "com.manuellugodev.hotelmanagment.CustomTestRunner"
         vectorDrawables {
