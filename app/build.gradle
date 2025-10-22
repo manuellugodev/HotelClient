@@ -11,14 +11,14 @@ plugins {
 
 android {
     namespace 'com.manuellugodev.hotelmanagment'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.manuellugodev.hotelmanagment"
         minSdk 24
-        targetSdk 34
-        versionCode 9
-        versionName "1.5"
+        targetSdk 35
+        versionCode 10
+        versionName "1.5.1"
 
         testInstrumentationRunner "com.manuellugodev.hotelmanagment.CustomTestRunner"
         vectorDrawables {
