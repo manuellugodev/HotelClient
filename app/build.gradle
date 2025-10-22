@@ -17,8 +17,8 @@ android {
         applicationId "com.manuellugodev.hotelmanagment"
         minSdk 24
         targetSdk 34
-        versionCode 8
-        versionName "1.4"
+        versionCode 9
+        versionName "1.5"
 
         testInstrumentationRunner "com.manuellugodev.hotelmanagment.CustomTestRunner"
         vectorDrawables {
@@ -30,7 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://app-hotel-5687665021bc.herokuapp.com/"'
+            buildConfigField "String", "BASE_URL", '"https://hotel.manuellugo.dev/"'
 
         }
         debug {
