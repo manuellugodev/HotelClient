@@ -47,12 +47,12 @@ class MyReservationsViewModelTest{
         viewmodel.onEvent(MyReservationEvent.GetMyReservations)
 
         advanceUntilIdle()
-        coVerify { getMyReservations.invoke(any()) }
+        coVerify { getMyReservations.invoke() }
     }
 
     @Test
     fun `WHEN event GetMyReservation and GetMyReservationUseCase is success THEN UPDATE state with reservations`()=runTest{
-        coEvery { getMyReservations.invoke(any()) } returns DataResult.Success(listOf(
+        coEvery { getMyReservations.invoke() } returns DataResult.Success(listOf(
             fakeReservation(), fakeReservation(), fakeReservation(), fakeReservation()
         ))
         viewmodel.onEvent(MyReservationEvent.GetMyReservations)
@@ -64,7 +64,7 @@ class MyReservationsViewModelTest{
     @Test
     fun `WHEN event GetMyReservation and GetMyReservationUseCase is Error THEN UPDATE state with Error`()=runTest{
         val exception=Exception()
-        coEvery { getMyReservations.invoke(any()) } returns DataResult.Error(exception)
+        coEvery { getMyReservations.invoke() } returns DataResult.Error(exception)
 
         viewmodel.onEvent(MyReservationEvent.GetMyReservations)
 
@@ -76,7 +76,7 @@ class MyReservationsViewModelTest{
     @Test
     fun `WHEN event OnDismissError THEN clean state ERROR`()= runTest {
         val exception=Exception()
-        coEvery { getMyReservations.invoke(any()) } returns DataResult.Error(exception)
+        coEvery { getMyReservations.invoke() } returns DataResult.Error(exception)
 
         viewmodel.onEvent(MyReservationEvent.GetMyReservations)
 

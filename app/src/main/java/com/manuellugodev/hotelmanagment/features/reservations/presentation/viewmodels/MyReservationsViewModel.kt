@@ -13,6 +13,7 @@ import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastRese
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -101,8 +102,8 @@ class MyReservationsViewModel @Inject constructor(
                         )
 
                         when (stateMyReservation.value.optionSelected) {
-                            0 -> onEvent(MyReservationEvent.GetUpcomingReservations)
-                            1 -> onEvent(MyReservationEvent.GetPastReservations)
+                            ReservationFilter.UPCOMING -> onEvent(MyReservationEvent.GetUpcomingReservations)
+                            ReservationFilter.PAST -> onEvent(MyReservationEvent.GetPastReservations)
                         }
                     }
 
@@ -130,13 +131,13 @@ class MyReservationsViewModel @Inject constructor(
             MyReservationEvent.GetMyReservations -> getReservations()
             MyReservationEvent.GetUpcomingReservations -> {
                 _stateMyReservation.value =
-                    stateMyReservation.value.copy(optionSelected = 0, showReservation = listOf())
+                    stateMyReservation.value.copy(optionSelected = ReservationFilter.UPCOMING, showReservation = listOf())
                 getUpcomingReservation()
             }
 
             MyReservationEvent.GetPastReservations -> {
                 _stateMyReservation.value =
-                    stateMyReservation.value.copy(optionSelected = 1, showReservation = listOf())
+                    stateMyReservation.value.copy(optionSelected = ReservationFilter.PAST, showReservation = listOf())
                 getPastReservationVm()
             }
 

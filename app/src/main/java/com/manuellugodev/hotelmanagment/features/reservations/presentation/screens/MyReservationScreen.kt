@@ -62,6 +62,7 @@ import com.manuellugodev.hotelmanagment.features.core.presentation.ui.theme.prim
 import com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels.MyReservationsViewModel
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -117,13 +118,13 @@ fun MyReservationScreen(state: MyReservationState, onEvent: (MyReservationEvent)
 
         Column {
             TabRow(
-                selectedTabIndex = state.optionSelected,
+                selectedTabIndex = state.optionSelected.value,
                 modifier = Modifier.padding(bottom = 10.dp), contentColor = Color.White
             ) {
 
                 Tab(
                     modifier = Modifier.padding(bottom = 5.dp),
-                    selected = 0 == state.optionSelected,
+                    selected = ReservationFilter.UPCOMING == state.optionSelected,
                     onClick = { onEvent(MyReservationEvent.GetUpcomingReservations) }) {
 
                     Text(
@@ -134,7 +135,7 @@ fun MyReservationScreen(state: MyReservationState, onEvent: (MyReservationEvent)
                 }
                 Tab(
                     modifier = Modifier.padding(bottom = 5.dp),
-                    selected = 1 == state.optionSelected,
+                    selected = ReservationFilter.PAST == state.optionSelected,
                     onClick = { onEvent(MyReservationEvent.GetPastReservations) }) {
 
                     Text(
