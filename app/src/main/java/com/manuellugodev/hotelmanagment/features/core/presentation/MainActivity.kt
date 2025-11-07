@@ -96,9 +96,9 @@ fun TopBarAppHotel(title: String) {
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             titleContentColor = MaterialTheme.colorScheme.onSurface,
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         ),
         windowInsets = WindowInsets(0)
     )
