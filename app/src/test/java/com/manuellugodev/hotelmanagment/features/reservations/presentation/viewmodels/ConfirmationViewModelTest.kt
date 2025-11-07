@@ -2,7 +2,7 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.view
 
 import androidx.lifecycle.SavedStateHandle
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
-import com.manuellugodev.hotelmanagment.TestDistpatchers
+import com.manuellugodev.hotelmanagment.TestDispatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
@@ -37,7 +37,7 @@ class ConfirmationViewModelTest{
     @Before
     fun setUp(){
         every { savedStateHandle.get<Long>(RESERVATION) } returns reservationIdMockk
-        viewModel= ConfirmationViewModel(sendConfirmation,getTemporalReservation,savedStateHandle,TestDistpatchers(standarTest))
+        viewModel= ConfirmationViewModel(sendConfirmation,getTemporalReservation,savedStateHandle,TestDispatchers(standarTest))
     }
 
     @Test

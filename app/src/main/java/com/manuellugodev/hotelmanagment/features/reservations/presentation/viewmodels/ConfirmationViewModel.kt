@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
@@ -27,7 +27,7 @@ class ConfirmationViewModel @Inject constructor(
     private val sendConfirmationReservation: SendConfirmationReservation,
     private val getTemporalReservation: GetTemporalReservation,
     savedStateHandle: SavedStateHandle,
-    private val distpatcher: DistpatcherProvider
+    private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
     private var temporalId:Long=savedStateHandle.get(RESERVATION)?:-1L
@@ -38,13 +38,12 @@ class ConfirmationViewModel @Inject constructor(
     val confirmationState :StateFlow<ConfirmationState> = _confirmationState
 
     private fun sendConfirmation() {
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
 
-            withContext(distpatcher.io) {
+            confirmationState.value.showReservation?.let { reservation ->
+                val result = sendConfirmationReservation.invoke(reservation)
 
-                if(confirmationState.value.showReservation!=null){
-                    val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
-
+                withContext(dispatcher.main) {
                     when(result){
 
                         is DataResult.Success -> {
@@ -53,22 +52,22 @@ class ConfirmationViewModel @Inject constructor(
                             _confirmationState.value =_confirmationState.value.copy(showError = result.exception.message.toString())
                         }
                     }
-                }else{
-                    _confirmationState.value=_confirmationState.value.copy(showError = "Some is wrong, reservation invalid")
                 }
-
+            } ?: run {
+                withContext(dispatcher.main) {
+                    _confirmationState.value=_confirmationState.value.copy(showError = "Something went wrong, reservation invalid")
+                }
             }
         }
     }
 
     private fun getTempReservation() {
 
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
 
-            withContext(distpatcher.io) {
+            val result = getTemporalReservation.invoke(temporalId)
 
-                val result = getTemporalReservation.invoke(temporalId)
-
+            withContext(dispatcher.main) {
                 when (result) {
 
                     is DataResult.Success -> {

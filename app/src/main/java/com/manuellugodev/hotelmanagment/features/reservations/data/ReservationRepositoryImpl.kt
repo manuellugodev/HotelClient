@@ -29,23 +29,17 @@ class ReservationRepositoryImpl(
         return dataSourceReservationLocal.saveReservationLocal(reservation)
     }
 
-    override suspend fun getMyReservations(guestId: Int): DataResult<List<Reservation>> {
+    override suspend fun getMyReservations(): DataResult<List<Reservation>> {
         val id = tokenManagment.getGuestId()
         return dataSourceReservation.getMyReservations(id)
     }
 
-    override suspend fun getUpcomingReservations(
-        guest: Int,
-        date: Date
-    ): DataResult<List<Reservation>> {
+    override suspend fun getUpcomingReservations(date: Date): DataResult<List<Reservation>> {
         val id = tokenManagment.getGuestId()
         return dataSourceReservation.getUpcomingReservations(id, date)
     }
 
-    override suspend fun getPastReservations(
-        guest: Int,
-        date: Date
-    ): DataResult<List<Reservation>> {
+    override suspend fun getPastReservations(date: Date): DataResult<List<Reservation>> {
         val id = tokenManagment.getGuestId()
         return dataSourceReservation.getPastReservations(id, date)
     }

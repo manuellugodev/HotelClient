@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.profile.presentation
 
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
-import com.manuellugodev.hotelmanagment.TestDistpatchers
+import com.manuellugodev.hotelmanagment.TestDispatchers
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import com.manuellugodev.hotelmanagment.utils.fakeProfile
@@ -28,7 +28,7 @@ class ProfileViewModelTest{
 
     @Before
     fun setUp(){
-     viewModel= ProfileViewModel(getDataProfile,doLogOutSession,TestDistpatchers(standarTest))
+     viewModel= ProfileViewModel(getDataProfile,doLogOutSession,TestDispatchers(standarTest))
     }
     @Test
     fun`WHEN LoadProfile event is called then called getDataProfileUsecase`()= runTest{

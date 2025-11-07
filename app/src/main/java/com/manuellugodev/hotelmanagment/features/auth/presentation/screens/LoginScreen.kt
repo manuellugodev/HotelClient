@@ -63,7 +63,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
         if (state.showError is AuthenticationFailedException) {
             message = stringResource(id = R.string.failed_authentication)
         }
-        ErrorSnackbar(errorMessage = message ?: "Some is wrong") {
+        ErrorSnackbar(errorMessage = message ?: "Something went wrong") {
             viewModel.onEvent(LoginEvent.DismissError)
         }
     }
@@ -103,7 +103,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
 
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = state.passwordeEnter,
+            value = state.passwordEnter,
             placeholder = { Text(text = "Password") },
             onValueChange = { onEvent(LoginEvent.OnPasswordEnter(it)) },
             modifier = Modifier

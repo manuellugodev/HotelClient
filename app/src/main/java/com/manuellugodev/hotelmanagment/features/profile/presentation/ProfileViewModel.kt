@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.profile.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.DoLogOutSession
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,37 +15,38 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getDataProfile: GetDataProfile,
     private val doLogOutSession: DoLogOutSession,
-    private val distpatcher: DistpatcherProvider
-) :ViewModel() {
+    private val dispatcher: DispatcherProvider
+) : ViewModel() {
 
     private val _stateProfile :MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState(getDataProfile = true))
     val stateProfile :StateFlow<ProfileState> = _stateProfile
 
     private fun loadDataProfile() {
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
             try {
-                val result = withContext(distpatcher.io) { getDataProfile() }
-                if (result.isSuccess) {
+                val result = getDataProfile()
+                withContext(dispatcher.main) {
+                    if (result.isSuccess) {
 
-                    _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
-                } else {
+                        _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
+                    } else {
 
-                    _stateProfile.value=_stateProfile.value.copy(showError = "Some was wrong")
+                        _stateProfile.value=_stateProfile.value.copy(showError = "Something went wrong")
+                    }
                 }
             } catch (e: Exception) {
-                _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Some was wrong getting profile")
-
+                withContext(dispatcher.main) {
+                    _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Something went wrong getting profile")
+                }
             }
-
-
         }
     }
 
     private fun logOutSession() {
 
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.main) {
             try {
-                val result = withContext(distpatcher.io) { doLogOutSession() }
+                val result = withContext(dispatcher.io) { doLogOutSession() }
 
                 if (result.isSuccess) {
                     _stateProfile.value = stateProfile.value.copy(isLogOut = true)

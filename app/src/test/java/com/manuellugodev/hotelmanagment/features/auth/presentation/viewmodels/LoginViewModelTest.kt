@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.auth.presentation.viewmodels
 
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
-import com.manuellugodev.hotelmanagment.TestDistpatchers
+import com.manuellugodev.hotelmanagment.TestDispatchers
 import com.manuellugodev.hotelmanagment.features.auth.domain.LoginWithUsernameAndPassword
 import com.manuellugodev.hotelmanagment.features.auth.utils.LoginEvent
 import io.mockk.coEvery
@@ -27,7 +27,7 @@ class LoginViewModelTest{
     val rule=MainCoroutineExtension(standardTest)
     @Before
     fun setUp(){
-        viewModel= LoginViewModel(loginUseCase,TestDistpatchers(standardTest))
+        viewModel= LoginViewModel(loginUseCase,TestDispatchers(standardTest))
     }
 
     @Test
@@ -88,7 +88,7 @@ class LoginViewModelTest{
         val password="password"
         viewModel.onEvent(LoginEvent.OnPasswordEnter(password = password))
 
-        assertEquals(password,viewModel.statusLogin.value.passwordeEnter)
+        assertEquals(password,viewModel.statusLogin.value.passwordEnter)
     }
 
     @Test

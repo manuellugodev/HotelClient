@@ -7,8 +7,8 @@ import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 
 class GetMyReservations(private val repository: ReservationRepository) {
 
-    suspend operator fun invoke(guest: Int): DataResult<List<Reservation>> {
-        return repository.getMyReservations(guest);
+    suspend operator fun invoke(): DataResult<List<Reservation>> {
+        return repository.getMyReservations();
     }
 
 }

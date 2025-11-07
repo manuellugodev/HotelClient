@@ -1,6 +1,6 @@
 package com.manuellugodev.hotelmanagment
 
-import com.manuellugodev.hotelmanagment.features.core.domain.StandarDistpatchers
+import com.manuellugodev.hotelmanagment.features.core.domain.StandardDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,11 +13,11 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MainCoroutineExtension(val  testDistpatchers:CoroutineDispatcher= StandardTestDispatcher()): TestWatcher() {
+class MainCoroutineExtension(val testDispatchers: CoroutineDispatcher = StandardTestDispatcher()) : TestWatcher() {
 
     override fun starting(description: Description?) {
         super.starting(description)
-        Dispatchers.setMain(testDistpatchers)
+        Dispatchers.setMain(testDispatchers)
     }
 
 

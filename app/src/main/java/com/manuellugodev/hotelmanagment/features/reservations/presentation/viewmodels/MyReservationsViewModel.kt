@@ -3,8 +3,9 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
@@ -12,6 +13,7 @@ import com.manuellugodev.hotelmanagment.features.reservations.domain.GetPastRese
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetUpcomingReservations
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationEvent
 import com.manuellugodev.hotelmanagment.features.reservations.utils.MyReservationState
+import com.manuellugodev.hotelmanagment.features.reservations.utils.ReservationFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,157 +28,88 @@ class MyReservationsViewModel @Inject constructor(
     private val getUpcomingReservations: GetUpcomingReservations,
     private val getPastReservations: GetPastReservations,
     private val removeReservationUsecase: DeleteReservation,
-    private val distparcher: DistpatcherProvider
+    private val dispatcher: DispatcherProvider
 ) :
     ViewModel() {
 
    private val _stateMyReservation : MutableStateFlow<MyReservationState> = MutableStateFlow(MyReservationState(searchMyReservations = true))
    val stateMyReservation :StateFlow<MyReservationState> = _stateMyReservation
 
-    private fun getReservations(id: Int=1) {
-        viewModelScope.launch(distparcher.io) {
+    private suspend fun handleReservationResult(fetchBlock: suspend () -> DataResult<List<Reservation>>) {
+        try {
+            val result = fetchBlock()
 
-            try {
-
-                val result = getMyReservationsUseCase(id)
-
-                withContext(distparcher.main) {
-                    if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data, searchMyReservations = false)
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(distparcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error", searchMyReservations = false)}
-
-            }
-
-
-        }
-    }
-
-    private fun getUpcomingReservation(id: Int = 1) {
-        viewModelScope.launch(distparcher.io) {
-
-            try {
-
-                val result = getUpcomingReservations(id)
-
-                withContext(distparcher.main) {
-                    if (result is DataResult.Success) {
+            withContext(dispatcher.main) {
+                when (result) {
+                    is DataResult.Success -> {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showReservation = result.data,
                             searchMyReservations = false
                         )
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
+                    }
+                    is DataResult.Error -> {
+                        handleReservationError(result.exception)
                     }
                 }
-            } catch (e: Exception) {
-                withContext(distparcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(
-                        showErrorMsg = e.message ?: "Error",
-                        searchMyReservations = false
-                    )
-                }
-
             }
-
-
+        } catch (e: Exception) {
+            withContext(dispatcher.main) {
+                handleReservationError(e)
+            }
         }
     }
 
-    private fun getPastReservationVm(id: Int = 1) {
-        viewModelScope.launch(distparcher.io) {
+    private fun handleReservationError(exception: Throwable) {
+        val errorMsg = when (exception) {
+            is AppointmentsNotFound -> "Appointments Not Found"
+            else -> exception.message ?: "Error"
+        }
+        _stateMyReservation.value = stateMyReservation.value.copy(
+            showErrorMsg = errorMsg,
+            searchMyReservations = false
+        )
+    }
 
-            try {
+    private fun getReservations() {
+        viewModelScope.launch(dispatcher.io) {
+            handleReservationResult { getMyReservationsUseCase() }
+        }
+    }
 
-                val result = getPastReservations(id)
+    private fun getUpcomingReservation() {
+        viewModelScope.launch(dispatcher.io) {
+            handleReservationResult { getUpcomingReservations() }
+        }
+    }
 
-                withContext(distparcher.main) {
-                    if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(
-                            showReservation = result.data,
-                            searchMyReservations = false
-                        )
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(distparcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(
-                        showErrorMsg = e.message ?: "Error",
-                        searchMyReservations = false
-                    )
-                }
-
-            }
-
-
+    private fun getPastReservationVm() {
+        viewModelScope.launch(dispatcher.io) {
+            handleReservationResult { getPastReservations() }
         }
     }
 
     private fun deleteReservation() {
-        viewModelScope.launch(distparcher.io) {
+        viewModelScope.launch(dispatcher.io) {
             try {
-                if (stateMyReservation.value.reservationSelectedId != null) {
-                    removeReservationUsecase(stateMyReservation.value.reservationSelectedId!!.id)
+                stateMyReservation.value.reservationSelectedId?.let { reservation ->
+                    removeReservationUsecase(reservation.id)
 
 
-                    withContext(distparcher.main) {
+                    withContext(dispatcher.main) {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showConfirmDelete = false,
                             reservationSelectedId = null
                         )
 
                         when (stateMyReservation.value.optionSelected) {
-                            0 -> onEvent(MyReservationEvent.GetUpcomingReservations)
-                            1 -> onEvent(MyReservationEvent.GetPastReservations)
+                            ReservationFilter.UPCOMING -> onEvent(MyReservationEvent.GetUpcomingReservations)
+                            ReservationFilter.PAST -> onEvent(MyReservationEvent.GetPastReservations)
                         }
                     }
 
                 }
             } catch (e: Exception) {
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showConfirmDelete = false,
                         reservationSelectedId = null
@@ -198,13 +131,13 @@ class MyReservationsViewModel @Inject constructor(
             MyReservationEvent.GetMyReservations -> getReservations()
             MyReservationEvent.GetUpcomingReservations -> {
                 _stateMyReservation.value =
-                    stateMyReservation.value.copy(optionSelected = 0, showReservation = listOf())
+                    stateMyReservation.value.copy(optionSelected = ReservationFilter.UPCOMING, showReservation = listOf())
                 getUpcomingReservation()
             }
 
             MyReservationEvent.GetPastReservations -> {
                 _stateMyReservation.value =
-                    stateMyReservation.value.copy(optionSelected = 1, showReservation = listOf())
+                    stateMyReservation.value.copy(optionSelected = ReservationFilter.PAST, showReservation = listOf())
                 getPastReservationVm()
             }
 

@@ -9,7 +9,7 @@ import com.manuellugodev.hotelmanagment.features.auth.domain.DoSignUpUseCase
 import com.manuellugodev.hotelmanagment.features.auth.domain.UserRegisterModel
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterEvent
 import com.manuellugodev.hotelmanagment.features.auth.utils.RegisterState
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.UsernameAlreadyExist
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val doSignUpUsecase: DoSignUpUseCase,
-    private val distpatcher: DistpatcherProvider
+    private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
     var state by mutableStateOf(RegisterState())
@@ -80,7 +80,7 @@ class RegisterViewModel @Inject constructor(
             state = state.copy(msgError = "Check the fields")
             return
         }
-        viewModelScope.launch(distpatcher.io) {
+        viewModelScope.launch(dispatcher.io) {
 
             val result = doSignUpUsecase(userToRegister)
 
@@ -97,7 +97,7 @@ class RegisterViewModel @Inject constructor(
                     }
 
                     else -> {
-                        state = state.copy(msgError = "Some was wrong")
+                        state = state.copy(msgError = "Something went wrong")
 
                     }
                 }

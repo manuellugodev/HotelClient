@@ -6,7 +6,7 @@ data class MyReservationState(
     val showLoader:Boolean = false,
     val showErrorMsg:String ="",
     val searchMyReservations: Boolean = false,
-    val optionSelected: Int = 0,
+    val optionSelected: ReservationFilter = ReservationFilter.UPCOMING,
     val showConfirmDelete: Boolean = false,
     val reservationSelectedId: Reservation? = null
 )

@@ -54,14 +54,14 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
                             return Result.failure(AuthenticationFailedException())
                         }
 
-                        return Result.failure(GeneralExceptionApp("Some is wrong"))
+                        return Result.failure(GeneralExceptionApp("Something went wrong"))
 
                     } catch (e: Exception) {
 
                         FirebaseCrashlytics.getInstance()
                             .log("The code is trying interprete the exception")
                         FirebaseCrashlytics.getInstance().recordException(e)
-                        return Result.failure(GeneralExceptionApp("Some is Wrong"))
+                        return Result.failure(GeneralExceptionApp("Something went wrong"))
                     }
                 }
 
@@ -69,12 +69,12 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
                 FirebaseCrashlytics.getInstance().log("The result was not success")
                 FirebaseCrashlytics.getInstance().recordException(exception)
 
-                return Result.failure(GeneralExceptionApp("Some is wrong"))
+                return Result.failure(GeneralExceptionApp("Something went wrong"))
             }
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().log("Some failed trying solve the request")
             FirebaseCrashlytics.getInstance().recordException(e)
-            return Result.failure(GeneralExceptionApp("Some is wrong"))
+            return Result.failure(GeneralExceptionApp("Something went wrong"))
         }
 
 
@@ -94,7 +94,7 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
                 val error = getException(result)
                 Result.failure(error)
             } else {
-                Result.failure(Exception("Some was wrong"))
+                Result.failure(Exception("Something went wrong"))
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -120,7 +120,7 @@ class LoginDataSourceApi(private val request: LoginRequest) : LoginDataSource {
             }
 
             else -> {
-                Exception("Some was Wrong")
+                Exception("Something went wrong")
             }
         }
 

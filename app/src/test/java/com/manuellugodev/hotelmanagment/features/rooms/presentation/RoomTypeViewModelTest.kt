@@ -2,7 +2,7 @@ package com.manuellugodev.hotelmanagment.features.rooms.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
-import com.manuellugodev.hotelmanagment.TestDistpatchers
+import com.manuellugodev.hotelmanagment.TestDispatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.profile.domain.usecase.GetDataProfile
@@ -175,7 +175,7 @@ class RoomTypeViewModelTest{
 
     }
     private fun buildViewModel():RoomTypeViewModel{
-        return  RoomTypeViewModel(searchRoomAvailables,saveTemporalReservation,getDataProfile, savedStateHandle,TestDistpatchers(standarTest))
+        return  RoomTypeViewModel(searchRoomAvailables,saveTemporalReservation,getDataProfile, savedStateHandle,TestDispatchers(standarTest))
     }
 
 
