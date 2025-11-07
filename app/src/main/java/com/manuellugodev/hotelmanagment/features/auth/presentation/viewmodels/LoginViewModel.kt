@@ -20,22 +20,8 @@ class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameA
 
 
     private fun tryLogin() {
-        val username = statusLogin.value.usernameEnter.trim()
+        val username = statusLogin.value.usernameEnter
         val password = statusLogin.value.passwordEnter
-
-        if (username.isBlank()) {
-            _statusLogin.value = _statusLogin.value.copy(
-                showError = Exception("Username cannot be empty")
-            )
-            return
-        }
-
-        if (password.isBlank()) {
-            _statusLogin.value = _statusLogin.value.copy(
-                showError = Exception("Password cannot be empty")
-            )
-            return
-        }
 
         _statusLogin.value = statusLogin.value.copy(showLoader = true)
 
@@ -46,13 +32,10 @@ class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameA
                 _statusLogin.value = _statusLogin.value.copy(showLoader = false, loginSuccess = true)
             }else{
                 val exception = result.exceptionOrNull()
-
                 _statusLogin.value =
                     _statusLogin.value.copy(showLoader = false, showError = exception)
-
             }
         }
-
     }
 
     fun onEvent(event: LoginEvent){

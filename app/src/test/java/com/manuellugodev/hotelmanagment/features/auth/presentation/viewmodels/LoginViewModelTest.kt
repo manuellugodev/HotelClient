@@ -32,7 +32,6 @@ class LoginViewModelTest{
 
     @Test
     fun`DoLogin Event is called then call to LoginUseCase`()= runTest {
-
         viewModel.onEvent(LoginEvent.DoLoginEvent)
         advanceUntilIdle()
         coVerify { loginUseCase.invoke(any(),any()) }
@@ -45,35 +44,35 @@ class LoginViewModelTest{
         advanceUntilIdle()
 
         assertEquals(true,viewModel.statusLogin.value.loginSuccess)
-        assert(viewModel.statusLogin.value.showError.isEmpty())
+        assert(viewModel.statusLogin.value.showError == null)
 
     }
 
     @Test
     fun`DoLogin Event is called and LoginUseCase is failure THEN update state showError`()= runTest {
-        val exception=Exception()
+        val exception = Exception("Login failed")
 
         coEvery { loginUseCase.invoke(any(),any()) } returns Result.failure(exception)
         viewModel.onEvent(LoginEvent.DoLoginEvent)
         advanceUntilIdle()
 
-        assert(viewModel.statusLogin.value.showError.isNotEmpty())
+        assert(viewModel.statusLogin.value.showError != null)
 
     }
 
     @Test
     fun`DismissError event is called then update state shoeError with empty value`()= runTest {
-        val exception=Exception()
+        val exception = Exception("Login failed")
 
         coEvery { loginUseCase.invoke(any(),any()) } returns Result.failure(exception)
         viewModel.onEvent(LoginEvent.DoLoginEvent)
 
         advanceUntilIdle()
-        assert(viewModel.statusLogin.value.showError.isNotEmpty())
+        assert(viewModel.statusLogin.value.showError != null)
         viewModel.onEvent(LoginEvent.DismissError)
         advanceUntilIdle()
 
-        assert(viewModel.statusLogin.value.showError.isEmpty())
+        assert(viewModel.statusLogin.value.showError == null)
 
     }
     @Test
