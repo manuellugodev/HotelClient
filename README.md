@@ -10,8 +10,8 @@ features.
 ## Features
 
 - **Booking Management**: View, modify, and cancel reservations.
-- **User Authentication**: Secure login and signup using email, Google, or social media accounts.
-- **Multi-language Support**: Available in English, Spanish, and more.
+- **User Authentication**: Secure login and signup using email
+- **Multi-language Support**: Available in English, Spanish
 
 ---
 
@@ -30,7 +30,7 @@ features.
 
 ### Architecture
 
-This project follows **MVVM (Model-View-ViewModel)** combined with **Clean Architecture**, ensuring
+This project follows **MVI (Model-View-Intent)** combined with **Clean Architecture**, ensuring
 maintainability, scalability, and testability. The architecture layers include:
 
 - **Presentation Layer**: Views and ViewModels, handling UI and user interactions.
@@ -40,27 +40,28 @@ maintainability, scalability, and testability. The architecture layers include:
 ---
 
 ## Screenshots
-
-### Login Screen (Dark Mode)
-
-![Login Screen (Dark Mode)](images/Login_DarkMode.webp)
-
-### Calendar Screen (Dark Mode)
-
-![Calendar Screen (Dark Mode)](images/calendar_darkmode.webp)
-
-### Guest Counter Screen
-
-![Guest Counter Screen](images/guestCounter.webp)
-
-### My Reservations Screen (Dark Mode)
-
-![My Reservations Screen (Dark Mode)](images/MyReservationsDarkMode.webp)
-
-### Profile Screen (Dark Mode)
-
-![Profile Screen (Dark Mode)](images/ProfileDarkMode.webp)
-
+<table>
+    <tr>
+        <td>
+          <img src="images/Login_DarkMode.webp" alt="Login Screen (Dark Mode)" width="200"/>
+        </td>
+        <td>
+          <img src="images/calendar_darkmode.webp" alt="Calendar Screen (Dark Mode)" width="200"/>
+        </td>
+         <td>
+          <img src="images/guestCounter.webp" alt="Counter Screen (Light Mode)" width="200"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+          <img src="images/MyReservationsDarkMode.webp" alt="My Reservations Screen (Dark Mode)" width="200"/>
+        </td>
+        <td>
+          <img src="images/ProfileDarkMode.webp" alt="Profile Screen (Dark Mode)" width="200"/>
+        </td>
+    </tr>
+  </table>
+      
 ---
 
 ## Prerequisites
