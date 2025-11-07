@@ -20,10 +20,27 @@ class LoginViewModel @Inject constructor(private val useCase: LoginWithUsernameA
 
 
     private fun tryLogin() {
+        val username = statusLogin.value.usernameEnter.trim()
+        val password = statusLogin.value.passwordEnter
+
+        if (username.isBlank()) {
+            _statusLogin.value = _statusLogin.value.copy(
+                showError = Exception("Username cannot be empty")
+            )
+            return
+        }
+
+        if (password.isBlank()) {
+            _statusLogin.value = _statusLogin.value.copy(
+                showError = Exception("Password cannot be empty")
+            )
+            return
+        }
+
         _statusLogin.value = statusLogin.value.copy(showLoader = true)
 
         viewModelScope.launch(dispatcher.io) {
-            val result = useCase(statusLogin.value.usernameEnter, statusLogin.value.passwordEnter)
+            val result = useCase(username, password)
 
             if(result.isSuccess){
                 _statusLogin.value = _statusLogin.value.copy(showLoader = false, loginSuccess = true)
