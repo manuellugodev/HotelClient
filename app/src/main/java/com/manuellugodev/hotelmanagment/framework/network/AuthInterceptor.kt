@@ -14,7 +14,7 @@ class AuthInterceptor(private val token: TokenManagment) : Interceptor {
 
         if (response.code == 401) {
             val data = response.body?.string()
-            if (data!!.contains("ExpiredJwtException")) {
+            if (data?.contains("ExpiredJwtException") == true) {
                 token.removeToken()
             }
         }
