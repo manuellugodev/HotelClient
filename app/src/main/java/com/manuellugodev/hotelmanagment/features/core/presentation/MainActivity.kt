@@ -28,6 +28,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -84,22 +86,21 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarAppHotel(title: String) {
-
-    val color = MaterialTheme.colorScheme
-
-    val colorS = color.primary.toString();
-
     TopAppBar(
         title = {
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = title, textAlign = TextAlign.Center
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors().copy(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+        ),
+        windowInsets = WindowInsets(0)
     )
 }
 
@@ -111,27 +112,93 @@ fun topBarPreview() {
 
 @Composable
 fun BottomBar(navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.primary,
     ) {
+        // Home/Reservations
         NavigationBarItem(
-            selected = true,
-            onClick = { navController.navigate(Screen.ReservationScreen.route) },
-            icon = { Icon(Icons.Default.Home, "Home") },
-            label = { Text("Home") })
-        NavigationBarItem(
-            selected = false,
-            onClick = { navController.navigate(Screen.MyReservationsScreen.route) },
-            icon = { Icon(Icons.Default.Bed, "Reservations") },
-            label = { Text("Reservations") })
-        NavigationBarItem(
-            selected = false,
-            onClick = { navController.navigate(Screen.MyProfileScreen.route) },
-            icon = { Icon(Icons.Default.Person, "Profile") },
-            label = { Text("Profile") })
+            selected = currentRoute == Screen.ReservationScreen.route,
+            onClick = {
+                if (currentRoute != Screen.ReservationScreen.route) {
+                    navController.navigate(Screen.ReservationScreen.route)
+                }
+            },
+            icon = {
+                Icon(
+                    Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = if (currentRoute == Screen.ReservationScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            label = {
+                Text(
+                    "Home",
+                    color = if (currentRoute == Screen.ReservationScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        )
 
+        // My Reservations
+        NavigationBarItem(
+            selected = currentRoute == Screen.MyReservationsScreen.route,
+            onClick = {
+                if (currentRoute != Screen.MyReservationsScreen.route) {
+                    navController.navigate(Screen.MyReservationsScreen.route)
+                }
+            },
+            icon = {
+                Icon(
+                    Icons.Default.Bed,
+                    contentDescription = "My Reservations",
+                    tint = if (currentRoute == Screen.MyReservationsScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            label = {
+                Text(
+                    "Reservations",
+                    color = if (currentRoute == Screen.MyReservationsScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        )
+
+        // Profile
+        NavigationBarItem(
+            selected = currentRoute == Screen.MyProfileScreen.route,
+            onClick = {
+                if (currentRoute != Screen.MyProfileScreen.route) {
+                    navController.navigate(Screen.MyProfileScreen.route)
+                }
+            },
+            icon = {
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = "Profile",
+                    tint = if (currentRoute == Screen.MyProfileScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            label = {
+                Text(
+                    "Profile",
+                    color = if (currentRoute == Screen.MyProfileScreen.route)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        )
     }
 }
 
@@ -146,17 +213,3 @@ fun Screen(innerPadding: PaddingValues) {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
