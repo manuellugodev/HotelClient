@@ -90,8 +90,8 @@ class MyReservationsViewModel @Inject constructor(
     private fun deleteReservation() {
         viewModelScope.launch(dispatcher.io) {
             try {
-                if (stateMyReservation.value.reservationSelectedId != null) {
-                    removeReservationUsecase(stateMyReservation.value.reservationSelectedId!!.id)
+                stateMyReservation.value.reservationSelectedId?.let { reservation ->
+                    removeReservationUsecase(reservation.id)
 
 
                     withContext(dispatcher.main) {

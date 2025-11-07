@@ -42,8 +42,8 @@ class ConfirmationViewModel @Inject constructor(
 
             withContext(dispatcher.io) {
 
-                if(confirmationState.value.showReservation!=null){
-                    val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
+                confirmationState.value.showReservation?.let { reservation ->
+                    val result = sendConfirmationReservation.invoke(reservation)
 
                     when(result){
 
@@ -53,7 +53,7 @@ class ConfirmationViewModel @Inject constructor(
                             _confirmationState.value =_confirmationState.value.copy(showError = result.exception.message.toString())
                         }
                     }
-                }else{
+                } ?: run {
                     _confirmationState.value=_confirmationState.value.copy(showError = "Some is wrong, reservation invalid")
                 }
 
