@@ -1,7 +1,7 @@
 package com.manuellugodev.hotelmanagment.features.reservations.presentation.viewmodels
 
 import com.manuellugodev.hotelmanagment.MainCoroutineExtension
-import com.manuellugodev.hotelmanagment.TestDistpatchers
+import com.manuellugodev.hotelmanagment.TestDispatchers
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
@@ -39,7 +39,7 @@ class MyReservationsViewModelTest{
             getUpcomingReservations,
             getPastReservations,
             deleteReservation,
-            TestDistpatchers(standardTest)
+            TestDispatchers(standardTest)
         )
     }
     @Test

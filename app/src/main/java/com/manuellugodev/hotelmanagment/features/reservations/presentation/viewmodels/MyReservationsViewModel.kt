@@ -3,7 +3,7 @@ package com.manuellugodev.hotelmanagment.features.reservations.presentation.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
@@ -26,7 +26,7 @@ class MyReservationsViewModel @Inject constructor(
     private val getUpcomingReservations: GetUpcomingReservations,
     private val getPastReservations: GetPastReservations,
     private val removeReservationUsecase: DeleteReservation,
-    private val distparcher: DistpatcherProvider
+    private val dispatcher: DispatcherProvider
 ) :
     ViewModel() {
 
@@ -34,13 +34,13 @@ class MyReservationsViewModel @Inject constructor(
    val stateMyReservation :StateFlow<MyReservationState> = _stateMyReservation
 
     private fun getReservations(id: Int=1) {
-        viewModelScope.launch(distparcher.io) {
+        viewModelScope.launch(dispatcher.io) {
 
             try {
 
                 val result = getMyReservationsUseCase(id)
 
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     if (result is DataResult.Success) {
                         _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data, searchMyReservations = false)
                     } else {
@@ -60,7 +60,7 @@ class MyReservationsViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error", searchMyReservations = false)}
 
             }
@@ -70,13 +70,13 @@ class MyReservationsViewModel @Inject constructor(
     }
 
     private fun getUpcomingReservation(id: Int = 1) {
-        viewModelScope.launch(distparcher.io) {
+        viewModelScope.launch(dispatcher.io) {
 
             try {
 
                 val result = getUpcomingReservations(id)
 
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     if (result is DataResult.Success) {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showReservation = result.data,
@@ -99,7 +99,7 @@ class MyReservationsViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showErrorMsg = e.message ?: "Error",
                         searchMyReservations = false
@@ -113,13 +113,13 @@ class MyReservationsViewModel @Inject constructor(
     }
 
     private fun getPastReservationVm(id: Int = 1) {
-        viewModelScope.launch(distparcher.io) {
+        viewModelScope.launch(dispatcher.io) {
 
             try {
 
                 val result = getPastReservations(id)
 
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     if (result is DataResult.Success) {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showReservation = result.data,
@@ -142,7 +142,7 @@ class MyReservationsViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showErrorMsg = e.message ?: "Error",
                         searchMyReservations = false
@@ -156,13 +156,13 @@ class MyReservationsViewModel @Inject constructor(
     }
 
     private fun deleteReservation() {
-        viewModelScope.launch(distparcher.io) {
+        viewModelScope.launch(dispatcher.io) {
             try {
                 if (stateMyReservation.value.reservationSelectedId != null) {
                     removeReservationUsecase(stateMyReservation.value.reservationSelectedId!!.id)
 
 
-                    withContext(distparcher.main) {
+                    withContext(dispatcher.main) {
                         _stateMyReservation.value = stateMyReservation.value.copy(
                             showConfirmDelete = false,
                             reservationSelectedId = null
@@ -176,7 +176,7 @@ class MyReservationsViewModel @Inject constructor(
 
                 }
             } catch (e: Exception) {
-                withContext(distparcher.main) {
+                withContext(dispatcher.main) {
                     _stateMyReservation.value = stateMyReservation.value.copy(
                         showConfirmDelete = false,
                         reservationSelectedId = null

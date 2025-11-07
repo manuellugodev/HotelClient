@@ -103,7 +103,7 @@ fun LoginContent(state: LoginStatus, navigateToRegister:()->Unit,onEvent:(LoginE
 
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = state.passwordeEnter,
+            value = state.passwordEnter,
             placeholder = { Text(text = "Password") },
             onValueChange = { onEvent(LoginEvent.OnPasswordEnter(it)) },
             modifier = Modifier

@@ -3,7 +3,7 @@ package com.manuellugodev.hotelmanagment.features.rooms.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Customer
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.model.RoomHotel
@@ -27,7 +27,7 @@ class RoomTypeViewModel @Inject constructor(
     var useCaseSaveTemporalReservation: SaveTemporalReservation,
     var useCaseGetMyProfileData: GetDataProfile,
     savedStateHandle: SavedStateHandle,
-    val distpatcher: DistpatcherProvider
+    val dispatcher: DispatcherProvider
 
 ) : ViewModel() {
 
@@ -42,11 +42,11 @@ class RoomTypeViewModel @Inject constructor(
     private fun searchRoomsAvailables(desiredStartTime: Long, desiredEndTime: Long, guests: Int) {
 
         _statusRoom.value=_statusRoom.value.copy(showLoader = true)
-        viewModelScope.launch(distpatcher.io) {
+        viewModelScope.launch(dispatcher.io) {
             try {
                 var result = usecase(Date(desiredStartTime), Date(desiredEndTime), guests)
 
-                withContext(distpatcher.main){
+                withContext(dispatcher.main){
                     when (result) {
                         is DataResult.Success -> {
                             _statusRoom.value = _statusRoom.value.copy(showRooms = result.data, showLoader = false)
@@ -59,7 +59,7 @@ class RoomTypeViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
-                withContext(distpatcher.main){
+                withContext(dispatcher.main){
                     _statusRoom.value = _statusRoom.value.copy(showError = e.message.toString(), showLoader = false)
 
                 }
@@ -75,7 +75,7 @@ class RoomTypeViewModel @Inject constructor(
         roomHotel: RoomHotel
     ) {
 
-        viewModelScope.launch(distpatcher.io) {
+        viewModelScope.launch(dispatcher.io) {
             try {
                 val customerResult= useCaseGetMyProfileData()
                 if(customerResult.isSuccess){

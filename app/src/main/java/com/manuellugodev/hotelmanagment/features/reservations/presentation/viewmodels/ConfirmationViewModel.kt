@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manuellugodev.hotelmanagment.features.core.domain.DistpatcherProvider
+import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetTemporalReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.SendConfirmationReservation
@@ -27,7 +27,7 @@ class ConfirmationViewModel @Inject constructor(
     private val sendConfirmationReservation: SendConfirmationReservation,
     private val getTemporalReservation: GetTemporalReservation,
     savedStateHandle: SavedStateHandle,
-    private val distpatcher: DistpatcherProvider
+    private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
     private var temporalId:Long=savedStateHandle.get(RESERVATION)?:-1L
@@ -38,9 +38,9 @@ class ConfirmationViewModel @Inject constructor(
     val confirmationState :StateFlow<ConfirmationState> = _confirmationState
 
     private fun sendConfirmation() {
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.main) {
 
-            withContext(distpatcher.io) {
+            withContext(dispatcher.io) {
 
                 if(confirmationState.value.showReservation!=null){
                     val result = sendConfirmationReservation.invoke(confirmationState.value.showReservation!!)
@@ -63,9 +63,9 @@ class ConfirmationViewModel @Inject constructor(
 
     private fun getTempReservation() {
 
-        viewModelScope.launch(distpatcher.main) {
+        viewModelScope.launch(dispatcher.main) {
 
-            withContext(distpatcher.io) {
+            withContext(dispatcher.io) {
 
                 val result = getTemporalReservation.invoke(temporalId)
 
