@@ -22,22 +22,23 @@ class ProfileViewModel @Inject constructor(
     val stateProfile :StateFlow<ProfileState> = _stateProfile
 
     private fun loadDataProfile() {
-        viewModelScope.launch(dispatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
             try {
-                val result = withContext(dispatcher.io) { getDataProfile() }
-                if (result.isSuccess) {
+                val result = getDataProfile()
+                withContext(dispatcher.main) {
+                    if (result.isSuccess) {
 
-                    _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
-                } else {
+                        _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
+                    } else {
 
-                    _stateProfile.value=_stateProfile.value.copy(showError = "Something went wrong")
+                        _stateProfile.value=_stateProfile.value.copy(showError = "Something went wrong")
+                    }
                 }
             } catch (e: Exception) {
-                _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Something went wrong getting profile")
-
+                withContext(dispatcher.main) {
+                    _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Something went wrong getting profile")
+                }
             }
-
-
         }
     }
 

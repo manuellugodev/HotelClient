@@ -38,13 +38,12 @@ class ConfirmationViewModel @Inject constructor(
     val confirmationState :StateFlow<ConfirmationState> = _confirmationState
 
     private fun sendConfirmation() {
-        viewModelScope.launch(dispatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
 
-            withContext(dispatcher.io) {
+            confirmationState.value.showReservation?.let { reservation ->
+                val result = sendConfirmationReservation.invoke(reservation)
 
-                confirmationState.value.showReservation?.let { reservation ->
-                    val result = sendConfirmationReservation.invoke(reservation)
-
+                withContext(dispatcher.main) {
                     when(result){
 
                         is DataResult.Success -> {
@@ -53,22 +52,22 @@ class ConfirmationViewModel @Inject constructor(
                             _confirmationState.value =_confirmationState.value.copy(showError = result.exception.message.toString())
                         }
                     }
-                } ?: run {
+                }
+            } ?: run {
+                withContext(dispatcher.main) {
                     _confirmationState.value=_confirmationState.value.copy(showError = "Something went wrong, reservation invalid")
                 }
-
             }
         }
     }
 
     private fun getTempReservation() {
 
-        viewModelScope.launch(dispatcher.main) {
+        viewModelScope.launch(dispatcher.io) {
 
-            withContext(dispatcher.io) {
+            val result = getTemporalReservation.invoke(temporalId)
 
-                val result = getTemporalReservation.invoke(temporalId)
-
+            withContext(dispatcher.main) {
                 when (result) {
 
                     is DataResult.Success -> {
