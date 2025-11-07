@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manuellugodev.hotelmanagment.features.core.domain.DispatcherProvider
 import com.manuellugodev.hotelmanagment.features.core.domain.exceptions.AppointmentsNotFound
+import com.manuellugodev.hotelmanagment.features.core.domain.model.Reservation
 import com.manuellugodev.hotelmanagment.features.core.domain.utils.DataResult
 import com.manuellugodev.hotelmanagment.features.reservations.domain.DeleteReservation
 import com.manuellugodev.hotelmanagment.features.reservations.domain.GetMyReservations
@@ -33,125 +34,56 @@ class MyReservationsViewModel @Inject constructor(
    private val _stateMyReservation : MutableStateFlow<MyReservationState> = MutableStateFlow(MyReservationState(searchMyReservations = true))
    val stateMyReservation :StateFlow<MyReservationState> = _stateMyReservation
 
-    private fun getReservations(id: Int=1) {
-        viewModelScope.launch(dispatcher.io) {
+    private suspend fun handleReservationResult(fetchBlock: suspend () -> DataResult<List<Reservation>>) {
+        try {
+            val result = fetchBlock()
 
-            try {
-
-                val result = getMyReservationsUseCase(id)
-
-                withContext(dispatcher.main) {
-                    if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(showReservation = result.data, searchMyReservations = false)
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
+            withContext(dispatcher.main) {
+                when (result) {
+                    is DataResult.Success -> {
+                        _stateMyReservation.value = stateMyReservation.value.copy(
+                            showReservation = result.data,
+                            searchMyReservations = false
+                        )
+                    }
+                    is DataResult.Error -> {
+                        handleReservationError(result.exception)
                     }
                 }
-            } catch (e: Exception) {
-                withContext(dispatcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(showErrorMsg = e.message?:"Error", searchMyReservations = false)}
-
             }
+        } catch (e: Exception) {
+            withContext(dispatcher.main) {
+                handleReservationError(e)
+            }
+        }
+    }
 
+    private fun handleReservationError(exception: Throwable) {
+        val errorMsg = when (exception) {
+            is AppointmentsNotFound -> "Appointments Not Found"
+            else -> exception.message ?: "Error"
+        }
+        _stateMyReservation.value = stateMyReservation.value.copy(
+            showErrorMsg = errorMsg,
+            searchMyReservations = false
+        )
+    }
 
+    private fun getReservations(id: Int = 1) {
+        viewModelScope.launch(dispatcher.io) {
+            handleReservationResult { getMyReservationsUseCase(id) }
         }
     }
 
     private fun getUpcomingReservation(id: Int = 1) {
         viewModelScope.launch(dispatcher.io) {
-
-            try {
-
-                val result = getUpcomingReservations(id)
-
-                withContext(dispatcher.main) {
-                    if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(
-                            showReservation = result.data,
-                            searchMyReservations = false
-                        )
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(dispatcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(
-                        showErrorMsg = e.message ?: "Error",
-                        searchMyReservations = false
-                    )
-                }
-
-            }
-
-
+            handleReservationResult { getUpcomingReservations(id) }
         }
     }
 
     private fun getPastReservationVm(id: Int = 1) {
         viewModelScope.launch(dispatcher.io) {
-
-            try {
-
-                val result = getPastReservations(id)
-
-                withContext(dispatcher.main) {
-                    if (result is DataResult.Success) {
-                        _stateMyReservation.value = stateMyReservation.value.copy(
-                            showReservation = result.data,
-                            searchMyReservations = false
-                        )
-                    } else {
-                        if ((result as DataResult.Error).exception is AppointmentsNotFound) {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = "Appointments Not Found",
-                                searchMyReservations = false
-                            )
-
-                        } else {
-                            _stateMyReservation.value = stateMyReservation.value.copy(
-                                showErrorMsg = (result as DataResult.Error).exception.message
-                                    ?: "Error", searchMyReservations = false
-                            )
-
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(dispatcher.main) {
-                    _stateMyReservation.value = stateMyReservation.value.copy(
-                        showErrorMsg = e.message ?: "Error",
-                        searchMyReservations = false
-                    )
-                }
-
-            }
-
-
+            handleReservationResult { getPastReservations(id) }
         }
     }
 
