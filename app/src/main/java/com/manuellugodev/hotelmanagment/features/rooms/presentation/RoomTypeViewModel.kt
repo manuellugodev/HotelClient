@@ -98,10 +98,10 @@ class RoomTypeViewModel @Inject constructor(
                         _statusRoom.value = _statusRoom.value.copy(showError = "Reservation not saved, try again")
                     }
                 }else{
-                    _statusRoom.value = _statusRoom.value.copy(showError = "Some is wrong with User")
+                    _statusRoom.value = _statusRoom.value.copy(showError = "Something went wrong with user data")
                 }
             } catch (e: Exception) {
-                _statusRoom.value = _statusRoom.value.copy(showError = "Some is Wrong ,try again")
+                _statusRoom.value = _statusRoom.value.copy(showError = "Something went wrong, try again")
 
             }
         }

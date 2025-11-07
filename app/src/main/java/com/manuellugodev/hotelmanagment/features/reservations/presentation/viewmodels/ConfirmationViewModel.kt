@@ -54,7 +54,7 @@ class ConfirmationViewModel @Inject constructor(
                         }
                     }
                 } ?: run {
-                    _confirmationState.value=_confirmationState.value.copy(showError = "Some is wrong, reservation invalid")
+                    _confirmationState.value=_confirmationState.value.copy(showError = "Something went wrong, reservation invalid")
                 }
 
             }

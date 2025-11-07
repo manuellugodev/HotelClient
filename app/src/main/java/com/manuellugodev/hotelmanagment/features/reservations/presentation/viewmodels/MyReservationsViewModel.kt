@@ -69,21 +69,21 @@ class MyReservationsViewModel @Inject constructor(
         )
     }
 
-    private fun getReservations(id: Int = 1) {
+    private fun getReservations() {
         viewModelScope.launch(dispatcher.io) {
-            handleReservationResult { getMyReservationsUseCase(id) }
+            handleReservationResult { getMyReservationsUseCase() }
         }
     }
 
-    private fun getUpcomingReservation(id: Int = 1) {
+    private fun getUpcomingReservation() {
         viewModelScope.launch(dispatcher.io) {
-            handleReservationResult { getUpcomingReservations(id) }
+            handleReservationResult { getUpcomingReservations() }
         }
     }
 
-    private fun getPastReservationVm(id: Int = 1) {
+    private fun getPastReservationVm() {
         viewModelScope.launch(dispatcher.io) {
-            handleReservationResult { getPastReservations(id) }
+            handleReservationResult { getPastReservations() }
         }
     }
 

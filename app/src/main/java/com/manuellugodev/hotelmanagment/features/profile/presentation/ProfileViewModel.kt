@@ -30,10 +30,10 @@ class ProfileViewModel @Inject constructor(
                     _stateProfile.value=_stateProfile.value.copy(showProfile = result.getOrThrow())
                 } else {
 
-                    _stateProfile.value=_stateProfile.value.copy(showError = "Some was wrong")
+                    _stateProfile.value=_stateProfile.value.copy(showError = "Something went wrong")
                 }
             } catch (e: Exception) {
-                _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Some was wrong getting profile")
+                _stateProfile.value = _stateProfile.value.copy(showError = e.message ?: "Something went wrong getting profile")
 
             }
 

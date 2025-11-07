@@ -97,7 +97,7 @@ class RegisterViewModel @Inject constructor(
                     }
 
                     else -> {
-                        state = state.copy(msgError = "Some was wrong")
+                        state = state.copy(msgError = "Something went wrong")
 
                     }
                 }

@@ -13,10 +13,10 @@ interface ReservationRepository {
     suspend fun getTemporalReservation(id: Long): DataResult<Reservation>
 
     suspend fun saveTemporalReservation(reservation: Reservation): Result<Reservation>
-    suspend fun getMyReservations(guest: Int): DataResult<List<Reservation>>
+    suspend fun getMyReservations(): DataResult<List<Reservation>>
 
-    suspend fun getUpcomingReservations(guest: Int, date: Date): DataResult<List<Reservation>>
-    suspend fun getPastReservations(guest: Int, date: Date): DataResult<List<Reservation>>
+    suspend fun getUpcomingReservations(date: Date): DataResult<List<Reservation>>
+    suspend fun getPastReservations(date: Date): DataResult<List<Reservation>>
 
     suspend fun deleteReservation(id: Int): DataResult<String>
 }

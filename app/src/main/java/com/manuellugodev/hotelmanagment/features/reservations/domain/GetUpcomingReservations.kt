@@ -10,7 +10,7 @@ class GetUpcomingReservations(
     private val time: TimeProvider
 ) {
 
-    suspend operator fun invoke(guest: Int): DataResult<List<Reservation>> {
-        return repository.getUpcomingReservations(guest, time.getNowTime())
+    suspend operator fun invoke(): DataResult<List<Reservation>> {
+        return repository.getUpcomingReservations(time.getNowTime())
     }
 }

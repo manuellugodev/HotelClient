@@ -10,9 +10,9 @@ class GetPastReservations(
     private val time: TimeProvider
 ) {
 
-    suspend operator fun invoke(guest: Int): DataResult<List<Reservation>> {
+    suspend operator fun invoke(): DataResult<List<Reservation>> {
 
-        return repository.getPastReservations(guest, time.getNowTime())
+        return repository.getPastReservations(time.getNowTime())
 
     }
 }
