@@ -23,11 +23,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoomTypeViewModel @Inject constructor(
-    var usecase: SearchRoomAvailables,
-    var useCaseSaveTemporalReservation: SaveTemporalReservation,
-    var useCaseGetMyProfileData: GetDataProfile,
+    private val usecase: SearchRoomAvailables,
+    private val useCaseSaveTemporalReservation: SaveTemporalReservation,
+    private val useCaseGetMyProfileData: GetDataProfile,
     savedStateHandle: SavedStateHandle,
-    val dispatcher: DispatcherProvider
+    private val dispatcher: DispatcherProvider
 
 ) : ViewModel() {
 
